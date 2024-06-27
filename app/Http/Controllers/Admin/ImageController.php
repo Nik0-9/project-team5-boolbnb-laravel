@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Sponsor;
-use App\Http\Requests\StoreSponsorRequest;
-use App\Http\Requests\UpdateSponsorRequest;
+use App\Models\Image;
+use App\Http\Requests\StoreImageRequest;
+use App\Http\Requests\UpdateImageRequest;
+use App\Http\Controllers\Controller;
 
-class SponsorController extends Controller
+class ImageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class SponsorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSponsorRequest $request)
+    public function store(StoreImageRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class SponsorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sponsor $sponsor)
+    public function show(Image $image)
     {
         //
     }
@@ -43,7 +44,7 @@ class SponsorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Sponsor $sponsor)
+    public function edit(Image $image)
     {
         //
     }
@@ -51,7 +52,7 @@ class SponsorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSponsorRequest $request, Sponsor $sponsor)
+    public function update(UpdateImageRequest $request, Image $image)
     {
         //
     }
@@ -59,7 +60,7 @@ class SponsorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sponsor $sponsor)
+    public function destroy(Image $image)
     {
         //
     }
