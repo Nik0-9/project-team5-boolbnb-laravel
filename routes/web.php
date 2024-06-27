@@ -4,7 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
-
+use App\Http\Controllers\Admin\ApartmentController;
+use App\Http\Controllers\Admin\ViewController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\Admin\SponsorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +25,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('apartments', ApartmentController::class);
+    Route::resource('views', ViewController::class);
+    Route::resource('services', ServiceController::class);
+    Route::resource('messages', MessageController::class);
+    Route::resource('images', ImageController::class);
+    Route::resource('sponsors', SponsorController::class);
 });
 
 Route::middleware('auth')->group(function () {

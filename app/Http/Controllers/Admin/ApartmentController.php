@@ -31,15 +31,18 @@ class ApartmentController extends Controller
      */
     public function store(StoreApartmentRequest $request)
     {
-        //
-    }
+        $validated = $request->validated();
+        $validated['slug'] = Apartment::generateSlug($validated['name']);
+        $apartment = Apartment::create($validated);
 
+        return redirect()->route('apartments.show', $apartment->id)->with('success', 'Appartamento creato con successo.');
+    }
     /**
      * Display the specified resource.
      */
     public function show(Apartment $apartment)
     {
-        //
+        return view('apartments.show', compact('apartment'));
     }
 
     /**
@@ -47,7 +50,7 @@ class ApartmentController extends Controller
      */
     public function edit(Apartment $apartment)
     {
-        //
+        return view('apartments.edit', compact('apartment'));
     }
 
     /**
@@ -55,7 +58,13 @@ class ApartmentController extends Controller
      */
     public function update(UpdateApartmentRequest $request, Apartment $apartment)
     {
-        //
+        $validated = $request->validated();
+        if ($apartment->name !== $validated['name']) {
+            $validated['slug'] = Apartment::generateSlug($validated['name']);
+        }
+        $apartment->update($validated);
+
+        return redirect()->route('apartments.show', $apartment->id)->with('success', 'Appartamento aggiornato con successo.');
     }
 
     /**
@@ -63,6 +72,7 @@ class ApartmentController extends Controller
      */
     public function destroy(Apartment $apartment)
     {
-        //
+        $apartment->delete();
+        return redirect()->route('apartments.index')->with('success', 'Appartamento eliminato con successo.');
     }
 }
