@@ -22,8 +22,8 @@ return new class extends Migration
             $table->tinyInteger('num_beds')->unsigned();
             $table->tinyInteger('num_rooms')->unsigned();
             $table->string('slug',255)->unique();
-            $table->decimal('latitude', 11,8);
-            $table->decimal('longitude', 11,8);
+            $table->decimal('latitude', 11,8)->nullable();
+            $table->decimal('longitude', 11,8)->nullable();
             $table->boolean('visible')->nullable()->default(1);
             $table->timestamps();
         });

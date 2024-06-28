@@ -6,6 +6,8 @@ use App\Models\Apartment;
 use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class ApartmentController extends Controller
 {
@@ -31,11 +33,13 @@ class ApartmentController extends Controller
      */
     public function store(StoreApartmentRequest $request)
     {
+        
         $validated = $request->validated();
         $validated['slug'] = Apartment::generateSlug($validated['name']);
-        $apartment = Apartment::create($validated);
+        $validated['user_id'] = Auth::id();
+        $newApartment = Apartment::create($validated);
 
-        return redirect()->route('admin.apartments.show', $apartment->id)->with('success', 'Appartamento creato con successo.');
+        return redirect()->route('admin.apartments.show', $newApartment->slug)->with('success', 'Appartamento creato con successo.');
     }
     /**
      * Display the specified resource.
@@ -58,13 +62,15 @@ class ApartmentController extends Controller
      */
     public function update(UpdateApartmentRequest $request, Apartment $apartment)
     {
+        
         $validated = $request->validated();
+        //$validated['user_id'] = Auth::id();
         if ($apartment->name !== $validated['name']) {
             $validated['slug'] = Apartment::generateSlug($validated['name']);
         }
         $apartment->update($validated);
 
-        return redirect()->route('admin.apartments.show', $apartment->id)->with('success', 'Appartamento aggiornato con successo.');
+        return redirect()->route('admin.apartments.show', $apartment->slug)->with('success', 'Appartamento aggiornato con successo.');
     }
 
     /**
