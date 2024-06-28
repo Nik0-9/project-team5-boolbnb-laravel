@@ -3,10 +3,10 @@
 
 @section('content')
     <h1>Modifica Appartamento</h1>
-    <form action="{{ route('apartments.update', $apartment->id) }}" method="POST">
+    <form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST">
         @csrf
         @method('PUT')
-        @include('apartments.partials.form')
-        <button type="submit" class="btn btn-primary">Aggiorna</button>
+        @include('layouts.partials.form')
+        <button type="submit" class="btn btn-primary" >Aggiorna</button>
     </form>
 @endsection

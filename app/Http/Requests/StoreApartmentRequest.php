@@ -30,8 +30,6 @@ class StoreApartmentRequest extends FormRequest
             'num_bathrooms' => 'required|integer|min:1',
             'num_beds' => 'required|integer|min:1',
             'num_rooms' => 'required|integer|min:1',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
         ];
     }
 
@@ -46,7 +44,7 @@ class StoreApartmentRequest extends FormRequest
             'address.max' => 'L\'indirizzo non può avere più di :max caratteri',
             'description.min' => 'La descrizione non può avere meno di :min caratteri',
             'square_meters.required' => 'I metri quadrati sono obbligatori',
-            'square_meters.min' => 'I metri quadrati non possono essere minori di 15 metri quadrati',
+            'square_meters.min' => 'I metri quadrati non possono essere minori di :min metri quadrati',
             'num_bathrooms.required' => 'Il numero di bagni sono obbligatori',
             'num_bathrooms.min' => 'Il numero di bagni non è minore di :min',
             'num_beds.required' => 'Il numero di letti sono obbligatori',

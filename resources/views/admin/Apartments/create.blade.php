@@ -6,6 +6,6 @@
     <form action="{{ route('admin.apartments.store') }}" method="POST">
         @csrf
         @include('layouts.partials.form')
-        <button type="submit" class="btn btn-primary">Salva</button>
+        <button type="submit" class="btn btn-primary" >Salva</button>
     </form>
 @endsection

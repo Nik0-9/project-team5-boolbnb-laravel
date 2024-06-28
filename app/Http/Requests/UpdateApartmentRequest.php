@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateApartmentRequest extends FormRequest
 {
@@ -21,21 +22,20 @@ class UpdateApartmentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|string|max:200',
-            'cover_image' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'description' => 'nullable|string|min:20',
-            'square_meters' => 'required|integer|min:20',
-            'num_bathrooms' => 'required|integer|min:1',
-            'num_beds' => 'required|integer|min:1',
-            'num_rooms' => 'required|integer|min:1',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'slug' => 'required|string|max:255|unique:apartments,slug,' . $this->route('apartment')->id,
-       ];
+        return
+            [
+                'name' => 'required|string|max:200',
+                'cover_image' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'description' => 'nullable|string|min:20',
+                'square_meters' => 'required|integer|min:20',
+                'num_bathrooms' => 'required|integer|min:1',
+                'num_beds' => 'required|integer|min:1',
+                'num_rooms' => 'required|integer|min:1',
+            ];
     }
-    public function messages(){
+    public function messages()
+    {
 
         return [
             'name.required' => 'Il nome è obbligatorio',
@@ -46,7 +46,7 @@ class UpdateApartmentRequest extends FormRequest
             'address.max' => 'L\'indirizzo non può avere più di :max caratteri',
             'description.min' => 'La descrizione non può avere meno di :min caratteri',
             'square_meters.required' => 'I metri quadrati sono obbligatori',
-            'square_meters.min' => 'I metri quadrati non possono essere minori di 15 metri quadrati',
+            'square_meters.min' => 'I metri quadrati non possono essere minori di :min metri quadrati',
             'num_bathrooms.required' => 'Il numero di bagni sono obbligatori',
             'num_bathrooms.min' => 'Il numero di bagni è minore di :min',
             'num_beds.required' => 'Il numero di letti sono obbligatori',

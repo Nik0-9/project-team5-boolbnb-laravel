@@ -18,7 +18,7 @@ class Apartment extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['visible'];
+    protected $guarded = [];
 
     public static function generateSlug($name)
     {
