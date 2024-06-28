@@ -5,5 +5,5 @@
     <p><strong>Nome:</strong> {{ $apartment->name }}</p>
     <p><strong>Indirizzo:</strong> {{ $apartment->address }}</p>
     <p><strong>Descrizione:</strong> {{ $apartment->description }}</p>
-    <a href="{{ route('apartments.index') }}" class="btn btn-secondary">Torna alla Lista</a>
+    <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary">Torna alla Lista</a>
 @endsection

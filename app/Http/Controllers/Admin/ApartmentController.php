@@ -14,7 +14,7 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        $apartments = Apartment::all();
+        $apartments = Apartment::where('user_id', auth()->user()->id)->get();
         return view('admin.apartments.index', compact('apartments'));
     }
 
@@ -35,14 +35,14 @@ class ApartmentController extends Controller
         $validated['slug'] = Apartment::generateSlug($validated['name']);
         $apartment = Apartment::create($validated);
 
-        return redirect()->route('apartments.show', $apartment->id)->with('success', 'Appartamento creato con successo.');
+        return redirect()->route('admin.apartments.show', $apartment->id)->with('success', 'Appartamento creato con successo.');
     }
     /**
      * Display the specified resource.
      */
     public function show(Apartment $apartment)
     {
-        return view('apartments.show', compact('apartment'));
+        return view('admin.apartments.show', compact('apartment'));
     }
 
     /**
@@ -50,7 +50,7 @@ class ApartmentController extends Controller
      */
     public function edit(Apartment $apartment)
     {
-        return view('apartments.edit', compact('apartment'));
+        return view('admin.apartments.edit', compact('apartment'));
     }
 
     /**
@@ -64,7 +64,7 @@ class ApartmentController extends Controller
         }
         $apartment->update($validated);
 
-        return redirect()->route('apartments.show', $apartment->id)->with('success', 'Appartamento aggiornato con successo.');
+        return redirect()->route('admin.apartments.show', $apartment->id)->with('success', 'Appartamento aggiornato con successo.');
     }
 
     /**
@@ -73,6 +73,6 @@ class ApartmentController extends Controller
     public function destroy(Apartment $apartment)
     {
         $apartment->delete();
-        return redirect()->route('apartments.index')->with('success', 'Appartamento eliminato con successo.');
+        return redirect()->route('admin.apartments.index')->with('success', 'Appartamento eliminato con successo.');
     }
 }
