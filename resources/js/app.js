@@ -30,3 +30,26 @@ deleteSubmitButtons.forEach((button) => {
         });
     });
 });
+
+//funzione get lat,lon
+// const baseUrlTt = "https://api.tomtom.com/search/2/geocode/";
+// const TtKey = '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI';
+// const TtJson = 'storeResult=false&view=Unified&key=';
+// const btnSave = document.getElementById("save");
+
+// btnSave.addEventListener("click", () => {
+    
+//     const address = document.getElementById("address").value;
+//     const encodedAddress = address.split(' ').join('%20');
+    
+//     axios.get(`${baseUrlTt}${encodedAddress}${TtJson}${TtKey}`).then((res)=>{
+//         const lat = res.data.results[0].position.lat;
+//         const lon = res.data.results[0].position.lon;
+//         console.log(lat,lon);  
+//     })
+// })
+
+
+//https://api.tomtom.com/search/2/geocode/Via%20Stefano%20Barbato%204%2080147%20Napoli%20NA.json?storeResult=false&view=Unified&key=*****
+//nostra chiamata
+//https://api.tomtom.com/search/2/geocode/Via%20Stefano%20Barbato%204%2080147%20Napoli%20NA.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI
