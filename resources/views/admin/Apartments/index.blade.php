@@ -19,7 +19,7 @@
                     <td>{{ $apartment->name }}</td>
                     <td>{{ $apartment->address }}</td>
                     <td>
-                        <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                        <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-info" id="btnInfo"><i class="fas fa-eye"></i></a>
                         <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                         <form action="{{ route('admin.apartments.destroy', $apartment->slug) }}" method="POST" style="display:inline;">
                             @csrf
