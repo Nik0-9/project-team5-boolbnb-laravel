@@ -21,7 +21,7 @@ class UpdateApartmentRequest extends FormRequest
         return [
             'name' => 'required|string|max:200',
             'cover_image' => 'file|image',
-            'street' => 'required|string|max:150|min:8',
+            'street' => 'required|string|max:150|min:5',
             'street_number' => 'required|string|min:1',
             'city' => 'required|string|max:150',
             'cap' => 'required|numeric',

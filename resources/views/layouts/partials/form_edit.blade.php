@@ -22,7 +22,7 @@
 <div class="d-flex border rounded p-2">
     <div class="me-3 w-25">
         <label for="street">Via</label>
-        <input type="text" class="form-control w-100" name="street" id="street" required minlength="8" maxlength="150">
+        <input type="text" class="form-control w-100" name="street" id="street" required minlength="5" maxlength="150">
     </div>
     @error ('street')
         <div class="alert alert-danger">{{ $message }}</div>
