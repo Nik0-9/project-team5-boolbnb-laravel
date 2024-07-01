@@ -5,7 +5,7 @@ use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 class ApartmentController extends Controller
 {
@@ -29,11 +29,20 @@ class ApartmentController extends Controller
      */
     public function store(StoreApartmentRequest $request)
     {
+        
         $validated = $request->validated();
         $validated['slug'] = Apartment::generateSlug($validated['name']);
         $validated['user_id'] = Auth::id();
+
+        if($request->hasFile('cover_image')){
+            $name = $validated['slug'];
+            $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name.'.jpg'); 
+            $validated['cover_image'] = $img_path;
+        }
+        
         $fullAddress = trim($validated['street']) . ' ' . trim($validated['street_number']) . ' ' . trim($validated['city']) . ' ' . trim($validated['cap']);
         $validated['address'] = $fullAddress;
+
         $client = new Client([
             'verify' => false,
         ]);
@@ -54,6 +63,7 @@ class ApartmentController extends Controller
         } else {
             return back()->withErrors(['address' => 'Indirizzo non valido inserire via, civico e città']);
         }
+
     
         $newApartment = Apartment::create($validated);
         return redirect()->route('admin.apartments.show', $newApartment->slug)->with('success', 'Appartamento creato con successo.');
@@ -77,12 +87,25 @@ class ApartmentController extends Controller
      */
     public function update(UpdateApartmentRequest $request, Apartment $apartment)
     {
+        
         $validated = $request->validated();
         //$validated['user_id'] = Auth::id();
         if ($apartment->name !== $validated['name']) {
             $validated['slug'] = Apartment::generateSlug($validated['name']);
+        }else{
+            $validated['slug'] = $apartment->slug;
         }
-        $fullAddress = trim($validated['street'] . ' ' . $validated['street_number'] . ' ' . $validated['city'] . ' ' . $validated['cap']);
+
+        if($request->hasFile('cover_image')){
+            if($apartment->cover_image){
+                Storage::delete($apartment->cover_image);
+            }
+            $name = $validated['slug'];
+            $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name.'.jpg'); 
+            $validated['cover_image'] = $img_path;    
+        }
+
+        $fullAddress = trim($validated['street']) . ' ' . trim($validated['street_number']) . ' ' . trim($validated['city']) . ' ' . trim($validated['cap']);
         $validated['address'] = $fullAddress;
         $client = new Client([
             'verify' => false,

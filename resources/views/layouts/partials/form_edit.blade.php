@@ -10,49 +10,50 @@
 <!-- IMMAGINE -->
 <div class="form-group">
     <label for="cover_image">Immagine di Copertina</label>
-    <input type="text" class="form-control" id="cover_image" name="cover_image"
-        value="{{ old('cover_image', isset($apartment) ? $apartment->cover_image : '') }}" required >
+    <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*" required>
 </div>
-@error('cover_image')
+
+<!-- @error('cover_image')
     <div class="alert alert-danger">{{ $message }}</div>
-@enderror
+@enderror -->
+
 <!-- INDIRIZZO -->
 <label for="address">Indirizzo</label>
 <div class="d-flex border rounded p-2">
     <div class="me-3 w-25">
         <label for="street">Via</label>
-        <input type="text" class="form-control w-100" name="street" id="street"  required minlength="8" maxlength="150">
+        <input type="text" class="form-control w-100" name="street" id="street" required minlength="8" maxlength="150">
     </div>
     @error ('street')
-    <div class="alert alert-danger">{{ $message }}</div>
+        <div class="alert alert-danger">{{ $message }}</div>
     @enderror
     <div class="me-3 w-25">
         <label for="street_number">Numero Civico</label>
         <input type="text" class="form-control" name="street_number" id="street_number" required minlength="1">
     </div>
     @error ('street_number')
-    <div class="alert alert-danger">{{ $message }}</div>
+        <div class="alert alert-danger">{{ $message }}</div>
     @enderror
     <div class="me-3 w-25">
         <label for="city">Città</label>
-        <input type="text" class="form-control" name="city" id="city" required maxlength="150" >
+        <input type="text" class="form-control" name="city" id="city" required maxlength="150">
     </div>
     @error ('city')
-    <div class="alert alert-danger">{{ $message }}</div>
+        <div class="alert alert-danger">{{ $message }}</div>
     @enderror
     <div class="me-3 w-25">
         <label for="cap">Cap</label>
-        <input type="text" class="form-control @error('cap') is-invalid @enderror" name="cap" id="cap" required pattern="^\d{5}$" minlength="5" maxlength="5" >
+        <input type="text" class="form-control @error('cap') is-invalid @enderror" name="cap" id="cap" required
+            pattern="^\d{5}$" minlength="5" maxlength="5">
     </div>
     @error ('cap')
-    <div class="alert alert-danger">{{ $message }}</div>
+        <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 </div>
 <!-- DESCRIZIONE -->
 <div class="form-group">
     <label for="description">Descrizione</label>
-    <textarea class="form-control" id="description" name="description"
-        rows="3" minlength="20">
+    <textarea class="form-control" id="description" name="description" rows="3" minlength="20">
         {{ old('description', isset($apartment) ? $apartment->description : '') }} 
     </textarea>
 </div>
