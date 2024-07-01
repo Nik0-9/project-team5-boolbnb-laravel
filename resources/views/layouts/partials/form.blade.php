@@ -28,7 +28,7 @@
     @enderror
     <div class="me-3 w-25">
         <label for="street_number">Numero Civico</label>
-        <input type="number" class="form-control" name="street_number" id="street_number" required minlength="1">
+        <input type="text" class="form-control" name="street_number" id="street_number" required minlength="1">
     </div>
     @error ('street_number')
     <div class="alert alert-danger">{{ $message }}</div>
@@ -42,7 +42,7 @@
     @enderror
     <div class="me-3 w-25">
         <label for="cap">Cap</label>
-        <input type="number" class="form-control" name="cap" id="cap" required minlength="5" maxlength="5"min="00001" max="99999">
+        <input type="text" class="form-control @error('cap') is-invalid @enderror" name="cap" id="cap" required pattern="^\d{5}$" minlength="5" maxlength="5" >
     </div>
     @error ('cap')
     <div class="alert alert-danger">{{ $message }}</div>

@@ -32,20 +32,22 @@ class ApartmentController extends Controller
         $validated = $request->validated();
         $validated['slug'] = Apartment::generateSlug($validated['name']);
         $validated['user_id'] = Auth::id();
-        $fullAddress = trim($validated['street'] . ' ' . $validated['street_number'] . ' ' . $validated['city'] . ' ' . $validated['cap']);
+        $fullAddress = trim($validated['street']) . ' ' . trim($validated['street_number']) . ' ' . trim($validated['city']) . ' ' . trim($validated['cap']);
         $validated['address'] = $fullAddress;
         $client = new Client([
             'verify' => false,
         ]);
         //chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
-        $formatted = Apartment::addressFormatted($validated['address']);
+        $formatted = str_replace(' ', '%20', ($validated['address']));
         $response = $client->get($baseUrlApi . $formatted . '.json', [
             'query' => [
+                'limit' => 1,
                 'key' => env('TOMTOM_KEY'),
             ]
         ]);
         $data = json_decode($response->getBody(), true);
+        
         if (isset($data['results'][0]['position'])) {
             $validated['latitude'] = $data['results'][0]['position']['lat'];
             $validated['longitude'] = $data['results'][0]['position']['lon'];
@@ -86,10 +88,10 @@ class ApartmentController extends Controller
             'verify' => false,
         ]);
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
-        $formatted = Apartment::addressFormatted($validated['address']);
+        $formatted = str_replace(' ', '%20', ($validated['address']));
         $response = $client->get($baseUrlApi . $formatted . '.json', [
             'query' => [
-                'typeahead' => true,
+                'limit' => 1,
                 'key' => env('TOMTOM_KEY'),
             ]
         ]);
