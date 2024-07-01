@@ -38,6 +38,8 @@ class ApartmentController extends Controller
             $name = $validated['slug'];
             $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name.'.jpg'); 
             $validated['cover_image'] = $img_path;
+        }else{
+            $validated['cover_image'] = 'default.jpg';
         }
         
         $fullAddress = trim($validated['street']) . ' ' . trim($validated['street_number']) . ' ' . trim($validated['city']) . ' ' . trim($validated['cap']);
@@ -97,7 +99,7 @@ class ApartmentController extends Controller
         }
 
         if($request->hasFile('cover_image')){
-            if($apartment->cover_image){
+            if($apartment->cover_image && $apartment->cover_image !== 'default.jpg'){
                 Storage::delete($apartment->cover_image);
             }
             $name = $validated['slug'];

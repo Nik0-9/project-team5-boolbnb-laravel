@@ -21,7 +21,7 @@ class StoreApartmentRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:200',
-            'cover_image' => 'required|file|image',
+            'cover_image' => 'file|image',
             'street' => 'required|string|max:150|min:8',
             'street_number' => 'required|string|min:1',
             'city' => 'required|string|max:150',
@@ -38,7 +38,6 @@ class StoreApartmentRequest extends FormRequest
         return [
             'name.required' => 'Il nome è obbligatorio',
             'name.max' => 'Il nome non può avere più di :max caratteri',
-            'cover_image.required' => 'L\'immagine di copertina è obbligatoria',
             'cover_image.file' => 'Il file caricato non è una immagine',
             'cover_image.image' => 'Il file caricato non è una immagine',
             'street.required' => 'La via è obbligatoria',
@@ -54,7 +53,7 @@ class StoreApartmentRequest extends FormRequest
             'square_meters.required' => 'I metri quadrati sono obbligatori',
             'square_meters.min' => 'I metri quadrati non possono essere minori di :min metri quadrati',
             'num_bathrooms.required' => 'Il numero di bagni sono obbligatori',
-            'num_bathrooms.min' => 'Il numero di bagni non è minore di :min',
+            'num_bathrooms.min' => 'Il numero di bagni non può essere minore di :min',
             'num_beds.required' => 'Il numero di letti sono obbligatori',
             'num_beds.min' => 'Il numero di letti non può essere minore di :min',
             'num_rooms.required' => 'Il numero di stanze sono obbligatori',
