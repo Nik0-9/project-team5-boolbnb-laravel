@@ -4,3 +4,127 @@
 @import "~@fortawesome/fontawesome-free/scss/regular";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
+
+
+/* sidebar */
+#sidebar {
+    width: 260px;
+    color: black;
+    background-color: blueviolet;
+
+    .logo {
+        padding: 7px 12px;
+
+        a {
+            padding: 11px 0;
+        }
+    }
+
+    .user {
+        padding-bottom: 20px;
+
+        .profile {
+            padding: 20px 0;
+            margin: 0 15px;
+            border-top: 1px solid #f4f3ef86;
+            border-bottom: 1px solid #f4f3ef86;
+
+            a {
+                padding: 0 10px;
+            }
+
+            .profile-picture {
+                width: 35px;
+                height: 35px;
+            }
+
+            ul {
+                margin-top: 9px;
+
+                li {
+                    a {
+                        margin-top: 10px;
+                        display: block;
+                        font-size: 12px;
+                        line-height: 30px;
+                        opacity: 0.8;
+
+                        i {
+                            width: 34px;
+                            text-align: center;
+                            margin-right: 10px;
+                            font-size: 1rem;
+                            line-height: 20px;
+                            opacity: 0.5;
+                        }
+
+                        &:hover {
+                            transition: all 0.3s ease 0s;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #routes-list {
+        li {
+            a {
+                margin: 10px 15px 0;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                font-weight: 600;
+                padding: 10px;
+                line-height: 30px;
+                opacity: 0.8;
+                position: relative;
+
+                &:hover {
+                    opacity: 1;
+                    transition: all 0.3s ease 0s;
+                }
+
+                i {
+                    font-size: 1.5rem;
+                    margin-right: 12px;
+                    line-height: 30px;
+                    width: 34px;
+                    text-align: center;
+                    opacity: 0.5;
+                }
+
+                &.active {
+                    opacity: 1;
+
+                    i {
+                        opacity: 0.8;
+                    }
+
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        right: -17px;
+                        top: 7px;
+                        opacity: 1;
+                        border-right: 17px solid black;
+                        border-top: 17px solid transparent;
+                        border-bottom: 17px solid transparent;
+                        display: inline-block;
+                        transition: opacity 0.15s ease-in;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// cards dashboard apartments
+#card-dash {
+    transition: 0.5s ease;
+
+    &:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+    }
+}
