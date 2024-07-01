@@ -31,10 +31,6 @@ class Apartment extends Model
         return $slug;
     }
 
-    public static function addressFormatted($address){
-        $formatted = Str::slug(trim($address), '%20');
-        return $formatted;
-    }
 
     public function user()
     {
