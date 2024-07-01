@@ -25,7 +25,7 @@
 
     <!-- INDIRIZZO -->
     <label for="address">Indirizzo</label>
-    <div class="d-flex border rounded mb-3">
+    <div class="d-flex border rounded mb-3 p-2">
         <div class="me-3 w-25">
             <label for="street">Via</label>
             <input type="text" class="form-control w-100" name="street" id="street" required minlength="5"

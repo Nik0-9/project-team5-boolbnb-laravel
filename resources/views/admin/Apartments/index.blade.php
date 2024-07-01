@@ -18,6 +18,7 @@
                 <tr>
                     <td>{{ $apartment->id }}</td>
                     <td>{{ $apartment->name }}</td>
+
                     <td>{{ $apartment->address }}</td>
                     <td>
                         <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-info" id="btnInfo"><i
