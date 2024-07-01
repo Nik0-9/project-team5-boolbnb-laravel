@@ -10,6 +10,8 @@
         <img class="w-50 m-auto pb-3" src="{{ $apartment->cover_image }}" alt="{{ $apartment->name }}">
         <p><strong>Indirizzo:</strong> {{ $apartment->address }}</p>
         <p><strong>Descrizione:</strong> {{ $apartment->description }}</p>
+        <p><strong>Latitudine:</strong> {{ $apartment->latitude }}</p>
+        <p><strong>Longitudine:</strong> {{ $apartment->longitude }}</p>
         <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary mx-2">Torna alla Lista</a>
     </div>
 @endsection
