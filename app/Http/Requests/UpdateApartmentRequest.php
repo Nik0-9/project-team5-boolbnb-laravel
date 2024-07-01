@@ -22,7 +22,7 @@ class UpdateApartmentRequest extends FormRequest
             [
                 'name' => 'required|string|max:200',
                 'cover_image' => 'required|string|max:255',
-                'street' => 'required|string|max:150',
+                'street' => 'required|string|max:150|min:8',
                 'street_number' => 'required|numeric|min:1',
                 'city' => 'required|string|max:150',
                 'cap' => 'required|numeric|max:99999|min:00001',
@@ -42,7 +42,9 @@ class UpdateApartmentRequest extends FormRequest
             'cover_image.max' => 'L\'immagine di copertina non può avere più di :max caratteri',
             'street.required' => 'La via è obbligatoria',
             'street.max' => 'La via non può avere più di :max caratteri',
+            'street.min' => 'La via deve avere più di :min caratteri',
             'street_number.required' => 'Il numero civico è obbligatorio',
+            'street_number.max' => 'Il numero civico deve essere inferiore a :max ',
             'street_number.min' => 'Il numero civico è minore di :min ',
             'city.required' => 'La città è obbligatoria',
             'city.max' => 'La città non può avere più di :max caratteri',

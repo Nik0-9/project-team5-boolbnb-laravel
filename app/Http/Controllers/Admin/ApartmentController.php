@@ -37,6 +37,7 @@ class ApartmentController extends Controller
         $client = new Client([
             'verify' => false,
         ]);
+        //chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
         $formatted = Apartment::addressFormatted($validated['address']);
         $response = $client->get($baseUrlApi . $formatted . '.json', [
@@ -51,6 +52,7 @@ class ApartmentController extends Controller
         } else {
             return back()->withErrors(['address' => 'Indirizzo non valido inserire via, civico e città']);
         }
+    
         $newApartment = Apartment::create($validated);
         return redirect()->route('admin.apartments.show', $newApartment->slug)->with('success', 'Appartamento creato con successo.');
     }
