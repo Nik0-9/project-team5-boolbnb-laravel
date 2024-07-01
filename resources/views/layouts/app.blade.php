@@ -26,6 +26,7 @@
         <div id="admin">
             @include('admin.partials.sidebar')
             <div id="content">
+                @include('admin.partials.header')
                 <main class="container">
                     @yield('content')
                 </main>

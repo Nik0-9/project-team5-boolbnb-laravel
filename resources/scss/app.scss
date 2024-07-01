@@ -1,3 +1,4 @@
+@use "./partials/variables"as *;
 @import '~bootstrap/scss/bootstrap';
 
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
@@ -6,118 +7,209 @@
 @import "~@fortawesome/fontawesome-free/scss/brands";
 
 
-/* sidebar */
-#sidebar {
-    width: 260px;
-    color: black;
-    background-color: blueviolet;
+// generals
+#admin {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
 
-    .logo {
-        padding: 7px 12px;
+    /* sidebar */
+    #sidebar {
+        width: 260px;
+        color: black;
+        background-color: blueviolet;
 
-        a {
-            padding: 11px 0;
-        }
-    }
+        .user {
+            padding-bottom: 20px;
 
-    .user {
-        padding-bottom: 20px;
+            .profile {
+                padding: 20px 0;
+                margin: 0 15px;
+                border-top: 1px solid #f4f3ef86;
+                border-bottom: 1px solid #f4f3ef86;
 
-        .profile {
-            padding: 20px 0;
-            margin: 0 15px;
-            border-top: 1px solid #f4f3ef86;
-            border-bottom: 1px solid #f4f3ef86;
+                a {
+                    padding: 0 10px;
+                }
 
-            a {
-                padding: 0 10px;
-            }
+                .profile-picture {
+                    width: 35px;
+                    height: 35px;
+                }
 
-            .profile-picture {
-                width: 35px;
-                height: 35px;
-            }
+                ul {
+                    margin-top: 9px;
 
-            ul {
-                margin-top: 9px;
+                    li {
+                        a {
+                            margin-top: 10px;
+                            display: block;
+                            font-size: 12px;
+                            line-height: 30px;
+                            opacity: 0.8;
 
-                li {
-                    a {
-                        margin-top: 10px;
-                        display: block;
-                        font-size: 12px;
-                        line-height: 30px;
-                        opacity: 0.8;
+                            i {
+                                width: 34px;
+                                text-align: center;
+                                margin-right: 10px;
+                                font-size: 1rem;
+                                line-height: 20px;
+                                opacity: 0.5;
+                            }
 
-                        i {
-                            width: 34px;
-                            text-align: center;
-                            margin-right: 10px;
-                            font-size: 1rem;
-                            line-height: 20px;
-                            opacity: 0.5;
-                        }
-
-                        &:hover {
-                            transition: all 0.3s ease 0s;
-                            opacity: 1;
+                            &:hover {
+                                transition: all 0.3s ease 0s;
+                                opacity: 1;
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    #routes-list {
-        li {
-            a {
-                margin: 10px 15px 0;
-                text-transform: uppercase;
-                font-size: 0.8rem;
-                font-weight: 600;
-                padding: 10px;
-                line-height: 30px;
-                opacity: 0.8;
-                position: relative;
-
-                &:hover {
-                    opacity: 1;
-                    transition: all 0.3s ease 0s;
-                }
-
-                i {
-                    font-size: 1.5rem;
-                    margin-right: 12px;
+        #routes-list {
+            li {
+                a {
+                    margin: 10px 15px 0;
+                    text-transform: uppercase;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    padding: 10px;
                     line-height: 30px;
-                    width: 34px;
-                    text-align: center;
-                    opacity: 0.5;
-                }
+                    opacity: 0.8;
+                    position: relative;
 
-                &.active {
-                    opacity: 1;
+                    &:hover {
+                        opacity: 1;
+                        transition: all 0.3s ease 0s;
+                    }
 
                     i {
-                        opacity: 0.8;
+                        font-size: 1.5rem;
+                        margin-right: 12px;
+                        line-height: 30px;
+                        width: 34px;
+                        text-align: center;
+                        opacity: 0.5;
                     }
 
-                    &:after {
-                        content: "";
-                        position: absolute;
-                        right: -17px;
-                        top: 7px;
+                    &.active {
                         opacity: 1;
-                        border-right: 17px solid black;
-                        border-top: 17px solid transparent;
-                        border-bottom: 17px solid transparent;
-                        display: inline-block;
-                        transition: opacity 0.15s ease-in;
+
+                        i {
+                            opacity: 0.8;
+                        }
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            right: -17px;
+                            top: 7px;
+                            opacity: 1;
+                            border-right: 17px solid black;
+                            border-top: 17px solid transparent;
+                            border-bottom: 17px solid transparent;
+                            display: inline-block;
+                            transition: opacity 0.15s ease-in;
+                        }
                     }
                 }
             }
         }
     }
 }
+
+/* main content */
+#content {
+    flex-grow: 1;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    main {
+        height: 100%;
+        padding: 0 16px;
+    }
+
+    /* header */
+    header {
+        #main-navbar {
+            background-color: $content-bg;
+            border-bottom: 1px solid #dddddd;
+            padding: 10px 16px;
+
+            .minimize-button {
+                button {
+                    background-color: $sidebar-bg;
+                    color: $content-bg;
+                    aspect-ratio: 1 / 1;
+                    padding: 2px 12px;
+                    border: none;
+                    border-radius: 50px;
+
+                    i {
+                        width: 16px;
+                    }
+
+                    &:hover {
+                        filter: brightness(0.8);
+                        transition-duration: 0.3s;
+                    }
+                }
+            }
+
+            .main-title {
+                color: $sidebar-bg;
+                font-size: 1.2rem;
+                font-weight: 400;
+            }
+
+            #navigation {
+                input {
+                    border: none;
+                    border-radius: 0;
+                    background-color: #ededea;
+
+                    &.form-control:focus {
+                        box-shadow: none;
+                    }
+                }
+
+                .input-group-text {
+                    color: $sidebar-bg;
+                    background-color: #ededea;
+                    border: none;
+                    border-radius: 0;
+                    height: 100%;
+                }
+
+                ul.navbar-nav {
+                    li.nav-item {
+                        a.nav-link {
+                            color: $sidebar-bg;
+
+                            span {
+                                position: absolute;
+                                transform: scale(0.7);
+                                top: 0;
+                                right: calc(50% - 10px);
+                            }
+
+                            &:hover i {
+                                filter: brightness(0.8);
+                                transform: scale(1.4);
+                                transition-duration: 0.3s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 // cards dashboard apartments
 #card-dash {
