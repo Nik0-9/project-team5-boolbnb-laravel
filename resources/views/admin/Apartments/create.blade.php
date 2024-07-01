@@ -113,6 +113,18 @@
         <input type="number" id="user" name="user_id" value="{{old('user_id', $apartment->user_id ?? '')}}">
     </div>
 
+    <div class="form-group mb-3">
+        <label for="services">Servizi</label>
+                @foreach ($services as $service)
+                    <div>
+                        <input type="checkbox" name="services[]" value="{{ $service->id }}" class="form-check-input"
+                            {{ in_array($service->id, old('services', [])) ? 'checked' : '' }}>
+                        <label for="services[]" class="form-check-label">{{ $service->name }}</label>
+                    </div>
+                @endforeach
+               
+            </div>
+
     <button type="submit" class="btn btn-primary" id="save">Salva</button>
 </form>
 @endsection

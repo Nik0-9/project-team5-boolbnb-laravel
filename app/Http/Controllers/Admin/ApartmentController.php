@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
+use App\Models\Service;
 class ApartmentController extends Controller
 {
     /**
@@ -22,13 +23,16 @@ class ApartmentController extends Controller
      */
     public function create()
     {
-        return view('admin.apartments.create');
+        $services = Service::all();
+
+        return view('admin.apartments.create', compact('services'));
     }
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreApartmentRequest $request)
     {
+        
         
         $validated = $request->validated();
         $validated['slug'] = Apartment::generateSlug($validated['name']);
@@ -66,8 +70,10 @@ class ApartmentController extends Controller
             return back()->withErrors(['address' => 'Indirizzo non valido inserire via, civico e città']);
         }
 
-    
         $newApartment = Apartment::create($validated);
+        if($request->has('services')){
+            $newApartment->services()->attach($request->input('services'));
+        }
         return redirect()->route('admin.apartments.show', $newApartment->slug)->with('success', 'Appartamento creato con successo.');
     }
     /**
@@ -81,8 +87,11 @@ class ApartmentController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Apartment $apartment)
+    
     {
-        return view('admin.apartments.edit', compact('apartment'));
+        $services = Service::all();
+
+        return view('admin.apartments.edit', compact('apartment', 'services'));
     }
     /**
      * Update the specified resource in storage.

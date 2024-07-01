@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50)->unique();
-            $table->string('icon',255);
+            $table->string('icon',255)->nullable();
             $table->timestamps();
         });
     }
