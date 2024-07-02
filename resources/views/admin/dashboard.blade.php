@@ -150,13 +150,13 @@
                 <div class="col-lg-6 mb-4">
 
                     <!-- Project Card Example -->
-                    <div class="card  mb-4">
+                   {{-- <div class="card  mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold ">Films</h6>
-                            {{-- <a href="{{ route('admin.movies.index') }}" class="">Mostra tutti i film</a> --}}
+                             <a href="{{ route('admin.movies.index') }}" class="">Mostra tutti i film</a> 
                         </div>
                         <div class="card-body">
-                            {{-- @foreach ($movies as $movie)
+                             @foreach ($movies as $movie)
                             <div class="d-flex align-items-center pb-3">
                                 <span class="pe-3">
                                     <img src="{{ $movie->thumb }}" alt="{{ $movie->title }}"
@@ -187,7 +187,7 @@
                         <div class="card-body">
                             @foreach ($apartments as $apartment)
                                 <div class="card text-bg-dark my-3 border-0 " style="height: 70px" id="card-dash">
-                                    <img src="{{ $apartment->cover_image}}" class="img-fluid" style="width: 100%; height: 100%; opacity: 0.8" alt="{{$apartment->name}}">
+                                    <img src="{{'storage/'.$apartment->cover_image }}" class="img-fluid" style="width: 100%; height: 100%; opacity: 0.8" alt="{{$apartment->name}}">
                                     <div class="card-img-overlay p-2">
                                         <h5 class="card-title">{{ $apartment->name }}</h5>
                                         <p class="card-text">aggiunto il: {{ $apartment->created_at}}</p>

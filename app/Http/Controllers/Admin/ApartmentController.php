@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
+
+
 use App\Models\Apartment;
 use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
@@ -107,6 +109,10 @@ class ApartmentController extends Controller
             $validated['slug'] = $apartment->slug;
         }
 
+        if($validated['street']&&$validated['street_number']&&$validated['city']&&$validated['cap']){
+            $validated['address'] = $apartment->address;
+        }
+
         if($request->hasFile('cover_image')){
             if($apartment->cover_image && $apartment->cover_image !== 'default.jpg'){
                 Storage::delete($apartment->cover_image);
@@ -135,6 +141,11 @@ class ApartmentController extends Controller
             $validated['longitude'] = $data['results'][0]['position']['lon'];
         } else {
             return back()->withErrors(['address' => 'Indirizzo non valido inserire via, civico e città']);
+        }
+        if($request->has('services')){
+            $apartment->services()->sync($request->services);
+        }else{
+            $apartment->services()->sync([]);
         }
         $apartment->update($validated);
         return redirect()->route('admin.apartments.show', $apartment->slug)->with('success', 'Appartamento aggiornato con successo.');

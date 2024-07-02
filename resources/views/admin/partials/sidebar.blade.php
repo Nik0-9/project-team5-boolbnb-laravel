@@ -61,7 +61,7 @@
         </li>
         <li>
             <a href="{{ route('admin.apartments.index') }}" class="{{ Route::is('admin.apartments.*') ? 'active' : '' }} nav-link d-flex align-items-center">
-                <i class="fa-solid fa-film"></i> Appartamenti
+                <i class="fa-solid fa-building"></i> Appartamenti
             </a>
         </li>
     </ul>

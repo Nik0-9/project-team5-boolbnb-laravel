@@ -2,14 +2,15 @@
 
 @section('content')
 <h1>Crea Nuovo Appartamento</h1>
-<form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data" >
+<form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="form-group mb-3">
         <!-- NOME -->
         <label for="name">Nome descrittivo appartamento</label>
         <input type="text" class="form-control" id="name" name="name"
-            value="{{ old('name', isset($apartment) ? $apartment->name : '') }}" required maxlength="200" minlength="10">
+            value="{{ old('name', isset($apartment) ? $apartment->name : '') }}" required maxlength="200"
+            minlength="10">
     </div>
     @error('name')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -59,7 +60,7 @@
         @error ('cap')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        
+
     </div>
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
@@ -115,16 +116,15 @@
 
     <div class="form-group mb-3">
         <label for="services">Servizi</label>
-                @foreach ($services as $service)
-                    <div>
-                        <input type="checkbox" name="services[]" value="{{ $service->id }}" class="form-check-input"
-                            {{ in_array($service->id, old('services', [])) ? 'checked' : '' }}>
-                        <label for="services[]" class="form-check-label">{{ $service->name }}</label>
-                    </div>
-                @endforeach
-               
+        @foreach ($services as $service)
+            <div>
+                <input type="checkbox" name="services[]" value="{{ $service->id }}" class="form-check-input" {{ in_array($service->id, old('services', [])) ? 'checked' : '' }}>
+                <label for="services[]" class="form-check-label">{{ $service->name }}</label>
             </div>
+        @endforeach
 
-    <button type="submit" class="btn btn-primary" id="save">Salva</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-4" id="save">Salva</button>
 </form>
 @endsection
