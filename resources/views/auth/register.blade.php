@@ -98,7 +98,7 @@
                                 class="col-md-4 col-form-label text-md-right">{{ __('Data di nascita') }}</label>
 
                             <div class="col-md-6">
-                                <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror"
+                                <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror"
                                     name="date_of_birth" value="{{ old('date_of_birth') }}" 
                                     autocomplete="date_of_birth">
 
@@ -123,4 +123,15 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dateOfBirth = document.getElementById('date_of_birth');
+    
+    // Calcola la data massima per l'età di 18 anni
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    dateOfBirth.max = maxDate.toISOString().split('T')[0];
+});
+</script>
 @endsection
