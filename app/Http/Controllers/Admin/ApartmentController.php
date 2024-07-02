@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use App\Models\Service;
 use Illuminate\Http\Request;
+
 class ApartmentController extends Controller
 {
     /**
@@ -50,14 +51,14 @@ class ApartmentController extends Controller
             $validated['cover_image'] = 'default.jpg';
         }
         
-         $searchAddress=$validated['address'] ;
+         $searchedAddress=$validated['address'] ;
 
         $client = new Client([
             'verify' => false,
         ]);
         //chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
-        $response = $client->get($baseUrlApi . $searchAddress . '.json', [
+        $response = $client->get($baseUrlApi . $searchedAddress . '.json', [
             'query' => [
                 'limit' => 1,
                 'key' => env('TOMTOM_KEY'),
@@ -123,12 +124,12 @@ class ApartmentController extends Controller
             $validated['cover_image'] = $img_path;    
         }
 
-        $searchAddress = $validated['address'];
+        $searchedAddress = $validated['address'];
         $client = new Client([
             'verify' => false,
         ]);
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
-        $response = $client->get($baseUrlApi . $searchAddress . '.json', [
+        $response = $client->get($baseUrlApi . $searchedAddress . '.json', [
             'query' => [
                 'limit' => 1,
                 'key' => env('TOMTOM_KEY'),
@@ -160,4 +161,5 @@ class ApartmentController extends Controller
         $apartment->delete();
         return redirect()->route('admin.apartments.index')->with('success', 'Appartamento eliminato con successo.');
     }
+
 }

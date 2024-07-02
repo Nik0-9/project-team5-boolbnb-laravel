@@ -27,14 +27,22 @@
 
     <!-- INDIRIZZO -->
     <div class="form-group mb-3">
-        <label for="address">Indirizzo</label>
-        <input type="text" class="form-control" id="address" name="address"
-            value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
-            minlength="10">
-    </div>
+    <label for="address">Indirizzo</label>
+    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
+        value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
+        minlength="10" autocomplete="off">
     @error('address')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+</div>
+
+<div class="form-group mb-3">
+    <label for="address-suggestions">Seleziona un indirizzo</label>
+    <select id="address-suggestions" class="form-control" size="5" style="display: none;"></select>
+</div>
+
+<input type="hidden" name="latitude" value="{{ old('latitude') }}">
+<input type="hidden" name="longitude" value="{{ old('longitude') }}">
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
         <label for="description">Descrizione</label>
