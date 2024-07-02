@@ -153,7 +153,7 @@
                    {{-- <div class="card  mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold ">...</h6>
-                            {{-- <a href="{{ route('admin.movies.index') }}" class="">Mostra tutti i film</a> --}}
+                            {{-- <a href="{{ route('admin.movies.index') }}" class="">Mostra tutti i film</a>
                         </div>
                         <div class="card-body">
                              @foreach ($movies as $movie)
@@ -168,7 +168,7 @@
 
                                 </div>
                             </div>
-                        @endforeach --}}
+                        @endforeach --}} 
                         </div>
                     </div>
                 </div>
