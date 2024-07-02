@@ -48,16 +48,14 @@ class ApartmentController extends Controller
             $validated['cover_image'] = 'default.jpg';
         }
         
-        $fullAddress = trim($validated['street']) . ' ' . trim($validated['street_number']) . ' ' . trim($validated['city']) . ' ' . trim($validated['cap']);
-        $validated['address'] = $fullAddress;
+         $searchAddress=$validated['address'] ;
 
         $client = new Client([
             'verify' => false,
         ]);
         //chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
-        $formatted = str_replace(' ', '%20', ($validated['address']));
-        $response = $client->get($baseUrlApi . $formatted . '.json', [
+        $response = $client->get($baseUrlApi . $searchAddress . '.json', [
             'query' => [
                 'limit' => 1,
                 'key' => env('TOMTOM_KEY'),
@@ -91,8 +89,10 @@ class ApartmentController extends Controller
     public function edit(Apartment $apartment)
     
     {
+        if($apartment->user_id !== Auth::id()){
+            abort(404, 'Pagina non trovata');
+        }
         $services = Service::all();
-
         return view('admin.apartments.edit', compact('apartment', 'services'));
     }
     /**
@@ -109,10 +109,6 @@ class ApartmentController extends Controller
             $validated['slug'] = $apartment->slug;
         }
 
-        if($validated['street']&&$validated['street_number']&&$validated['city']&&$validated['cap']){
-            $validated['address'] = $apartment->address;
-        }
-
         if($request->hasFile('cover_image')){
             if($apartment->cover_image && $apartment->cover_image !== 'default.jpg'){
                 Storage::delete($apartment->cover_image);
@@ -122,14 +118,12 @@ class ApartmentController extends Controller
             $validated['cover_image'] = $img_path;    
         }
 
-        $fullAddress = trim($validated['street']) . ' ' . trim($validated['street_number']) . ' ' . trim($validated['city']) . ' ' . trim($validated['cap']);
-        $validated['address'] = $fullAddress;
+        $searchAddress = $validated['address'];
         $client = new Client([
             'verify' => false,
         ]);
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
-        $formatted = str_replace(' ', '%20', ($validated['address']));
-        $response = $client->get($baseUrlApi . $formatted . '.json', [
+        $response = $client->get($baseUrlApi . $searchAddress . '.json', [
             'query' => [
                 'limit' => 1,
                 'key' => env('TOMTOM_KEY'),
@@ -155,6 +149,9 @@ class ApartmentController extends Controller
      */
     public function destroy(Apartment $apartment)
     {
+        if($apartment->user_id !== Auth::id()){
+            abort(404, 'Pagina non trovata');
+        }
         $apartment->delete();
         return redirect()->route('admin.apartments.index')->with('success', 'Appartamento eliminato con successo.');
     }
