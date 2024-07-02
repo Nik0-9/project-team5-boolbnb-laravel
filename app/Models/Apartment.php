@@ -12,11 +12,13 @@ use App\Models\Message;
 use App\Models\Image;
 use App\models\Service;
 use App\Models\Sponsor;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Apartment extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $guarded = [];
 

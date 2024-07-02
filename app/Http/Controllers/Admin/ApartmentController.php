@@ -10,14 +10,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use App\Models\Service;
+use Illuminate\Http\Request;
 class ApartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $apartments = Apartment::where('user_id', auth()->user()->id)->get();
+        
         return view('admin.apartments.index', compact('apartments'));
     }
     /**
@@ -81,6 +83,7 @@ class ApartmentController extends Controller
      */
     public function show(Apartment $apartment)
     {
+        
         return view('admin.apartments.show', compact('apartment'));
     }
     /**
@@ -89,9 +92,11 @@ class ApartmentController extends Controller
     public function edit(Apartment $apartment)
     
     {
+
         if($apartment->user_id !== Auth::id()){
             abort(404, 'Pagina non trovata');
-        }
+        }  
+
         $services = Service::all();
         return view('admin.apartments.edit', compact('apartment', 'services'));
     }

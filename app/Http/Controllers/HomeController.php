@@ -12,4 +12,10 @@ class HomeController extends Controller
         $apartments = Apartment::where('user_id', auth()->user()->id)->get();
         return view('admin.apartments.index', compact('apartments'));
     }
+    public function delete($id)
+    {
+        $data = Apartment::find($id);
+        $data->delete();
+        return redirect()->back();
+    }
 }
