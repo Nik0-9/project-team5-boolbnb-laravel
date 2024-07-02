@@ -10,9 +10,9 @@
 <!-- IMMAGINE -->
 <div class="form-group mb-3">
     <label for="cover_image">Immagine di Copertina</label>
-    <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*" required>
+    <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*" {{old('cover_image')}}>
 </div>
-@error('cover_image')
+    @error('cover_image')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 

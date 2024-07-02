@@ -152,7 +152,7 @@
                     <!-- Project Card Example -->
                     <div class="card  mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold ">Films</h6>
+                            <h6 class="m-0 font-weight-bold ">...</h6>
                             {{-- <a href="{{ route('admin.movies.index') }}" class="">Mostra tutti i film</a> --}}
                         </div>
                         <div class="card-body">
