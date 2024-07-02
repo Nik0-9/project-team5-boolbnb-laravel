@@ -20,7 +20,6 @@ class ApartmentController extends Controller
     public function index(Request $request)
     {
         $apartments = Apartment::where('user_id', auth()->user()->id)->get();
-        
         return view('admin.apartments.index', compact('apartments'));
     }
     /**
@@ -84,7 +83,9 @@ class ApartmentController extends Controller
      */
     public function show(Apartment $apartment)
     {
-        
+        if($apartment->user_id !== Auth::id()){
+            abort(404, 'Pagina non trovata');
+        }
         return view('admin.apartments.show', compact('apartment'));
     }
     /**
