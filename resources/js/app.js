@@ -7,6 +7,38 @@ import.meta.glob([
 ])
 import { Chart } from 'chart.js/auto';
 
+// funzione di autocompletamento
+document.addEventListener('DOMContentLoaded', function() {
+  let addressInput = document.getElementById('address');
+  let resultsSelect = document.createElement('select');
+  addressInput.parentNode.appendChild(resultsSelect);
+
+  addressInput.addEventListener('input', function() {
+      let query = addressInput.value;
+
+      if (query.length < 5) {
+          resultsSelect.innerHTML = '';
+          return;
+      }
+      fetch(`https://api.tomtom.com/search/2/search/${query}.json?key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
+          .then(response => response.json())
+          .then(data => {
+              resultsSelect.innerHTML = '';
+              data.results.forEach(result => {
+                  let option = document.createElement('option');
+                  option.value = result.address.freeformAddress;
+                  option.textContent = result.address.freeformAddress;
+                  resultsSelect.appendChild(option);
+              });
+          })
+          .catch(error => console.error('Error fetching the address:', error));
+  });
+
+  resultsSelect.addEventListener('change', function() {
+      addressInput.value = resultsSelect.value;
+  });
+});
+
 
 // funzione per eliminare
 const deleteSubmitButtons = document.querySelectorAll(".delete-button");
@@ -56,28 +88,27 @@ document.addEventListener('DOMContentLoaded', function () {
   const today = new Date();
     const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
     dateOfBirth.max = maxDate.toISOString().split('T')[0];
-});
-
-  form_register.addEventListener('submit', function (event) {
+    
+    form_register.addEventListener('submit', function (event) {
       if (password.value !== passwordConfirm.value) {
-          event.preventDefault();
-          passwordMatchError.style.display = 'block';
+        event.preventDefault();
+        passwordMatchError.style.display = 'block';
       } else {
-          passwordMatchError.style.display = 'none';
+        passwordMatchError.style.display = 'none';
       }
-  });
-
-  passwordConfirm.addEventListener('input', function () {
+    });
+    
+    passwordConfirm.addEventListener('input', function () {
       if (password.value !== passwordConfirm.value) {
-          passwordConfirm.classList.add('is-invalid');
-          passwordMatchError.style.display = 'block';
+        passwordConfirm.classList.add('is-invalid');
+        passwordMatchError.style.display = 'block';
       } else {
-          passwordConfirm.classList.remove('is-invalid');
-          passwordMatchError.style.display = 'none';
+        passwordConfirm.classList.remove('is-invalid');
+        passwordMatchError.style.display = 'none';
       }
+    });
   });
-
-
+  
 
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
@@ -191,26 +222,3 @@ var myPieChart = new Chart(ctx1, {
     cutoutPercentage: 80,
   },
 });
-
-//funzione get lat,lon
-// const baseUrlTt = "https://api.tomtom.com/search/2/geocode/";
-// const TtKey = '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI';
-// const TtJson = 'storeResult=false&view=Unified&key=';
-// const btnSave = document.getElementById("save");
-
-// btnSave.addEventListener("click", () => {
-    
-//     const address = document.getElementById("address").value;
-//     const encodedAddress = address.split(' ').join('%20');
-    
-//     axios.get(`${baseUrlTt}${encodedAddress}${TtJson}${TtKey}`).then((res)=>{
-//         const lat = res.data.results[0].position.lat;
-//         const lon = res.data.results[0].position.lon;
-//         console.log(lat,lon);  
-//     })
-// })
-
-
-//https://api.tomtom.com/search/2/geocode/Via%20Stefano%20Barbato%204%2080147%20Napoli%20NA.json?storeResult=false&view=Unified&key=*****
-//nostra chiamata
-//https://api.tomtom.com/search/2/geocode/Via%20Stefano%20Barbato%204%2080147%20Napoli%20NA.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI
