@@ -51,7 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const password = document.getElementById('password');
   const passwordConfirm = document.getElementById('password-confirm');
   const passwordMatchError = document.getElementById('password-match-error');
-  
+  const dateOfBirth = document.getElementById('date_of_birth');
+
+  const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+    dateOfBirth.max = maxDate.toISOString().split('T')[0];
+});
 
   form_register.addEventListener('submit', function (event) {
       if (password.value !== passwordConfirm.value) {
@@ -71,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
           passwordMatchError.style.display = 'none';
       }
   });
-});
+
 
 
 // Area Chart Example

@@ -124,14 +124,5 @@
     </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const dateOfBirth = document.getElementById('date_of_birth');
-    
-    // Calcola la data massima per l'età di 18 anni
-    const today = new Date();
-    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-    dateOfBirth.max = maxDate.toISOString().split('T')[0];
-});
-</script>
+
 @endsection
