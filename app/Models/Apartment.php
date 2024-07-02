@@ -20,18 +20,22 @@ class Apartment extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['services'];
 
     public static function generateSlug($name)
     {
         $slug = Str::slug($name, '-');
         $count = 1;
-        while (Apartment::where('slug', $slug)->first()) {
-            $slug = Str::slug($name) . '-' . $count;
+    
+        do {
+            $newSlug = ($count > 1) ? "{$slug}-{$count}" : $slug;
+            $existingSlug = Apartment::withTrashed()->where('slug', $newSlug)->exists();
             $count++;
-        }
-        return $slug;
+        } while ($existingSlug);
+    
+        return $newSlug;
     }
+    
 
 
     public function user()

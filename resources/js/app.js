@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
           .catch(error => console.error('Error fetching the address:', error));
   });
 
-  resultsSelect.addEventListener('change', function() {
+  resultsSelect.addEventListener('click', function() {
       addressInput.value = resultsSelect.value;
   });
 });

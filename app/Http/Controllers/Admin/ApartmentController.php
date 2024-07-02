@@ -37,9 +37,9 @@ class ApartmentController extends Controller
     public function store(StoreApartmentRequest $request)
     {
         
-        
         $validated = $request->validated();
         $validated['slug'] = Apartment::generateSlug($validated['name']);
+        
         $validated['user_id'] = Auth::id();
 
         if($request->hasFile('cover_image')){
@@ -76,6 +76,7 @@ class ApartmentController extends Controller
         if($request->has('services')){
             $newApartment->services()->attach($request->input('services'));
         }
+        
         return redirect()->route('admin.apartments.show', $newApartment->slug)->with('success', 'Appartamento creato con successo.');
     }
     /**
