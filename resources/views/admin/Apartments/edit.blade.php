@@ -26,39 +26,15 @@
 
 
     <!-- INDIRIZZO -->
-    <label for="address">Indirizzo</label>
-    <div class="d-flex border rounded p-2">
-        <div class="me-3 w-25">
-            <label for="street">Via</label>
-            <input type="text" class="form-control w-100" name="street" id="street" required minlength="5"
-                maxlength="150">
-        </div>
-        @error ('street')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="me-3 w-25">
-            <label for="street_number">Numero Civico</label>
-            <input type="text" class="form-control" name="street_number" id="street_number" required minlength="1">
-        </div>
-        @error ('street_number')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="me-3 w-25">
-            <label for="city">Città</label>
-            <input type="text" class="form-control" name="city" id="city" required maxlength="150">
-        </div>
-        @error ('city')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <div class="me-3 w-25">
-            <label for="cap">Cap</label>
-            <input type="text" class="form-control @error('cap') is-invalid @enderror" name="cap" id="cap" required
-                pattern="^\d{5}$" minlength="5" maxlength="5">
-        </div>
-        @error ('cap')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
+    <div class="form-group mb-3">
+        <label for="address">Indirizzo</label>
+        <input type="text" class="form-control" id="address" name="address"
+            value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
+            minlength="10">
     </div>
+    @error('address')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
         <label for="description">Descrizione</label>
