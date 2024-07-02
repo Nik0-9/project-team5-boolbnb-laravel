@@ -45,7 +45,33 @@ but.addEventListener('click', () => {
   icon.classList.toggle('fa-chevron-right'); // Toggle between left and right icons
 });
 
+//funzione validazione conferma password
+document.addEventListener('DOMContentLoaded', function () {
+  const form_register = document.getElementById('register-form');
+  const password = document.getElementById('password');
+  const passwordConfirm = document.getElementById('password-confirm');
+  const passwordMatchError = document.getElementById('password-match-error');
+  
 
+  form_register.addEventListener('submit', function (event) {
+      if (password.value !== passwordConfirm.value) {
+          event.preventDefault();
+          passwordMatchError.style.display = 'block';
+      } else {
+          passwordMatchError.style.display = 'none';
+      }
+  });
+
+  passwordConfirm.addEventListener('input', function () {
+      if (password.value !== passwordConfirm.value) {
+          passwordConfirm.classList.add('is-invalid');
+          passwordMatchError.style.display = 'block';
+      } else {
+          passwordConfirm.classList.remove('is-invalid');
+          passwordMatchError.style.display = 'none';
+      }
+  });
+});
 
 
 // Area Chart Example
