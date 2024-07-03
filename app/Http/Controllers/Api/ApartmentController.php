@@ -40,6 +40,11 @@ class ApartmentController extends Controller
         Apartment::destroy($id);
         return response()->json(null, 204);
     }
+    public function getSponsored()
+    {
+        $sponsored= Apartment::where('is_sponsored', true)->get();
+        return response()->json($sponsored);
+    }
+
+
 }
-
-

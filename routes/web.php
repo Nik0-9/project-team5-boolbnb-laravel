@@ -33,7 +33,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('messages', MessageController::class);
     Route::resource('images', ImageController::class);
     Route::resource('sponsors', SponsorController::class);
-    Route::get('apartmentSponsor', ApartmentSponsorController::class)->parameters(['apartmentSponsor'=>'apartmentSponsor:id']);
+    Route::resource('apartmentSponsor', ApartmentSponsorController::class)->parameters(['apartmentSponsor'=>'apartmentSponsor:id']);
 
 });
 

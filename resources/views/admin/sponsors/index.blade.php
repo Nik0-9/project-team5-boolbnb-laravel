@@ -17,10 +17,10 @@
             @foreach ($apartments as $apartment )           
             @foreach ($apartment->sponsor as $sponsor)
                 <tr>
-                    <td>{{ $sponsor->id }}</td>
-                    <td>{{ $sponsor->name }}</td>
+                    <td>{{ $apartment->id  }}</td>
+                    <td>{{ $apartment->name }}</td>
                     <td>{{ $sponsor->price }}</td>
-                    <td>{{ $sponsor->duration }}</td>
+                    <td>{{ $apartment->pivot->end_date }}</td>
 
                     <td>
                          <a href="{{ route('admin.sponsors.show', $sponsor->name) }}" class="btn btn-info" id="btnInfo"><i

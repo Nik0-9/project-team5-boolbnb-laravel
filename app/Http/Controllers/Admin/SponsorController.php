@@ -36,7 +36,12 @@ class SponsorController extends Controller
      */
     public function create()
     {
-        return view('admin.sponsors.create', compact('sponsor'));
+        $sponsors = Sponsor::all();
+        $apartments = Apartment::where('user_id', Auth::id())
+            ->whereDoesntHave('sponsors', function ($query) {
+                $query->where('end_date', '>', Carbon::now());
+            })->get();
+        return view('admin.sponsors.create', compact('sponsors', 'apartments'));
     }
 
     /**
@@ -44,7 +49,14 @@ class SponsorController extends Controller
      */
     public function store(StoreSponsorRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $existingSponsor = ApartmentSponsor::where('apartment_id', $data['apartment_id'])
+        ->where('sponsorship_id', $data['sponsorships'][0])
+        ->first();
+        if ($existingSponsor) {
+            return back()->withErrors('La sponsorizzazione per questo appartamento è già presente.');
+        }
     }
 
     /**
