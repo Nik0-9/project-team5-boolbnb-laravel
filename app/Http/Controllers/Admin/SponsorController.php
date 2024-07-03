@@ -6,6 +6,11 @@ use App\Models\Sponsor;
 use App\Http\Requests\StoreSponsorRequest;
 use App\Http\Requests\UpdateSponsorRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Apartment;
+use App\Models\ApartmentSponsor;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 class SponsorController extends Controller
 {
     /**
@@ -13,7 +18,17 @@ class SponsorController extends Controller
      */
     public function index()
     {
-        //
+        $apartments = Apartment::where('user_id', Auth::id())
+        ->whereHas('sponsors', function ($query) {
+            $query->where('end_date', '>', Carbon::now());
+        })
+        ->with(['sponsors' => function ($query) {
+            $query->where('end_date', '>', Carbon::now());
+        }])
+        ->get();
+
+
+        return view('admin.sponsors.index', compact('apartments'));
     }
 
     /**
@@ -21,7 +36,7 @@ class SponsorController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.sponsors.create', compact('sponsor'));
     }
 
     /**
@@ -37,7 +52,7 @@ class SponsorController extends Controller
      */
     public function show(Sponsor $sponsor)
     {
-        //
+        return view('admin.sponsors.show', compact('sponsor'));
     }
 
     /**
@@ -45,7 +60,8 @@ class SponsorController extends Controller
      */
     public function edit(Sponsor $sponsor)
     {
-        //
+        return view('admin.sponsors.edit', compact('sponsor'));
+        
     }
 
     /**
@@ -53,7 +69,8 @@ class SponsorController extends Controller
      */
     public function update(UpdateSponsorRequest $request, Sponsor $sponsor)
     {
-        //
+        return redirect()->route('admin.sponsors.index');
+        
     }
 
     /**

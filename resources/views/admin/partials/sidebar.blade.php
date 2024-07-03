@@ -64,6 +64,12 @@
                 <i class="fa-solid fa-building"></i> Appartamenti
             </a>
         </li>
+        <li>
+            <a href="{{ route('admin.sponsors.index') }}" class="{{ Route::is('admin.sponsors.*') ? 'active' : '' }} nav-link d-flex align-items-center">
+                <i class="fa-solid fa-building"></i> Sponsorizzazioni
+            </a>
+        </li>
+
     </ul>
     @endif
 </nav>
