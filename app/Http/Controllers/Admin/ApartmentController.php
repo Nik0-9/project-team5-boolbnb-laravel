@@ -1,6 +1,6 @@
 <?php
-namespace App\Http\Controllers\Admin;
 
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Apartment;
 use App\Http\Requests\StoreApartmentRequest;
@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use App\Models\Service;
+use App\Models\Sponsor;
 use Illuminate\Http\Request;
 
 class ApartmentController extends Controller
@@ -22,40 +23,40 @@ class ApartmentController extends Controller
         $apartments = Apartment::where('user_id', auth()->user()->id)->get();
         return view('admin.apartments.index', compact('apartments'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         $services = Service::all();
+        $sponsors = Sponsor::all();
 
-        return view('admin.apartments.create', compact('services'));
+        return view('admin.apartments.create', compact('services', 'sponsors'));
     }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreApartmentRequest $request)
     {
-        
         $validated = $request->validated();
         $validated['slug'] = Apartment::generateSlug($validated['name']);
-        
         $validated['user_id'] = Auth::id();
 
         if($request->hasFile('cover_image')){
             $name = $validated['slug'];
             $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name.'.jpg'); 
             $validated['cover_image'] = $img_path;
-        }else{
+        } else {
             $validated['cover_image'] = 'default.jpg';
         }
-        
-         $searchedAddress=$validated['address'] ;
 
+        $searchedAddress = $validated['address'];
         $client = new Client([
             'verify' => false,
         ]);
-        //chiamata API
+        // chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
         $response = $client->get($baseUrlApi . $searchedAddress . '.json', [
             'query' => [
@@ -73,12 +74,25 @@ class ApartmentController extends Controller
         }
 
         $newApartment = Apartment::create($validated);
+
         if($request->has('services')){
             $newApartment->services()->attach($request->input('services'));
         }
-        
+
+        if ($request->has('sponsors')) {
+            foreach ($request->input('sponsors') as $sponsorId) {
+                $newApartment->sponsors()->attach($sponsorId, [
+                    'start_date' => now(),
+                    'end_date' => now()->addDays(30),
+                    'price' => 100,
+                    'name' => 'Basic Sponsorship'
+                ]);
+            }
+        }
+
         return redirect()->route('admin.apartments.show', $newApartment->slug)->with('success', 'Appartamento creato con successo.');
     }
+
     /**
      * Display the specified resource.
      */
@@ -89,31 +103,30 @@ class ApartmentController extends Controller
         }
         return view('admin.apartments.show', compact('apartment'));
     }
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Apartment $apartment)
-    
     {
-
         if($apartment->user_id !== Auth::id()){
             abort(404, 'Pagina non trovata');
         }  
 
         $services = Service::all();
-        return view('admin.apartments.edit', compact('apartment', 'services'));
+        $sponsors = Sponsor::all();
+        return view('admin.apartments.edit', compact('apartment', 'services', 'sponsors'));
     }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateApartmentRequest $request, Apartment $apartment)
     {
-        
         $validated = $request->validated();
-        //$validated['user_id'] = Auth::id();
         if ($apartment->name !== $validated['name']) {
             $validated['slug'] = Apartment::generateSlug($validated['name']);
-        }else{
+        } else {
             $validated['slug'] = $apartment->slug;
         }
 
@@ -144,14 +157,32 @@ class ApartmentController extends Controller
         } else {
             return back()->withErrors(['address' => 'Indirizzo non valido inserire via, civico e città']);
         }
+
+        $apartment->update($validated);
+
         if($request->has('services')){
             $apartment->services()->sync($request->services);
-        }else{
+        } else {
             $apartment->services()->sync([]);
         }
-        $apartment->update($validated);
+
+        if ($request->has('sponsors')) {
+            $apartment->sponsors()->sync([]);
+            foreach ($request->input('sponsors') as $sponsorId) {
+                $apartment->sponsors()->attach($sponsorId, [
+                    'start_date' => now(),
+                    'end_date' => now()->addDays(30),
+                    'price' => 100,
+                    'name' => 'Basic Sponsorship'
+                ]);
+            }
+        } else {
+            $apartment->sponsors()->sync([]);
+        }
+
         return redirect()->route('admin.apartments.show', $apartment->slug)->with('success', 'Appartamento aggiornato con successo.');
     }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -163,5 +194,4 @@ class ApartmentController extends Controller
         $apartment->delete();
         return redirect()->route('admin.apartments.index')->with('success', 'Appartamento eliminato con successo.');
     }
-
 }
