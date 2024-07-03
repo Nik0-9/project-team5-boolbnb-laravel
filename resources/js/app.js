@@ -10,8 +10,7 @@ import { Chart } from 'chart.js/auto';
 // funzione di autocompletamento
 document.addEventListener('DOMContentLoaded', function() {
   let addressInput = document.getElementById('address');
-  let resultsSelect = document.createElement('select');
-  addressInput.parentNode.appendChild(resultsSelect);
+  let resultsSelect = document.getElementById('resultsSelect');
 
   addressInput.addEventListener('input', function() {
       let query = addressInput.value;

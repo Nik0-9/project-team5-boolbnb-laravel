@@ -55,8 +55,8 @@ class ApartmentController extends Controller
         $client = new Client([
             'verify' => false,
         ]);
-        //chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
+        //chiamata API
         $response = $client->get($baseUrlApi . $searchedAddress . '.json', [
             'query' => [
                 'limit' => 1,

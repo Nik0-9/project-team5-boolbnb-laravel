@@ -18,7 +18,7 @@
     <!-- IMMAGINE -->
     <div class="form-group mb-3">
         <label for="cover_image">Immagine di Copertina</label>
-        <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*" >
+        <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*">
     </div>
     @error('cover_image')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -27,22 +27,22 @@
 
     <!-- INDIRIZZO -->
     <div class="form-group mb-3">
-    <label for="address">Indirizzo</label>
-    <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
-        value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
-        minlength="10" autocomplete="off">
-    @error('address')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
-</div>
+        <label for="address">Indirizzo</label>
+        <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
+            value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
+            minlength="10" autocomplete="off">
+        @error('address')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
 
-<div class="form-group mb-3">
-    <label for="address-suggestions">Seleziona un indirizzo</label>
-    <select id="address-suggestions" class="form-control" size="5" style="display: none;"></select>
-</div>
+    <div class="form-group mb-3">
+        <select class="form-select" id="resultsSelect" class="">
+        </select>
+    </div>
 
-<input type="hidden" name="latitude" value="{{ old('latitude') }}">
-<input type="hidden" name="longitude" value="{{ old('longitude') }}">
+    <input type="hidden" name="latitude" value="{{ old('latitude') }}">
+    <input type="hidden" name="longitude" value="{{ old('longitude') }}">
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
         <label for="description">Descrizione</label>
@@ -97,7 +97,7 @@
         @foreach ($services as $service)
             <div>
                 <input type="checkbox" name="services[]" value="{{ $service->id }}" class="form-check-input" {{ $apartment->services->contains($service->id) ? 'checked' : '' }}>
-                <label for="services[]" class="form-check-label">{{ $service->name }}</label>               
+                <label for="services[]" class="form-check-label">{{ $service->name }}</label>
             </div>
         @endforeach
     </div>
