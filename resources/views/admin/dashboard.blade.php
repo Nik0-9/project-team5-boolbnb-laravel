@@ -8,6 +8,7 @@
                 <h1 class="h3 mb-0 text-gray-800 fs-1">Dashboard</h1>
             </div>
 
+             
             <!-- Content Row -->
             <div class="row">
 
@@ -19,7 +20,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bolder fs-5 text-uppercase mb-2">
                                         guadagni (Mensili)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">€ 0</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas  fa-calendar fa-2x text-gray-300"></i>
@@ -37,7 +38,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bolder fs-5  text-uppercase mb-2">
                                         Guadagni (Annuali)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">€ 0</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas  fa-dollar-sign fa-2x text-gray-300"></i>
@@ -58,7 +59,7 @@
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">0%</div>
                                         </div>
                                         <div class="col">
                                             <div class="progress progress-sm mr-2">
@@ -84,7 +85,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bolder fs-5  text-uppercase mb-2">
                                         Richieste pendenti</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas  fa-comments fa-2x text-gray-300"></i>
@@ -116,14 +117,14 @@
                 </div>
 
                 <!-- Pie Chart -->
-                <div class="col-xl-4 col-lg-5">
-                    <div class="card  mb-4">
+                <!-- <div class="col-xl-4 col-lg-5">
+                    <div class="card  mb-4"> -->
                         <!-- Card Header - Dropdown -->
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <!-- <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold ">Fonti di reddito</h6>
-                        </div>
+                        </div> -->
                         <!-- Card Body -->
-                        <div class="card-body">
+                        <!-- <div class="card-body">
                             <div class="chart-pie pt-4 pb-2">
                                 <canvas id="myPieChart"></canvas>
                             </div>
@@ -141,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Content Row -->
             <div class="row">
