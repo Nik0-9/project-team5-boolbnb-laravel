@@ -25,10 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Rotte per gli appartamenti
 Route::get('apartments', [ApartmentController::class, 'index']);
-Route::get('apartment/{id}', [ApartmentController::class, 'show']);
-Route::get('apartment/{slug}/services', [ApartmentController::class, 'services']);
 Route::get('apartments/sponsored', [ApartmentController::class, 'getSponsoredApartments']);
-
-
-
+Route::get('apartments/{id}', [ApartmentController::class, 'show']);
+Route::get('apartments/{slug}/services', [ApartmentController::class, 'services']);
+Route::post('apartments', [ApartmentController::class, 'store']);
+Route::put('apartments/{id}', [ApartmentController::class, 'update']);
+Route::delete('apartments/{id}', [ApartmentController::class, 'destroy']);
