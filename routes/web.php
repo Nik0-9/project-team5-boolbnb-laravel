@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\SponsorController;
+use App\Http\Controllers\Admin\ApartmentSponsorController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +32,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('messages', MessageController::class);
     Route::resource('images', ImageController::class);
     Route::resource('sponsors', SponsorController::class);
+    Route::resource('apartment_sponsors', ApartmentSponsorController::class);
 });
 
 Route::middleware('auth')->group(function () {

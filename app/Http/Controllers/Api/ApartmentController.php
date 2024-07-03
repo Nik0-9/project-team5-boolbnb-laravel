@@ -17,6 +17,14 @@ class ApartmentController extends Controller
 
     }
 
+    public function getSponsoredApartments()
+    {
+        // Assicurati che la relazione sia definita correttamente nel modello Apartment
+        $sponsoredApartments = Apartment::whereHas('sponsors')->with('sponsors')->get();
+        
+        return response()->json($sponsoredApartments);
+    }
+
     public function store(Request $request)
     {
         $item = Apartment::create($request->all());

@@ -15,12 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   addressInput.addEventListener('input', function() {
       let query = addressInput.value;
+      let apiKey = '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI';
+      let counrtySet = 'countrySet=ITA';
 
       if (query.length < 5) {
           resultsSelect.innerHTML = '';
           return;
       }
-      fetch(`https://api.tomtom.com/search/2/search/${query}.json?key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
+      fetch(`https://api.tomtom.com/search/2/search/${query}.json?${counrtySet}&key=${apiKey}`)
           .then(response => response.json())
           .then(data => {
               resultsSelect.innerHTML = '';
