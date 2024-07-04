@@ -58,6 +58,7 @@ class ApartmentController extends Controller
         ]);
         // chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
+        //chiamata API
         $response = $client->get($baseUrlApi . $searchedAddress . '.json', [
             'query' => [
                 'limit' => 1,

@@ -36,6 +36,10 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
+    <div class="form-group mb-3">
+    <select class="form-select" id="resultsSelect" class="">
+    </select>
+    </div>
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
         <label for="description">Descrizione</label>
