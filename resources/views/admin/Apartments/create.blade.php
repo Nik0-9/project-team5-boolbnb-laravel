@@ -15,6 +15,7 @@
     @error('name')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+
     <!-- IMMAGINE -->
     <div class="form-group mb-3">
         <label for="cover_image">Immagine di Copertina</label>
@@ -49,6 +50,7 @@
     @error('description')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+
     <!-- METRI QUADRI -->
     <div class="form-group mb-3">
         <label for="square_meters">Metri Quadrati</label>
@@ -59,6 +61,7 @@
     @error('square_meters')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+
     <!-- NUMERO BAGNI -->
     <div class="form-group mb-3">
         <label for="num_bathrooms">Numero di Bagni</label>
@@ -69,6 +72,7 @@
     @error('num_bathrooms')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+
     <!-- NUMERO LETTI -->
     <div class="form-group mb-3">
         <label for="num_beds">Numero di Letti</label>
@@ -78,6 +82,7 @@
     @error('num_beds')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+
     <!-- NUMERO STANZE -->
     <div class="form-group mb-3">
         <label for="num_rooms">Numero di Stanze</label>
@@ -87,9 +92,7 @@
     @error('num_rooms')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
-    <div class="d-none">
-        <input type="number" id="user" name="user_id" value="{{old('user_id', $apartment->user_id ?? '')}}">
-    </div>
+
     <!-- SERVIZI -->
     <div class="form-group mb-3">
         <label for="services">Servizi</label>
@@ -103,6 +106,20 @@
             </div>
         @endforeach
     </div>
+
+    <!-- SPONSOR -->
+    <div class="form-group mb-3">
+        <label for="sponsors">Sponsor</label>
+        @error('sponsors')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+        <select class="form-control" id="sponsors" name="sponsors[]" multiple>
+            @foreach($sponsors as $sponsor)
+                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsors', [])) ? 'selected' : '' }}>{{ $sponsor->name }}</option>
+            @endforeach
+        </select>
+    </div>
+
     <button type="submit" class="btn btn-primary mb-4" id="save">Salva</button>
 </form>
 @endsection

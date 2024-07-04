@@ -13,34 +13,45 @@ class ApartmentController extends Controller
         return response()->json([
             'success' => true,
             'results' => $data
-    ]);
-
+        ]);
     }
 
     public function getSponsoredApartments()
     {
-        // Assicurati che la relazione sia definita correttamente nel modello Apartment
         $sponsoredApartments = Apartment::whereHas('sponsors')->with('sponsors')->get();
         
-        return response()->json($sponsoredApartments);
+        return response()->json([
+            'success' => true,
+            'results' => $sponsoredApartments
+        ]);
     }
 
     public function store(Request $request)
     {
         $item = Apartment::create($request->all());
-        return response()->json($item, 201);
+        return response()->json([
+            'success' => true,
+            'results' => $item
+        ], 201);
     }
 
     public function show($id)
     {
-        return Apartment::findOrFail($id);
+        $apartment = Apartment::with('images', 'services')->findOrFail($id);
+        return response()->json([
+            'success' => true,
+            'results' => $apartment
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $item = Apartment::findOrFail($id);
         $item->update($request->all());
-        return response()->json($item, 200);
+        return response()->json([
+            'success' => true,
+            'results' => $item
+        ], 200);
     }
 
     public function destroy($id)
@@ -49,5 +60,3 @@ class ApartmentController extends Controller
         return response()->json(null, 204);
     }
 }
-
-
