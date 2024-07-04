@@ -2,13 +2,15 @@
 
 @section('content')
 <h1>Modifica Appartamento</h1>
+<div class="mb-3 fw-light"> I campi sono obbligatori *</div>
+
 <form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     
     <!-- NOME -->
     <div class="form-group mb-3">
-        <label for="name">Nome descrittivo appartamento</label>
+        <label for="name">Nome descrittivo appartamento *</label>
         <input type="text" class="form-control" id="name" name="name"
             value="{{ old('name', $apartment->name) }}" required maxlength="200" minlength="10">
     </div>
@@ -27,7 +29,7 @@
 
     <!-- INDIRIZZO -->
     <div class="form-group mb-3">
-        <label for="address">Indirizzo</label>
+        <label for="address">Indirizzo *</label>
         <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
 
             value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
@@ -56,7 +58,7 @@
 
     <!-- METRI QUADRI -->
     <div class="form-group mb-3">
-        <label for="square_meters">Metri Quadrati</label>
+        <label for="square_meters">Metri Quadrati *</label>
         <input type="number" class="form-control" id="square_meters" name="square_meters"
             value="{{ old('square_meters', $apartment->square_meters) }}" required minlength="20">
     </div>
@@ -66,7 +68,7 @@
 
     <!-- NUMERO BAGNI -->
     <div class="form-group mb-3">
-        <label for="num_bathrooms">Numero di Bagni</label>
+        <label for="num_bathrooms">Numero di Bagni *</label>
         <input type="number" class="form-control" id="num_bathrooms" name="num_bathrooms"
             value="{{ old('num_bathrooms', $apartment->num_bathrooms) }}" required minlength="1">
     </div>
@@ -76,7 +78,7 @@
 
     <!-- NUMERO LETTI -->
     <div class="form-group mb-3">
-        <label for="num_beds">Numero di Letti</label>
+        <label for="num_beds">Numero di Letti *</label>
         <input type="number" class="form-control" id="num_beds" name="num_beds"
             value="{{ old('num_beds', $apartment->num_beds) }}" required minlength="1">
     </div>
@@ -86,7 +88,7 @@
 
     <!-- NUMERO STANZE -->
     <div class="form-group mb-3">
-        <label for="num_rooms">Numero di Stanze</label>
+        <label for="num_rooms">Numero di Stanze *</label>
         <input type="number" class="form-control" id="num_rooms" name="num_rooms"
             value="{{ old('num_rooms', $apartment->num_rooms) }}" required minlength="1">
     </div>
@@ -96,7 +98,9 @@
 
     <!-- SERVIZI -->
     <div class="form-group mb-3">
-        <label for="services">Servizi</label>
+        <label for="services">Servizi *</label>
+        <div class="mb-3 fw-light"> scegli almeno un servizio</div>
+
         @error('services')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror

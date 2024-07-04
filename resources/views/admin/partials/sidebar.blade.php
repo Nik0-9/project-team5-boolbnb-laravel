@@ -56,14 +56,16 @@
     <ul id="routes-list" class="navbar-nav">
         <li>
             <a href="{{ route('admin.dashboard') }}" class="{{ Route::is('admin.dashboard') ? 'active' : '' }} nav-link d-flex align-items-center">
-                <i class="fa-solid fa-building-columns"></i> Dashboard
+                <i class="fa-solid fa-building-columns"></i><span>Dashboard</span> 
             </a>
         </li>
         <li>
             <a href="{{ route('admin.apartments.index') }}" class="{{ Route::is('admin.apartments.*') ? 'active' : '' }} nav-link d-flex align-items-center">
-                <i class="fa-solid fa-building"></i> Appartamenti
+                <i class="fa-solid fa-building"></i>
+                <span>Appartamenti</span> 
             </a>
         </li>
     </ul>
     @endif
 </nav>
+

@@ -4,23 +4,24 @@
     <!-- Begin Page Content -->
    <h1>Appartamenti</h1>
     <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary">Crea Nuovo Appartamento</a>
-    <table class="table">
+    <div class="table-responsive-md">
+    <table id="res-table" class="table table-hover">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>Indirizzo</th>
+                <th class="address">Indirizzo</th>
                 <th>Azione</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($apartments as $apartment)
                 <tr>
-                    <td>{{ $apartment->id }}</td>
-                    <td>{{ $apartment->name }}</td>
+                    <td data-title="id">{{ $apartment->id }}</td>
+                    <td data-title="name">{{ $apartment->name }}</td>
 
-                    <td>{{ $apartment->address }}</td>
-                    <td>
+                    <td data-title="address" class="address">{{ $apartment->address }}</td>
+                    <td data-title="actions">
                         <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-info" id="btnInfo"><i
                                 class="fas fa-eye"></i></a>
                         <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-warning"><i
@@ -37,5 +38,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
+
     @include('admin.partials.modal-delete')
 @endsection
