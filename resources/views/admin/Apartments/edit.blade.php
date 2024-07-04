@@ -95,6 +95,9 @@
     <!-- SERVIZI -->
     <div class="form-group mb-3">
         <label for="services">Servizi</label>
+        @error('services')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         @foreach ($services as $service)
             <div>
                 <input type="checkbox" name="services[]" value="{{ $service->id }}" class="form-check-input" {{ $apartment->services->contains($service->id) ? 'checked' : '' }}>
