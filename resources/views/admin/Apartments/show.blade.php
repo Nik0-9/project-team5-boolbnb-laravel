@@ -15,13 +15,20 @@
     <p><strong>Latitudine:</strong> {{ $apartment->latitude }}</p>
     <p><strong>Longitudine:</strong> {{ $apartment->longitude }}</p>
     @if($apartment->services)
-        @foreach($apartment->services as $service)
-            <p>
-                <img class="service-show" src="{{ asset( $service->icon) }}" alt="{{ $service->name }}">
-                {{ $service->name }}
-            </p>
-        @endforeach
+        <div class="d-flex">
+            @foreach($apartment->services as $service)
+                <div class="d-flex flex-column mx-2">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img class="service-show" src="{{ asset($service->icon) }}" alt="{{ $service->name }}">
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <p class="text-center">{{ $service->name }}</p>
+                    </div>
+                </div>
+
+            @endforeach
+        </div>
     @endif
-    <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25">Torna alla Lista</a>
+    <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
 </div>
 @endsection
