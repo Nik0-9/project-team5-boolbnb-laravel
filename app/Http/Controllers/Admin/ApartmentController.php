@@ -81,12 +81,19 @@ class ApartmentController extends Controller
 
         if ($request->has('sponsors')) {
             foreach ($request->input('sponsors') as $sponsorId) {
-                $newApartment->sponsors()->attach($sponsorId, [
-                    'start_date' => now(),
-                    'end_date' => now()->addDays(30),
-                    'price' => 100,
-                    'name' => 'Basic Sponsorship'
-                ]);
+                $sponsor = Sponsor::find($sponsorId);
+                if ($sponsor) {
+                    // Calcola la data di fine basata sulla durata
+                    $endDate = now()->addHours($sponsor->duration);
+        
+                    // Attacca lo sponsor con i dettagli
+                    $newApartment->sponsors()->attach($sponsorId, [
+                        'start_date' => now(),
+                        'end_date' => $endDate,
+                        'price' => $sponsor->price,
+                        'name' => $sponsor->name,
+                    ]);
+                }
             }
         }
 
