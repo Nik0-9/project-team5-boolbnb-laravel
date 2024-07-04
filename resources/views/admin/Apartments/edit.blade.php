@@ -129,6 +129,6 @@
         <input type="number" id="user" name="user_id" value="{{ old('user_id', $apartment->user_id) }}">
     </div>
 
-    <button type="submit" class="btn btn-primary">Aggiorna</button>
+    <button type="submit" class="btn btn-primary mb-4">Aggiorna</button>
 </form>
 @endsection
