@@ -25,6 +25,29 @@ class ApartmentController extends Controller
             'results' => $sponsoredApartments
         ]);
     }
+    public function search(String $address,string $latitude,string $longitude)
+    {
+        // Converti lat e lon da gradi a radianti
+        $lat = deg2rad($latitude);
+        $lon = deg2rad($longitude);
+
+        // Raggio in km (20 km)
+        $radius = 20;
+
+        // Raggio in metri (20 km convertito in metri)
+       
+
+        // Query per trovare gli appartamenti entro il raggio specificato
+        $apartments = Apartment::select('*')
+            ->whereRaw("6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))) <= $radius")
+            ->get();
+
+        // Esempio di output
+        return response()->json([
+            'success' => true,
+            'results' => $apartments
+        ]);
+    }
 
     public function store(Request $request)
     {
