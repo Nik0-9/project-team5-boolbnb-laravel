@@ -2,9 +2,9 @@
 
 @section('content')
 <h1>Modifica Appartamento</h1>
-<div class="mb-3 fw-light"> I campi sono obbligatori *</div>
+<div class="mb-3 fs-5"> I campi sono obbligatori *</div>
 
-<form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST" id="modForm" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     

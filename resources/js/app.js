@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const addressInput = document.getElementById('address');
   const addressSuggestions = document.getElementById('addressSuggestions');
   let debounceTimeout;
-
+if(addressInput){
   addressInput.addEventListener('input', function () {
     const query = addressInput.value;
 
@@ -65,9 +65,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Errore di ricerca indirizzo:', error));
       }, 1500);
     });
+}
+  
 
     // Verifica se l'utente ha selezionato almeno un servizio
-    const form = document.getElementById('createForm');
+    const form = document.getElementById('modForm');
     const checkboxes = document.querySelectorAll('.form-check-input');
     const errorDiv = document.getElementById('serviceError');
 
@@ -114,26 +116,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const today = new Date();
     const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-    dateOfBirth.max = maxDate.toISOString().split('T')[0];
+    if(dateOfBirth){
+      dateOfBirth.max = maxDate.toISOString().split('T')[0];
 
-    form_register.addEventListener('submit', function (event) {
-      if (password.value !== passwordConfirm.value) {
-        event.preventDefault();
-        passwordMatchError.style.display = 'block';
-      } else {
-        passwordMatchError.style.display = 'none';
-      }
-    });
-
-    passwordConfirm.addEventListener('input', function () {
-      if (password.value !== passwordConfirm.value) {
-        passwordConfirm.classList.add('is-invalid');
-        passwordMatchError.style.display = 'block';
-      } else {
-        passwordConfirm.classList.remove('is-invalid');
-        passwordMatchError.style.display = 'none';
-      }
-    });
+      
+      form_register.addEventListener('submit', function (event) {
+        if (password.value !== passwordConfirm.value) {
+          event.preventDefault();
+          passwordMatchError.style.display = 'block';
+        } else {
+          passwordMatchError.style.display = 'none';
+        }
+      });
+      
+      passwordConfirm.addEventListener('input', function () {
+        if (password.value !== passwordConfirm.value) {
+          passwordConfirm.classList.add('is-invalid');
+          passwordMatchError.style.display = 'block';
+        } else {
+          passwordConfirm.classList.remove('is-invalid');
+          passwordMatchError.style.display = 'none';
+        }
+      });
+    }
   });
 
 

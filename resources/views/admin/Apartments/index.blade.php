@@ -7,7 +7,7 @@
     <div class="table-responsive-md">
     <table id="res-table" class="table table-hover">
         <thead>
-            <tr class="text-center">
+            <tr class="r">
                 <th>Nome</th>
                 <th>Immagine</th>
                 <th class="address">Indirizzo</th>
@@ -17,10 +17,10 @@
         </thead>
         <tbody>
             @foreach ($apartments as $apartment)
-                <tr class="align-middle text-center">
+                <tr class="align-middle r">
                     
                     <td data-title="name" class="w-25">{{ $apartment->name }}</td>
-                    <td class="w-25" data-title="image"><img class="w-75" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
+                    <td class="w-25" data-title="image"><img class="w-100" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
                     <td data-title="address" class="w-25">{{ $apartment->address }}</td>
                     @if($apartment->visible == 1)
                     <td data-title="visible" class="visible">Si</td>

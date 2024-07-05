@@ -4,7 +4,7 @@
 <h1>Crea Nuovo Appartamento</h1>
 <div class="mb-3 fs-5"> I campi sono obbligatori *</div>
 
-<form action="{{ route('admin.apartments.store') }}" method="POST" id="createForm" enctype="multipart/form-data">
+<form action="{{ route('admin.apartments.store') }}" method="POST" id="modForm" enctype="multipart/form-data">
     @csrf
 
     <!-- NOME -->
