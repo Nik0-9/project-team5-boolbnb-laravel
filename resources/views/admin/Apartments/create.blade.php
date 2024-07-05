@@ -9,7 +9,7 @@
 
     <!-- NOME -->
     <div class="form-group mb-3">
-        <label for="name">Nome descrittivo appartamento *</label>
+        <label for="name">Nome appartamento *</label>
         <input type="text" class="form-control" id="name" name="name"
             value="{{ old('name', isset($apartment) ? $apartment->name : '') }}" required maxlength="200"
             minlength="10">
@@ -33,7 +33,8 @@
         <label for="address">Indirizzo *</label>
         <input type="text" class="form-control" id="address" name="address"
             value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
-            minlength="10">
+            minlength="10" list="addressSuggestions">
+        <datalist id="addressSuggestions"></datalist>
     </div>
     @error('address')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -130,26 +131,70 @@
 @endsection
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('createForm');
-        const checkboxes = document.querySelectorAll('.form-check-input');
-        const errorDiv = document.getElementById('serviceError');
+   document.addEventListener('DOMContentLoaded', function() {
+  const addressInput = document.getElementById('address');
+  const addressSuggestions = document.getElementById('addressSuggestions');
 
-        form.addEventListener('submit', function (event) {
-            let isChecked = false;
+  addressInput.addEventListener('input', function() {
+    const query = addressInput.value;
 
-            checkboxes.forEach(function (checkbox) {
-                if (checkbox.checked) {
-                    isChecked = true;
-                }
-            });
+    if (query.length < 3) {
+      addressSuggestions.innerHTML = '';
+      return;
+    }
 
-            if (!isChecked) {
-                event.preventDefault();
-                errorDiv.classList.remove('d-none');
-            } else {
-                errorDiv.classList.add('d-none');
-            }
+    fetch(`https://api.tomtom.com/search/2/search/${query}.json?counrtySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
+      .then(response => response.json())
+      .then(data => {
+        addressSuggestions.innerHTML = '';
+        data.results.forEach(result => {
+          const option = document.createElement('option');
+          option.value = result.address.freeformAddress;
+          addressSuggestions.appendChild(option);
         });
+      })
+      .catch(error => console.error('Error fetching the address:', error));
+  });
+
+  addressInput.addEventListener('change', function() {
+    const options = addressSuggestions.options;
+    for (let i = 0; i < options.length; i++) {
+      if (options[i].value === addressInput.value) {
+        // Option found, input value is valid
+        return;
+      }
+    }
+    // Option not found, clear the input
+    addressInput.value = '';
+  });
+
+  const form = document.getElementById('createForm');
+  const checkboxes = document.querySelectorAll('.form-check-input');
+  const errorDiv = document.getElementById('serviceError');
+
+  form.addEventListener('submit', function(event) {
+    let isChecked = false;
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked) {
+        isChecked = true;
+      }
     });
+
+    if (!isChecked) {
+      event.preventDefault();
+      errorDiv.classList.remove('d-none');
+    } else {
+      errorDiv.classList.add('d-none');
+    }
+  });
+});
 </script>
+
+<style>
+.floating-save {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+</style>
