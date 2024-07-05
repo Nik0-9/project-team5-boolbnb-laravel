@@ -8,20 +8,21 @@ import.meta.glob([
 import { Chart } from 'chart.js/auto';
 
 // funzione di autocompletamento
+
 document.addEventListener('DOMContentLoaded', function() {
   let addressInput = document.getElementById('address');
-  let resultsSelect = document.getElementById('resultsSelect');
+  let resultsSelect = document.createElement('select');
+  
+  addressInput.parentNode.appendChild(resultsSelect);
 
   addressInput.addEventListener('input', function() {
       let query = addressInput.value;
-      let apiKey = '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI';
-      let counrtySet = 'countrySet=ITA';
 
-      if (query.length < 5) {
+      if (query.length < 3) {
           resultsSelect.innerHTML = '';
           return;
       }
-      fetch(`https://api.tomtom.com/search/2/search/${query}.json?${counrtySet}&key=${apiKey}`)
+      fetch(`https://api.tomtom.com/search/2/search/${query}.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
           .then(response => response.json())
           .then(data => {
               resultsSelect.innerHTML = '';
@@ -31,11 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
                   option.textContent = result.address.freeformAddress;
                   resultsSelect.appendChild(option);
               });
+              resultsSelect.selectedIndex = 0;
           })
           .catch(error => console.error('Error fetching the address:', error));
   });
 
-  resultsSelect.addEventListener('click', function() {
+  resultsSelect.addEventListener('change', function() {
       addressInput.value = resultsSelect.value;
   });
 });

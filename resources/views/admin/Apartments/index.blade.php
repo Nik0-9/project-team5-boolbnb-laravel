@@ -2,25 +2,31 @@
 
 @section('content')
     <!-- Begin Page Content -->
-   <h1>Appartamenti</h1>
-    <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary">Crea Nuovo Appartamento</a>
+   <h1 class="mb-4">Appartamenti</h1>
+    <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary mb-3">Crea Nuovo Appartamento</a>
     <div class="table-responsive-md">
     <table id="res-table" class="table table-hover">
         <thead>
-            <tr>
-                <th>ID</th>
+            <tr class="text-center">
                 <th>Nome</th>
+                <th>Immagine</th>
                 <th class="address">Indirizzo</th>
+                <th class="visible">Visibile</th>
                 <th>Azione</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($apartments as $apartment)
-                <tr>
-                    <td data-title="id">{{ $apartment->id }}</td>
-                    <td data-title="name">{{ $apartment->name }}</td>
-
-                    <td data-title="address" class="address">{{ $apartment->address }}</td>
+                <tr class="align-middle text-center">
+                    
+                    <td data-title="name" class="w-25">{{ $apartment->name }}</td>
+                    <td class="w-25" data-title="image"><img class="w-75" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
+                    <td data-title="address" class="w-25">{{ $apartment->address }}</td>
+                    @if($apartment->visible == 1)
+                    <td data-title="visible" class="visible">Si</td>
+                    @else
+                    <td data-title="visible" class="visible">No</td>
+                    @endif
                     <td data-title="actions">
                         <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-info" id="btnInfo"><i
                                 class="fas fa-eye"></i></a>

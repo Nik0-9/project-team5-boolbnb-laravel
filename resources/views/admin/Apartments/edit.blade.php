@@ -125,9 +125,7 @@
         </select>
     </div>
 
-    <div class="d-none">
-        <input type="number" id="user" name="user_id" value="{{ old('user_id', $apartment->user_id) }}">
-    </div>
+    
 
     <button type="submit" class="btn btn-primary mb-4">Aggiorna</button>
 </form>

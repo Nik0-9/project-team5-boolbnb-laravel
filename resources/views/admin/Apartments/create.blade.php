@@ -2,9 +2,9 @@
 
 @section('content')
 <h1>Crea Nuovo Appartamento</h1>
-<div class="mb-3 fw-light"> I campi sono obbligatori *</div>
+<div class="mb-3 fs-5"> I campi sono obbligatori *</div>
 
-<form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.apartments.store') }}" method="POST" id="createForm" enctype="multipart/form-data">
     @csrf
 
     <!-- NOME -->
@@ -39,10 +39,7 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
-    <div class="form-group mb-3">
-    <select class="form-select" id="resultsSelect" class="">
-    </select>
-    </div>
+    
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
         <label for="description">Descrizione</label>
@@ -97,9 +94,10 @@
     @enderror
 
     <!-- SERVIZI -->
-    <div class="form-group mb-3">
+    <div class="form-group mb-3 ">
         <label for="services">Servizi *</label>
-        <div class="mb-3 fw-light"> scegli almeno un servizio</div>
+        <div class="mb-3 fs-5"> Aggiungere almeno un servizio</div>
+        <div class="alert alert-warning d-none" id="serviceError">Seleziona almeno un servizio</div>
 
         @error('services')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -125,6 +123,33 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary mb-4" id="save">Salva</button>
 </form>
+<div class="position-fixed bottom-0 end-0 p-5" style="z-index: 10;">
+    <button type="submit" form="createForm" class="btn btn-primary btn-lg">Salva</button>
+</div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('createForm');
+        const checkboxes = document.querySelectorAll('.form-check-input');
+        const errorDiv = document.getElementById('serviceError');
+
+        form.addEventListener('submit', function (event) {
+            let isChecked = false;
+
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    isChecked = true;
+                }
+            });
+
+            if (!isChecked) {
+                event.preventDefault();
+                errorDiv.classList.remove('d-none');
+            } else {
+                errorDiv.classList.add('d-none');
+            }
+        });
+    });
+</script>
