@@ -27,7 +27,9 @@ class UpdateApartmentRequest extends FormRequest
             'num_bathrooms' => 'required|integer|min:1',
             'num_beds' => 'required|integer|min:1',
             'num_rooms' => 'required|integer|min:1',
-            'services' => 'required|array|min:1'
+            'services' => 'required|array|min:1',
+            'visible' => 'required|boolean'
+
         ];
     }
     public function messages()
@@ -51,6 +53,7 @@ class UpdateApartmentRequest extends FormRequest
             'num_rooms.min' => 'Il numero di stanze non è minore di :min',
             'services.required' => 'Selezionare almeno un servizio',
             'services.min' => 'Selezionare almeno un servizio',
+            'visible.required' => 'Selezionare se l\'appartamento è visibile o meno'
         ];
     }
 }

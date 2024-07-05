@@ -165,6 +165,8 @@ class ApartmentController extends Controller
         } else {
             return back()->withErrors(['address' => 'Indirizzo non valido inserire via, civico e città']);
         }
+        
+        $apartment->visible = $validated['visible'];
 
         $apartment->update($validated);
 

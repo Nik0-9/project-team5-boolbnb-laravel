@@ -63,7 +63,7 @@ if(addressInput){
           }
         })
         .catch(error => console.error('Errore di ricerca indirizzo:', error));
-      }, 1500);
+      }, 1000);
     });
 }
   

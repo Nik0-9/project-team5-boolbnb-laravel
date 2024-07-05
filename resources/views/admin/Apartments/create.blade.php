@@ -2,7 +2,7 @@
 
 @section('content')
 <h1>Crea Nuovo Appartamento</h1>
-<div class="mb-3 fs-5"> I campi sono obbligatori *</div>
+<div class="mb-2 fs-5"> I campi sono obbligatori *</div>
 
 <form action="{{ route('admin.apartments.store') }}" method="POST" id="modForm" enctype="multipart/form-data">
     @csrf
@@ -97,7 +97,7 @@
     <!-- SERVIZI -->
     <div class="form-group mb-3 ">
         <label for="services">Servizi *</label>
-        <div class="mb-3 fs-5"> Aggiungere almeno un servizio</div>
+        <div class="mb-3 "> Aggiungere almeno un servizio</div>
         <div class="alert alert-warning d-none" id="serviceError">Seleziona almeno un servizio</div>
 
         @error('services')
@@ -126,8 +126,52 @@
 
 </form>
 <div class="position-fixed bottom-0 end-0 p-5" style="z-index: 10;">
-    <button type="submit" form="createForm" class="btn btn-primary btn-lg">Salva</button>
+    <button type="submit" form="modForm" class="btn btn-primary btn-lg">Salva</button>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('modForm');
+        const inputs = document.querySelectorAll('#num_bathrooms, #num_beds, #num_rooms');
+        const squareMeters = document.getElementById('square_meters');
+        squareMeters.addEventListener('input', function () {
+            if (squareMeters.value < 20) {
+                squareMeters.classList.add('is-invalid');
+            } else {
+                squareMeters.classList.remove('is-invalid');
+            }
+        })
+
+
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                if (input.value < 1) {
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+        });
+
+        form.addEventListener('submit', function (event) {
+            let allValid = true;
+            inputs.forEach(input => {
+                if (input.value < 1) {
+                    allValid = false;
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (!allValid) {
+                event.preventDefault();
+                alert('Per favore, inserisci valori validi per tutti i campi.');
+            }
+        });
+    });
+
+</script>
 @endsection
 
 
