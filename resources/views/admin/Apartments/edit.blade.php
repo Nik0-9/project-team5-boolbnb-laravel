@@ -55,7 +55,7 @@
     <div class="form-group mb-3">
         <label for="square_meters">Metri Quadrati *</label>
         <input type="number" class="form-control" id="square_meters" name="square_meters"
-            value="{{ old('square_meters', $apartment->square_meters) }}" required minvalue="20">
+            value="{{ old('square_meters', $apartment->square_meters) }}" required min="20">
     </div>
     @error('square_meters')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -65,7 +65,7 @@
     <div class="form-group mb-3">
         <label for="num_bathrooms">Numero di Bagni *</label>
         <input type="number" class="form-control" id="num_bathrooms" name="num_bathrooms"
-            value="{{ old('num_bathrooms', $apartment->num_bathrooms) }}" required minlength="1">
+            value="{{ old('num_bathrooms', $apartment->num_bathrooms) }}" required min="1">
     </div>
     @error('num_bathrooms')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -75,7 +75,7 @@
     <div class="form-group mb-3">
         <label for="num_beds">Numero di Letti *</label>
         <input type="number" class="form-control" id="num_beds" name="num_beds"
-            value="{{ old('num_beds', $apartment->num_beds) }}" required minlength="1">
+            value="{{ old('num_beds', $apartment->num_beds) }}" required min="1">
     </div>
     @error('num_beds')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -85,7 +85,7 @@
     <div class="form-group mb-3">
         <label for="num_rooms">Numero di Stanze *</label>
         <input type="number" class="form-control" id="num_rooms" name="num_rooms"
-            value="{{ old('num_rooms', $apartment->num_rooms) }}" required minlength="1">
+            value="{{ old('num_rooms', $apartment->num_rooms) }}" required min="1">
     </div>
     @error('num_rooms')
         <div class="alert alert-danger">{{ $message }}</div>

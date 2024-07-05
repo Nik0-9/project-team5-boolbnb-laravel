@@ -11,8 +11,7 @@
     <div class="form-group mb-3">
         <label for="name">Nome appartamento *</label>
         <input type="text" class="form-control" id="name" name="name"
-            value="{{ old('name', isset($apartment) ? $apartment->name : '') }}" required maxlength="200"
-            minlength="10">
+            value="{{ old('name', isset($apartment) ? $apartment->name : '') }}" required maxlength="200" min="10">
     </div>
 
     @error('name')
@@ -40,7 +39,7 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
-    
+
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
         <label for="description">Descrizione</label>
@@ -56,8 +55,7 @@
     <div class="form-group mb-3">
         <label for="square_meters">Metri Quadrati *</label>
         <input type="number" class="form-control" id="square_meters" name="square_meters"
-            value="{{ old('square_meters', isset($apartment) ? $apartment->square_meters : '') }}" required
-             minvalue="20">
+            value="{{ old('square_meters', isset($apartment) ? $apartment->square_meters : '') }}" required min="20">
     </div>
     @error('square_meters')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -67,8 +65,7 @@
     <div class="form-group mb-3">
         <label for="num_bathrooms">Numero di Bagni *</label>
         <input type="number" class="form-control" id="num_bathrooms" name="num_bathrooms"
-            value="{{ old('num_bathrooms', isset($apartment) ? $apartment->num_bathrooms : '') }}" required
-            minvalue="0">
+            value="{{ old('num_bathrooms', isset($apartment) ? $apartment->num_bathrooms : '') }}" required min="1">
     </div>
     @error('num_bathrooms')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -119,7 +116,8 @@
         @enderror
         <select class="form-control" id="sponsors" name="sponsors[]" multiple>
             @foreach($sponsors as $sponsor)
-                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsors', [])) ? 'selected' : '' }}>{{ $sponsor->name }}</option>
+                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsors', [])) ? 'selected' : '' }}>
+                    {{ $sponsor->name }}</option>
             @endforeach
         </select>
     </div>
@@ -173,5 +171,3 @@
 
 </script>
 @endsection
-
-
