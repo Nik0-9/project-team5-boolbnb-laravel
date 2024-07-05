@@ -57,7 +57,7 @@
         <label for="square_meters">Metri Quadrati *</label>
         <input type="number" class="form-control" id="square_meters" name="square_meters"
             value="{{ old('square_meters', isset($apartment) ? $apartment->square_meters : '') }}" required
-            minlength="20">
+             minvalue="20">
     </div>
     @error('square_meters')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -68,7 +68,7 @@
         <label for="num_bathrooms">Numero di Bagni *</label>
         <input type="number" class="form-control" id="num_bathrooms" name="num_bathrooms"
             value="{{ old('num_bathrooms', isset($apartment) ? $apartment->num_bathrooms : '') }}" required
-            minlength="1">
+            minvalue="0">
     </div>
     @error('num_bathrooms')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -78,7 +78,7 @@
     <div class="form-group mb-3">
         <label for="num_beds">Numero di Letti *</label>
         <input type="number" class="form-control" id="num_beds" name="num_beds"
-            value="{{ old('num_beds', isset($apartment) ? $apartment->num_beds : '') }}" required minlength="1">
+            value="{{ old('num_beds', isset($apartment) ? $apartment->num_beds : '') }}" required minvalue="1">
     </div>
     @error('num_beds')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -88,7 +88,7 @@
     <div class="form-group mb-3">
         <label for="num_rooms">Numero di Stanze *</label>
         <input type="number" class="form-control" id="num_rooms" name="num_rooms"
-            value="{{ old('num_rooms', isset($apartment) ? $apartment->num_rooms : '') }}" required minlength="1">
+            value="{{ old('num_rooms', isset($apartment) ? $apartment->num_rooms : '') }}" required minvalue="1">
     </div>
     @error('num_rooms')
         <div class="alert alert-danger">{{ $message }}</div>
@@ -130,71 +130,4 @@
 </div>
 @endsection
 
-<script>
-   document.addEventListener('DOMContentLoaded', function() {
-  const addressInput = document.getElementById('address');
-  const addressSuggestions = document.getElementById('addressSuggestions');
 
-  addressInput.addEventListener('input', function() {
-    const query = addressInput.value;
-
-    if (query.length < 3) {
-      addressSuggestions.innerHTML = '';
-      return;
-    }
-
-    fetch(`https://api.tomtom.com/search/2/search/${query}.json?counrtySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
-      .then(response => response.json())
-      .then(data => {
-        addressSuggestions.innerHTML = '';
-        data.results.forEach(result => {
-          const option = document.createElement('option');
-          option.value = result.address.freeformAddress;
-          addressSuggestions.appendChild(option);
-        });
-      })
-      .catch(error => console.error('Error fetching the address:', error));
-  });
-
-  addressInput.addEventListener('change', function() {
-    const options = addressSuggestions.options;
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].value === addressInput.value) {
-        // Option found, input value is valid
-        return;
-      }
-    }
-    // Option not found, clear the input
-    addressInput.value = '';
-  });
-
-  const form = document.getElementById('createForm');
-  const checkboxes = document.querySelectorAll('.form-check-input');
-  const errorDiv = document.getElementById('serviceError');
-
-  form.addEventListener('submit', function(event) {
-    let isChecked = false;
-    checkboxes.forEach(function(checkbox) {
-      if (checkbox.checked) {
-        isChecked = true;
-      }
-    });
-
-    if (!isChecked) {
-      event.preventDefault();
-      errorDiv.classList.remove('d-none');
-    } else {
-      errorDiv.classList.add('d-none');
-    }
-  });
-});
-</script>
-
-<style>
-.floating-save {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 1000;
-}
-</style>

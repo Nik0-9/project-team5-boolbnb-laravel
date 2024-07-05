@@ -30,22 +30,15 @@
     <!-- INDIRIZZO -->
     <div class="form-group mb-3">
         <label for="address">Indirizzo *</label>
-        <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
-
+        <input type="text" class="form-control" id="address" name="address"
             value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
-            minlength="10" autocomplete="off">
-        @error('address')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
+            minlength="10" list="addressSuggestions">
+        <datalist id="addressSuggestions"></datalist>
     </div>
+    @error('address')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
 
-    <div class="form-group mb-3">
-        <select class="form-select" id="resultsSelect" class="">
-        </select>
-    </div>
-
-    <input type="hidden" name="latitude" value="{{ old('latitude') }}">
-    <input type="hidden" name="longitude" value="{{ old('longitude') }}">
 
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
