@@ -27,13 +27,17 @@ use App\Http\Controllers\Admin\ApartmentSponsorController;
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('apartments', ApartmentController::class)->parameters(['apartments' => 'apartment:slug']);
+    Route::post('/apartments/{id}/upload-images', [ApartmentController::class, 'uploadImages'])->name('apartments.uploadImages');
     Route::resource('views', ViewController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('messages', MessageController::class);
     Route::resource('images', ImageController::class);
     Route::resource('sponsors', SponsorController::class);
     Route::resource('apartment_sponsors', ApartmentSponsorController::class);
+   
 });
+    
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

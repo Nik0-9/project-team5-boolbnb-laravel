@@ -3,11 +3,34 @@
 @section('content') 
 <div class="card m-4 border-0">
     <h1 class="d-inline">Dettagli Appartamento</h1>
-    <div class="d-flex justify-content-end">
-        <a href="{{route('admin.apartments.edit', $apartment->slug)}}" class="btn btn-success ">Modifica</a>
+    <p><strong>{{ $apartment->name }}</strong></p>
+
+    <div class="row">
+        <!-- Immagine Grande -->
+        <div class="col-12 col-md-8">
+            <img class="img-fluid w-100" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
+        </div>
+
+        <!-- Contenitore per le miniature -->
+        <div class="col-12 col-md-4">
+            <div class="d-flex flex-column">
+                @foreach($apartment->images as $image)
+                    <div class="mb-2">
+                        <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail" alt="Immagine">
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        
+        <form action="{{ route('admin.apartments.uploadImages', $apartment->id) }}" method="POST" enctype="multipart/form-data" class="mt-4">
+        @csrf
+        <div class="form-group mb-3 w-50">
+            <label for="images">Carica Immagini</label>
+            <input type="file" name="images[]" id="images" multiple class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Carica Immagini</button>
+    </form>
     </div>
-    <p><strong>Nome:</strong> {{ $apartment->name }}</p>
-    <img class="w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
     <p><strong>Indirizzo:</strong> {{ $apartment->address }}</p>
     <p><strong>Descrizione:</strong> {{ $apartment->description }}</p>
     @if ($apartment->visible == 1)

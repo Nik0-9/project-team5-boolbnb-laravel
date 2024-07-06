@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use App\Models\Service;
 use App\Models\Sponsor;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 class ApartmentController extends Controller
@@ -109,7 +110,31 @@ class ApartmentController extends Controller
         if($apartment->user_id !== Auth::id()){
             abort(404, 'Pagina non trovata');
         }
+        $apartment = Apartment::with('images')->findOrFail($apartment->id);
         return view('admin.apartments.show', compact('apartment'));
+    }
+
+    public function uploadImages(Request $request, $id)
+    {
+        $request->validate([
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        $apartment = Apartment::findOrFail($id);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $file = Storage::putFileAs('apartment_image/details', $file, $apartment->slug.'-'.$file->getClientOriginalName());
+
+                Image::create([
+                    'apartment_id' => $apartment->id,
+                    'image' => $file,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.apartments.show', $apartment->slug)
+                         ->with('success', 'Immagini caricate con successo.');
     }
 
     /**
