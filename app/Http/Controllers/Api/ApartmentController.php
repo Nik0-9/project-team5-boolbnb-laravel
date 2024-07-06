@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
@@ -19,13 +20,13 @@ class ApartmentController extends Controller
     public function getSponsoredApartments()
     {
         $sponsoredApartments = Apartment::whereHas('sponsors')->with('sponsors')->get();
-        
+
         return response()->json([
             'success' => true,
             'results' => $sponsoredApartments
         ]);
     }
-    public function search(String $address,string $latitude,string $longitude)
+    public function search(string $address, string $latitude, string $longitude)
     {
         // Converti lat e lon da gradi a radianti
         $lat = deg2rad($latitude);
@@ -35,17 +36,28 @@ class ApartmentController extends Controller
         $radius = 20;
 
         // Raggio in metri (20 km convertito in metri)
-       
 
-        // Query per trovare gli appartamenti entro il raggio specificato
-        $apartments = Apartment::select('*')
-            ->whereRaw("6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))) <= $radius")
+
+        $baseQuery = Apartment::select('apartments.*')
+            ->whereRaw("6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))) <= $radius");
+
+        // Clona la query di base per gli appartamenti sponsorizzati
+        $apartmentsSponsored = (clone $baseQuery)
+            ->whereHas('sponsors')
+            ->get();
+
+        // Clona la query di base per gli appartamenti non sponsorizzati
+        $apartmentsBase = (clone $baseQuery)
+            ->whereDoesntHave('sponsors')
             ->get();
 
         // Esempio di output
         return response()->json([
             'success' => true,
-            'results' => $apartments
+            'results' => [
+                'sponsored' => $apartmentsSponsored,
+                'base' => $apartmentsBase
+            ]
         ]);
     }
 

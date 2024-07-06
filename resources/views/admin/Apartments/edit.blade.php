@@ -9,15 +9,34 @@
     @csrf
     @method('PUT')
 
-    <!-- NOME -->
-    <div class="form-group mb-3">
-        <label for="name">Nome descrittivo appartamento *</label>
-        <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $apartment->name) }}"
-            required maxlength="200" minlength="10">
+    <div class="row">
+        <!-- NOME -->
+        <div class="col-12 col-lg-6">
+            <div class="form-group mb-3">
+                <label for="name">Nome appartamento *</label>
+                <input type="text" class="form-control" id="name" name="name"
+                    value="{{ old('name', $apartment->name) }}" required maxlength="200" minlength="10">
+            </div>
+            @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+
+        <!-- INDIRIZZO -->
+        <div class="col-12 col-lg-6">
+            <div class="form-group mb-3">
+                <label for="address">Indirizzo *</label>
+                <input type="text" class="form-control" id="address" name="address"
+                    value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
+                    minlength="10" list="addressSuggestions">
+                <datalist id="addressSuggestions"></datalist>
+            </div>
+            @error('address')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
     </div>
-    @error('name')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
 
     <!-- IMMAGINE -->
     <div class="form-group mb-3">
@@ -28,17 +47,7 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
-    <!-- INDIRIZZO -->
-    <div class="form-group mb-3">
-        <label for="address">Indirizzo *</label>
-        <input type="text" class="form-control" id="address" name="address"
-            value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
-            minlength="10" list="addressSuggestions">
-        <datalist id="addressSuggestions"></datalist>
-    </div>
-    @error('address')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
+
 
 
     <!-- DESCRIZIONE -->
@@ -51,46 +60,61 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
-    <!-- METRI QUADRI -->
-    <div class="form-group mb-3">
-        <label for="square_meters">Metri Quadrati *</label>
-        <input type="number" class="form-control" id="square_meters" name="square_meters"
-            value="{{ old('square_meters', $apartment->square_meters) }}" required min="20">
-    </div>
-    @error('square_meters')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <!-- METRI QUADRI -->
+            <div class="form-group mb-3">
+                <label for="square_meters">Metri Quadrati *</label>
+                <input type="number" class="form-control" id="square_meters" name="square_meters"
+                    value="{{ old('square_meters', $apartment->square_meters) }}" required min="20">
+            </div>
+            @error('square_meters')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
 
-    <!-- NUMERO BAGNI -->
-    <div class="form-group mb-3">
-        <label for="num_bathrooms">Numero di Bagni *</label>
-        <input type="number" class="form-control" id="num_bathrooms" name="num_bathrooms"
-            value="{{ old('num_bathrooms', $apartment->num_bathrooms) }}" required min="1">
-    </div>
-    @error('num_bathrooms')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
 
-    <!-- NUMERO LETTI -->
-    <div class="form-group mb-3">
-        <label for="num_beds">Numero di Letti *</label>
-        <input type="number" class="form-control" id="num_beds" name="num_beds"
-            value="{{ old('num_beds', $apartment->num_beds) }}" required min="1">
-    </div>
-    @error('num_beds')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
+        <!-- NUMERO STANZE -->
+        <div class="col-12 col-lg-6">
 
-    <!-- NUMERO STANZE -->
-    <div class="form-group mb-3">
-        <label for="num_rooms">Numero di Stanze *</label>
-        <input type="number" class="form-control" id="num_rooms" name="num_rooms"
-            value="{{ old('num_rooms', $apartment->num_rooms) }}" required min="1">
+            <div class="form-group mb-3">
+                <label for="num_rooms">Numero di Stanze *</label>
+                <input type="number" class="form-control" id="num_rooms" name="num_rooms"
+                    value="{{ old('num_rooms', $apartment->num_rooms) }}" required min="1">
+            </div>
+            @error('num_rooms')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
     </div>
-    @error('num_rooms')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
 
+    <div class="row">
+        <!-- NUMERO BAGNI -->
+        <div class="col-12 col-lg-6">
+            <div class="form-group mb-3">
+                <label for="num_bathrooms">Numero di Bagni *</label>
+                <input type="number" class="form-control" id="num_bathrooms" name="num_bathrooms"
+                    value="{{ old('num_bathrooms', $apartment->num_bathrooms) }}" required min="1">
+            </div>
+            @error('num_bathrooms')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+
+        <!-- NUMERO LETTI -->
+        <div class="col-12 col-lg-6">
+
+            <div class="form-group mb-3">
+                <label for="num_beds">Numero di Letti *</label>
+                <input type="number" class="form-control" id="num_beds" name="num_beds"
+                    value="{{ old('num_beds', $apartment->num_beds) }}" required min="1">
+            </div>
+            @error('num_beds')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
     <!-- SERVIZI -->
     <div class="row">
         <div class="form-group mb-3">
