@@ -55,6 +55,21 @@
             @endforeach
         </div>
     @endif
+    <h2>Messaggi</h2>
+    @if($apartment->messages->isEmpty())
+        <p>Nessun messaggio.</p>
+    @else
+        <ul>
+            @foreach($apartment->messages as $message)
+                <li>
+                    <strong>{{ $message->name }} {{ $message->surname }}</strong><br>
+                    <strong>Email:</strong> {{ $message->email }}<br>
+                    <strong>Messaggio:</strong> {{ $message->body }}<br>
+                    <small>Inviato il: {{ $message->created_at }}</small>
+                </li>
+            @endforeach
+        </ul>
+    @endif
     <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
 </div>
 @endsection
