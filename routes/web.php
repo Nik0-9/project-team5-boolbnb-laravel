@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\ApartmentSponsorController;
+use App\Http\Controllers\Admin\SponsorshipController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,8 +35,10 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('images', ImageController::class);
     Route::resource('sponsors', SponsorController::class);
     Route::resource('apartment_sponsors', ApartmentSponsorController::class);
-   
+    Route::get('admin/apartments/{apartment}/sponsor', [SponsorshipController::class, 'create'])->name('admin.sponsor.create');
+    Route::post('admin/apartments/{apartment}/sponsor', [SponsorshipController::class, 'store'])->name('admin.sponsor.store');
 });
+   
     
 
 
