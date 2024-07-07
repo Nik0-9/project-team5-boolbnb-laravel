@@ -32,7 +32,7 @@ class MessageController extends Controller
             $messages = $messages->where('apartment_id', $apartment_id);
         }
 
-        $messages = $messages->orderBy('created_at', 'desc')->get();
+        $messages = $messages->orderBy('created_at', 'asc')->get();
 
         return view('admin.messages.index', [
             'messages' => $messages,

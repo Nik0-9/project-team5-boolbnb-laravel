@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use App\Models\Service;
 use App\Models\Sponsor;
+use App\Models\Message;
 use Illuminate\Http\Request;
 
 class ApartmentController extends Controller
