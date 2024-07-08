@@ -3,6 +3,7 @@
 @section('content')
     <!-- Begin Page Content -->
    <h1 class="mb-4">Appartamenti</h1>
+   @if (Auth::user() && Auth::user()->apartments()->exists())
     <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary mb-3">Crea Nuovo Appartamento</a>
     <div class="table-responsive-md">
     <table id="res-table" class="table table-hover">
@@ -47,4 +48,7 @@
     </div>
 
     @include('admin.partials.modal-delete')
+     @endif
+     <p>non hai ancora alcun appartamento</p>
+     <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary my-3">Crea Nuovo Appartamento</a>
 @endsection

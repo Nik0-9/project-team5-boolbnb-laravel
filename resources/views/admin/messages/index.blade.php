@@ -10,9 +10,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive-md">
+                        @if ($messages->isEmpty())
+                                <p>Non ho trovato nulla.</p>
+                            @else
                             <div class="list-group">
                                 @foreach ($messages as $message)
-                                    <div class="list-group-item">
+                                    <div class="list-group-item list-group-item-action">
+                                <a href=" {{ route('admin.messages.show', $message->id) }}">
+
                                         <div class="d-flex w-100 justify-content-between">
                                             <h5 class="mb-1">{{ $message->apartment->name }}</h5>
                                             <small>{{ $message->created_at }}</small>
@@ -31,9 +36,12 @@
                                             </button>
                                         </form>
                                         </div>
+                                </a>
+
                                     </div>
                                 @endforeach
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -43,3 +51,11 @@
 
     @include('admin.partials.modal-delete-message')
 @endsection
+<style scope>
+.list-group-item-action a {
+        text-decoration: none; 
+        color: inherit;
+        cursor: pointer; 
+      
+    }
+</style>

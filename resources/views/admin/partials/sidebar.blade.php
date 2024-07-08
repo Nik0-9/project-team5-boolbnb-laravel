@@ -17,7 +17,9 @@
                             <i class="fa-solid fa-user"></i> {{ __('Profilo') }}
                         </a>
                     </li>
-                   
+                    @if (Auth::user()->apartments()->exists())
+                    
+                  
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
@@ -28,6 +30,7 @@
                             <i class="fa-solid fa-sign-out"></i> {{ __('Disconnetti') }}
                         </a>
                     </li>
+                    @endif
                 </ul>
                 @else
                 <ul class="navbar-nav">
@@ -55,12 +58,14 @@
                 <i class="fa-solid fa-building-columns"></i><span>Dashboard</span> 
             </a>
         </li>
+       
         <li>
             <a href="{{ route('admin.apartments.index') }}" class="{{ Route::is('admin.apartments.*') ? 'active' : '' }} nav-link d-flex align-items-center">
                 <i class="fa-solid fa-building"></i>
                 <span>Appartamenti</span> 
             </a>
         </li>
+        
         <li>
             <a href="{{ route('admin.messages.index') }}" class="{{ Route::is('admin.messages.*') ? 'active' : '' }} nav-link d-flex align-items-center">
                 <i class="fa-solid fa-envelope"></i>
