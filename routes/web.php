@@ -31,6 +31,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('views', ViewController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('messages', MessageController::class);
+    Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
     Route::resource('images', ImageController::class);
     Route::resource('sponsors', SponsorController::class);
     Route::resource('apartment_sponsors', ApartmentSponsorController::class);

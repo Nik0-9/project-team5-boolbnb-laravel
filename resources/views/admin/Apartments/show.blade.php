@@ -55,21 +55,47 @@
             @endforeach
         </div>
     @endif
-    <h2>Messaggi</h2>
+    <h3 class="mt-2">Richiesta di contatto</h3>
     @if($apartment->messages->isEmpty())
         <p>Nessun messaggio.</p>
     @else
-        <ul>
-            @foreach($apartment->messages as $message)
-                <li>
-                    <strong>{{ $message->name }} {{ $message->surname }}</strong><br>
-                    <strong>Email:</strong> {{ $message->email }}<br>
-                    <strong>Messaggio:</strong> {{ $message->body }}<br>
-                    <small>Inviato il: {{ $message->created_at }}</small>
-                </li>
-            @endforeach
-        </ul>
+    <div class="list-group">
+                                @foreach ($apartment->messages as $message)
+                                <div class="list-group-item list-group-item-action my-3">
+                                <a href=" {{ route('admin.messages.show', $message->id) }}">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ $message->apartment->name }}</h5>
+                                            <small>{{ $message->created_at }}</small>
+                                        </div>
+                                        <p>{{ $message->body }}</p>
+                                        <p class="mb-1"><small><strong>Nome utente: </strong>{{ $message->name }} {{$message->surname}}</small></p>
+                                        <div class="d-flex w-100 justify-content-between">
+                                        <small><strong>Email: </strong> {{ $message->email }}</small>
+                                        <!-- Form di eliminazione -->
+                                        <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST"
+                                              style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger p-1 delete-button">
+                                             Cancella messaggio
+                                            </button>
+                                        </form>
+                                        </div>
+                                </a>
+
+                                    </div>
+                                @endforeach
+                            </div>
     @endif
     <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
 </div>
 @endsection
+<style scope>
+.list-group-item-action a {
+        text-decoration: none; 
+        color: inherit;
+        cursor: pointer;
+      
+    }
+</style>

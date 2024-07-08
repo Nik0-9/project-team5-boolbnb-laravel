@@ -63,7 +63,20 @@ class MessageController extends Controller
      */
     public function show(Message $message)
     {
-        //
+        $user = Auth::user();
+
+        // Verifica che l'appartamento associato al messaggio appartenga all'utente autenticato
+        if ($message->apartment->user_id !== $user->id) {
+            abort(404); // Accesso negato
+        }
+
+        // Recupera gli appartamenti dell'utente autenticato
+        $apartments = Apartment::where('user_id', $user->id)->get();
+
+        // Recupera i messaggi associati agli appartamenti dell'utente autenticato
+        $messages = Message::where('apartment_id', $message->apartment_id)->get();
+
+        return view('admin.messages.show', compact('message', 'apartments', 'messages'));
     }
 
     /**
