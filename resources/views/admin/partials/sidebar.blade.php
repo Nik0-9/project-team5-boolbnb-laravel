@@ -61,6 +61,12 @@
                 <span>Appartamenti</span> 
             </a>
         </li>
+        <li>
+            <a href="{{ route('admin.messages.index') }}" class="{{ Route::is('admin.messages.*') ? 'active' : '' }} nav-link d-flex align-items-center">
+                <i class="fa-solid fa-envelope"></i>
+                <span>Messaggi</span> 
+            </a>
+        </li>
     </ul>
     @endif
 </nav>
