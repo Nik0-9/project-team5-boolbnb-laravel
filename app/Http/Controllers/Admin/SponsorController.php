@@ -18,9 +18,9 @@ class SponsorController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        
+
         $gatewayConfig = config('services.braintree');
-        Log::info('Braintree Config:', $gatewayConfig); // Aggiungi questo per il debug
+        Log::info('Braintree Config:', $gatewayConfig);
 
         $this->gateway = new BraintreeGateway([
             'environment' => $gatewayConfig['environment'],
@@ -30,11 +30,11 @@ class SponsorController extends Controller
         ]);
 
         Log::info('Braintree Gateway:', [
-            'environment' => $this->gateway->config->environment(),
-            'merchantId' => $this->gateway->config->merchantId(),
-            'publicKey' => $this->gateway->config->publicKey(),
-            'privateKey' => $this->gateway->config->privateKey()
-        ]); // Aggiungi questo per il debug
+            'environment' => $gatewayConfig['environment'],
+            'merchantId' => $gatewayConfig['merchant_id'],
+            'publicKey' => $gatewayConfig['public_key'],
+            'privateKey' => $gatewayConfig['private_key']
+        ]);
     }
 
     public function index()
@@ -55,7 +55,6 @@ class SponsorController extends Controller
         $sponsor = Sponsor::findOrFail($validated['sponsor_id']);
         $endDate = now()->addHours($sponsor->duration);
 
-        // Processo di pagamento Braintree
         $nonce = $validated['payment_method_nonce'];
         $result = $this->gateway->transaction()->sale([
             'amount' => $sponsor->price,

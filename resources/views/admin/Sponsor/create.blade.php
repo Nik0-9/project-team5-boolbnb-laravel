@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Sponsorizza il tuo appartamento</h1>
     
-    <form action="{{ route('sponsor.store', $apartment->id) }}" method="POST">
+    <form action="{{ route('admin.sponsor.store', $apartment->slug) }}" method="POST">
         @csrf
         
         <div class="form-group">
@@ -17,8 +17,7 @@
         </div>
 
         <div id="dropin-container"></div>
-        
-        <input type="hidden" name="payment_method_nonce" id="payment_method_nonce">
+        <input type="hidden" name="payment_method_nonce" value="">
         
         <button type="submit" class="btn btn-primary">Sponsorizza</button>
     </form>
@@ -47,7 +46,7 @@
                     console.log('Request Payment Method Error', err);
                     return;
                 }
-                document.querySelector('#payment_method_nonce').value = payload.nonce;
+                document.querySelector('input[name="payment_method_nonce"]').value = payload.nonce;
                 form.submit();
             });
         });

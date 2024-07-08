@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\Admin\ViewController;
@@ -11,18 +10,6 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\ApartmentSponsorController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-//Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
