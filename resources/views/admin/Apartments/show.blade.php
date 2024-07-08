@@ -71,7 +71,8 @@
         </ul>
     @endif
 
-    <a href="{{ route('admin.sponsor.create', $apartment) }}" class="btn btn-primary">Sponsorizza questo appartamento</a>
+    <!-- Link alla pagina di sponsorizzazione -->
+    <a href="{{ route('admin.sponsor.create', $apartment->id) }}" class="btn btn-primary w-25 mb-4">Sponsorizza questo appartamento</a>
 
     <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
 </div>

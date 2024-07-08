@@ -11,7 +11,6 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\ApartmentSponsorController;
-use App\Http\Controllers\Admin\SponsorshipController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,20 +34,15 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('images', ImageController::class);
     Route::resource('sponsors', SponsorController::class);
     Route::resource('apartment_sponsors', ApartmentSponsorController::class);
-    Route::get('admin/apartments/{apartment}/sponsor', [SponsorshipController::class, 'create'])->name('admin.sponsor.create');
-    Route::post('admin/apartments/{apartment}/sponsor', [SponsorshipController::class, 'store'])->name('admin.sponsor.store');
+    Route::get('apartments/{apartment}/sponsor', [SponsorController::class, 'create'])->name('sponsor.create');
+    Route::post('apartments/{apartment}/sponsor', [SponsorController::class, 'store'])->name('sponsor.store');
 });
-   
-    
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
 
 require __DIR__.'/auth.php';
 

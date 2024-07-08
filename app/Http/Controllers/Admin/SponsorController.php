@@ -3,62 +3,98 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Sponsor;
+use App\Models\Apartment;
 use App\Http\Requests\StoreSponsorRequest;
 use App\Http\Requests\UpdateSponsorRequest;
 use App\Http\Controllers\Controller;
+use Braintree\Gateway as BraintreeGateway;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+
 class SponsorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $gateway;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        
+        $gatewayConfig = config('services.braintree');
+        Log::info('Braintree Config:', $gatewayConfig); // Aggiungi questo per il debug
+
+        $this->gateway = new BraintreeGateway([
+            'environment' => $gatewayConfig['environment'],
+            'merchantId' => $gatewayConfig['merchant_id'],
+            'publicKey' => $gatewayConfig['public_key'],
+            'privateKey' => $gatewayConfig['private_key'],
+        ]);
+
+        Log::info('Braintree Gateway:', [
+            'environment' => $this->gateway->config->environment(),
+            'merchantId' => $this->gateway->config->merchantId(),
+            'publicKey' => $this->gateway->config->publicKey(),
+            'privateKey' => $this->gateway->config->privateKey()
+        ]); // Aggiungi questo per il debug
+    }
+
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Apartment $apartment)
     {
-        //
+        $sponsors = Sponsor::all();
+        return view('admin.sponsor.create', compact('apartment', 'sponsors'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSponsorRequest $request)
+    public function store(StoreSponsorRequest $request, Apartment $apartment)
     {
-        //
+        $validated = $request->validated();
+
+        $sponsor = Sponsor::findOrFail($validated['sponsor_id']);
+        $endDate = now()->addHours($sponsor->duration);
+
+        // Processo di pagamento Braintree
+        $nonce = $validated['payment_method_nonce'];
+        $result = $this->gateway->transaction()->sale([
+            'amount' => $sponsor->price,
+            'paymentMethodNonce' => $nonce,
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+
+        if ($result->success) {
+            $apartment->sponsors()->attach($sponsor->id, [
+                'start_date' => now(),
+                'end_date' => $endDate,
+                'price' => $sponsor->price,
+                'name' => $sponsor->name,
+            ]);
+
+            return redirect()->route('admin.apartments.show', $apartment->slug)
+                             ->with('success', 'Sponsorizzazione aggiunta con successo');
+        } else {
+            return back()->withErrors('Errore nella transazione: ' . $result->message);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Sponsor $sponsor)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Sponsor $sponsor)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateSponsorRequest $request, Sponsor $sponsor)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Sponsor $sponsor)
     {
         //
