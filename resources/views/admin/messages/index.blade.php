@@ -53,9 +53,9 @@
 @endsection
 <style scope>
 .list-group-item-action a {
-        text-decoration: none; /* Rimuove il sottolineato del link */
-        color: inherit; /* Mantiene il colore del testo predefinito */
-        cursor: auto; /* Impedisce il cambiamento del cursore al passaggio */
+        text-decoration: none; 
+        color: inherit;
+        cursor: pointer; 
       
     }
 </style>
