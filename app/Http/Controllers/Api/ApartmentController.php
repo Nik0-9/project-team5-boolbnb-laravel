@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
+use App\Models\Service;
 
 class ApartmentController extends Controller
 {
@@ -51,13 +52,50 @@ class ApartmentController extends Controller
             ->whereDoesntHave('sponsors')
             ->get();
 
+        $services = Service::all();
+
         // Esempio di output
         return response()->json([
             'success' => true,
             'results' => [
                 'sponsored' => $apartmentsSponsored,
-                'base' => $apartmentsBase
+                'base' => $apartmentsBase,
+                'services' => $services
             ]
+        ]);
+    }
+
+    public function filterByService(int $serviceId, string $latitude, string $longitude)
+    {
+        // Converti lat e lon da gradi a radianti
+        $lat = deg2rad($latitude);
+        $lon = deg2rad($longitude);
+
+        // Raggio in km (20 km)
+        $radius = 20;
+
+        $baseQuery = Apartment::select('apartments.*')
+            ->whereRaw("6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))) <= $radius");
+
+
+        $apartmentsSponsored = (clone $baseQuery)
+            ->whereHas('sponsors')
+            ->whereHas('services', function ($query) use ($serviceId) {
+                $query->where('service_id', $serviceId);
+            })
+            ->get();
+
+        $apartmentsBase = (clone $baseQuery)
+            ->whereDoesntHave('sponsors')
+            ->whereHas('services', function ($query) use ($serviceId) {
+                $query->where('service_id', $serviceId);
+            })
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'sponsored' => $apartmentsSponsored,
+            'base' => $apartmentsBase,
         ]);
     }
 
