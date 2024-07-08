@@ -10,6 +10,9 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive-md">
+                        @if ($messages->isEmpty())
+                                <p>Non ho trovato nulla.</p>
+                            @else
                             <div class="list-group">
                                 @foreach ($messages as $message)
                                     <div class="list-group-item">
@@ -34,6 +37,7 @@
                                     </div>
                                 @endforeach
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
