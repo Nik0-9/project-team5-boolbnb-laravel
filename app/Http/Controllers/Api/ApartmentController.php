@@ -27,37 +27,54 @@ class ApartmentController extends Controller
             'results' => $sponsoredApartments
         ]);
     }
-    public function search(string $address, string $latitude, string $longitude)
-    {
-        // Converti lat e lon da gradi a radianti
-        $lat = deg2rad($latitude);
-        $lon = deg2rad($longitude);
-        // Raggio in km (20 km)
-        $radius = 20;
-        // Raggio in metri (20 km convertito in metri)
-        $baseQuery = Apartment::select('apartments.*')
-            ->whereRaw("6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))) <= $radius");
-        // Clona la query di base per gli appartamenti sponsorizzati
+    public function search(string $address, string $latitude, string $longitude, ?int $serviceId = null)
+{
+    // Convert latitude and longitude from degrees to radians
+    $lat = deg2rad($latitude);
+    $lon = deg2rad($longitude);
+
+    // Radius in km (20 km)
+    $radius = 20;
+
+    $baseQuery = Apartment::select('apartments.*')
+        ->whereRaw("6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))) <= $radius");
+
+    // Modify baseQuery based on whether serviceId is provided
+    if ($serviceId !== null) {
+        $apartmentsSponsored = (clone $baseQuery)
+            ->whereHas('sponsors')
+            ->whereHas('services', function ($query) use ($serviceId) {
+                $query->where('service_id', $serviceId);
+            })
+            ->get();
+
+        $apartmentsBase = (clone $baseQuery)
+            ->whereDoesntHave('sponsors')
+            ->whereHas('services', function ($query) use ($serviceId) {
+                $query->where('service_id', $serviceId);
+            })
+            ->get();
+    } else {
         $apartmentsSponsored = (clone $baseQuery)
             ->whereHas('sponsors')
             ->get();
-        // Clona la query di base per gli appartamenti non sponsorizzati
+
         $apartmentsBase = (clone $baseQuery)
             ->whereDoesntHave('sponsors')
             ->get();
-
-        $services = Service::all();
-
-        // Esempio di output
-        return response()->json([
-            'success' => true,
-            'results' => [
-                'sponsored' => $apartmentsSponsored,
-                'base' => $apartmentsBase,
-                'services' => $services
-            ]
-        ]);
     }
+
+    $services = Service::all();
+
+    return response()->json([
+        'success' => true,
+        'results' => [
+            'sponsored' => $apartmentsSponsored,
+            'base' => $apartmentsBase,
+            'services' => $services
+        ]
+    ]);
+}
 
     public function filterByService(int $serviceId, string $latitude, string $longitude)
     {
