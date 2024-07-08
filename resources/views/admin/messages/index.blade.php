@@ -17,10 +17,10 @@
                                             <h5 class="mb-1">{{ $message->apartment->name }}</h5>
                                             <small>{{ $message->created_at }}</small>
                                         </div>
-                                        <p class="mb-1">{{ $message->body }}</p>
-
+                                        <p>{{ $message->body }}</p>
+                                        <p class="mb-1"><small><strong>Nome utente: </strong>{{ $message->name }} {{$message->surname}}</small></p>
                                         <div class="d-flex w-100 justify-content-between">
-                                        <small>Email: {{ $message->email }}</small>
+                                        <small><strong>Email: </strong> {{ $message->email }}</small>
                                         <!-- Form di eliminazione -->
                                         <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST"
                                               style="display:inline;">
@@ -41,5 +41,5 @@
         </div>
     </div>
 
-    @include('admin.partials.modal-delete')
+    @include('admin.partials.modal-delete-message')
 @endsection
