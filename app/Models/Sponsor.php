@@ -13,8 +13,8 @@ class Sponsor extends Model
     protected $guarded = [];
 
     public function apartments(){
-        return $this->belongsToMany(Apartment::class)
-        ->withPivot('start_date', 'end_date', 'price')
+        return $this->belongsToMany(Apartment::class, 'apartment_sponsors')
+        ->withPivot('start_date', 'end_date', 'price', 'name')
         ->withTimestamps();
     }
 }

@@ -12,6 +12,8 @@ use GuzzleHttp\Client;
 use App\Models\Service;
 use App\Models\Sponsor;
 use App\Models\Image;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class ApartmentController extends Controller
@@ -21,7 +23,7 @@ class ApartmentController extends Controller
      */
     public function index(Request $request)
     {
-        $apartments = Apartment::where('user_id', auth()->user()->id)->with('images','messages')->get();
+        $apartments = Apartment::where('user_id', auth()->user()->id)->with('images', 'messages')->get();
 
         return view('admin.apartments.index', compact('apartments'));
     }
@@ -46,9 +48,13 @@ class ApartmentController extends Controller
         $validated['slug'] = Apartment::generateSlug($validated['name']);
         $validated['user_id'] = Auth::id();
 
-        if($request->hasFile('cover_image')){
+        Log::info('Current Timezone: ' . config('app.timezone'));
+        Log::info('Current DateTime: ' . now());
+    
+
+        if ($request->hasFile('cover_image')) {
             $name = $validated['slug'];
-            $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name.'.jpg'); 
+            $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name . '.jpg');
             $validated['cover_image'] = $img_path;
         } else {
             $validated['cover_image'] = 'default.jpg';
@@ -60,7 +66,7 @@ class ApartmentController extends Controller
         ]);
         // chiamata API
         $baseUrlApi = "https://api.tomtom.com/search/2/geocode/";
-        
+
         $response = $client->get($baseUrlApi . $searchedAddress . '.json', [
             'query' => [
                 'limit' => 1,
@@ -68,7 +74,7 @@ class ApartmentController extends Controller
             ]
         ]);
         $data = json_decode($response->getBody(), true);
-        
+
         if (isset($data['results'][0]['position'])) {
             $validated['latitude'] = $data['results'][0]['position']['lat'];
             $validated['longitude'] = $data['results'][0]['position']['lon'];
@@ -78,7 +84,7 @@ class ApartmentController extends Controller
 
         $newApartment = Apartment::create($validated);
 
-        if($request->has('services')){
+        if ($request->has('services')) {
             $newApartment->services()->attach($request->input('services'));
         }
 
@@ -88,7 +94,7 @@ class ApartmentController extends Controller
                 if ($sponsor) {
                     // Calcola la data di fine basata sulla durata
                     $endDate = now()->addHours($sponsor->duration);
-        
+
                     // Attacca lo sponsor con i dettagli
                     $newApartment->sponsors()->attach($sponsorId, [
                         'start_date' => now(),
@@ -111,10 +117,12 @@ class ApartmentController extends Controller
         if($apartment->user_id !== Auth::id()){
             abort(404, 'Pagina non trovata');
         }
-        $apartment = Apartment::with('images')->findOrFail($apartment->id);
-        return view('admin.apartments.show', compact('apartment'));
-    }
 
+        $apartment = Apartment::with('images', 'sponsors')->findOrFail($apartment->id);
+        $activeSponsor = $apartment->sponsors()->wherePivot('end_date', '>', now())->orderBy('price', 'desc')->first();
+
+        return view('admin.apartments.show', compact('apartment', 'activeSponsor'));
+    }
     public function uploadImages(Request $request, $id)
     {
         $request->validate([
@@ -125,7 +133,7 @@ class ApartmentController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
-                $file = Storage::putFileAs('apartment_image/details', $file, $apartment->slug.'-'.$file->getClientOriginalName());
+                $file = Storage::putFileAs('apartment_image/details', $file, $apartment->slug . '-' . $file->getClientOriginalName());
 
                 Image::create([
                     'apartment_id' => $apartment->id,
@@ -133,9 +141,9 @@ class ApartmentController extends Controller
                 ]);
             }
         }
-
+    
         return redirect()->route('admin.apartments.show', $apartment->slug)
-                         ->with('success', 'Immagini caricate con successo.');
+            ->with('success', 'Immagini caricate con successo.');
     }
 
     /**
@@ -143,9 +151,9 @@ class ApartmentController extends Controller
      */
     public function edit(Apartment $apartment)
     {
-        if($apartment->user_id !== Auth::id()){
+        if ($apartment->user_id !== Auth::id()) {
             abort(404, 'Pagina non trovata');
-        }  
+        }
 
         $services = Service::all();
         $sponsors = Sponsor::all();
@@ -155,7 +163,7 @@ class ApartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateApartmentRequest $request, Apartment $apartment)
+    public function update(UpdateApartmentRequest $request, Apartment $apartment, Sponsor $sponsor)
     {
         $validated = $request->validated();
         if ($apartment->name !== $validated['name']) {
@@ -164,13 +172,13 @@ class ApartmentController extends Controller
             $validated['slug'] = $apartment->slug;
         }
 
-        if($request->hasFile('cover_image')){
-            if($apartment->cover_image && $apartment->cover_image !== 'default.jpg'){
+        if ($request->hasFile('cover_image')) {
+            if ($apartment->cover_image && $apartment->cover_image !== 'default.jpg') {
                 Storage::delete($apartment->cover_image);
             }
             $name = $validated['slug'];
-            $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name.'.jpg'); 
-            $validated['cover_image'] = $img_path;    
+            $img_path = Storage::putFileAs('apartment_image', $request->cover_image, $name . '.jpg');
+            $validated['cover_image'] = $img_path;
         }
 
         $searchedAddress = $validated['address'];
@@ -191,12 +199,12 @@ class ApartmentController extends Controller
         } else {
             return back()->withErrors(['address' => 'Indirizzo non valido inserire via, civico e città']);
         }
-        
+
         $apartment->visible = $validated['visible'];
 
         $apartment->update($validated);
 
-        if($request->has('services')){
+        if ($request->has('services')) {
             $apartment->services()->sync($request->services);
         } else {
             $apartment->services()->sync([]);
@@ -207,9 +215,9 @@ class ApartmentController extends Controller
             foreach ($request->input('sponsors') as $sponsorId) {
                 $apartment->sponsors()->attach($sponsorId, [
                     'start_date' => now(),
-                    'end_date' => now()->addDays(30),
-                    'price' => 100,
-                    'name' => 'Basic Sponsorship'
+                    'end_date' => now()->addHours($sponsor->duration),
+                    'price' => $sponsor->price,
+                    'name' => $sponsor->name,
                 ]);
             }
         } else {
@@ -224,7 +232,7 @@ class ApartmentController extends Controller
      */
     public function destroy(Apartment $apartment)
     {
-        if($apartment->user_id !== Auth::id()){
+        if ($apartment->user_id !== Auth::id()) {
             abort(404, 'Pagina non trovata');
         }
         $apartment->delete();
