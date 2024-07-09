@@ -3,6 +3,7 @@
 @section('content')
     <!-- Begin Page Content -->
    <h1 class="mb-4">Appartamenti</h1>
+   @if (Auth::user() && Auth::user()->apartments()->exists())
     <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary mb-3">Crea Nuovo Appartamento</a>
     <div class="table-responsive-md">
     <table id="res-table" class="table table-hover">
@@ -20,7 +21,7 @@
                 <tr class="align-middle r">
                     
                     <td data-title="name" class="w-25">{{ $apartment->name }}</td>
-                    <td class="w-25" data-title="image"><img class="w-100" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
+                    <td class="w-25" data-title="image"><img class="w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
                     <td data-title="address" class="w-25">{{ $apartment->address }}</td>
                     @if($apartment->visible == 1)
                     <td data-title="visible" class="visible">Si</td>
@@ -47,4 +48,10 @@
     </div>
 
     @include('admin.partials.modal-delete')
+    @else
+     <p>non hai ancora alcun appartamento</p>
+     <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary my-3">Crea Nuovo Appartamento</a>
+     @endelse
+     @endif
+
 @endsection

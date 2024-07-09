@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
+use App\Models\Service;
 
 class ApartmentController extends Controller
 {
@@ -16,7 +17,6 @@ class ApartmentController extends Controller
             'results' => $data
         ]);
     }
-
     public function getSponsoredApartments()
     {
         $sponsoredApartments = Apartment::whereHas('sponsors')->with('sponsors')->get();
@@ -26,53 +26,82 @@ class ApartmentController extends Controller
             'results' => $sponsoredApartments
         ]);
     }
-    public function search(string $address, string $latitude, string $longitude)
+    public function getBaseApartments()
     {
-        // Converti lat e lon da gradi a radianti
-        $lat = deg2rad($latitude);
-        $lon = deg2rad($longitude);
+        $sponsoredApartments = Apartment::whereDoesntHave('sponsors')->get();
 
-        // Raggio in km (20 km)
-        $radius = 20;
-
-        // Raggio in metri (20 km convertito in metri)
-
-
-        $baseQuery = Apartment::select('apartments.*')
-            ->whereRaw("6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude))) <= $radius");
-
-        // Clona la query di base per gli appartamenti sponsorizzati
-        $apartmentsSponsored = (clone $baseQuery)
-            ->whereHas('sponsors')
-            ->get();
-
-        // Clona la query di base per gli appartamenti non sponsorizzati
-        $apartmentsBase = (clone $baseQuery)
-            ->whereDoesntHave('sponsors')
-            ->get();
-
-        // Esempio di output
         return response()->json([
             'success' => true,
-            'results' => [
-                'sponsored' => $apartmentsSponsored,
-                'base' => $apartmentsBase
-            ]
+            'results' => $sponsoredApartments
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $item = Apartment::create($request->all());
-        return response()->json([
-            'success' => true,
-            'results' => $item
-        ], 201);
-    }
+    public function search(Request $request)
+{
+    $latitude = $request->latitude;
+    $longitude = $request->longitude;
 
-    public function show($id)
+    $radius = 20;
+
+    $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
+        ->having('distance', '<=', $radius);
+
+    $apartmentsSponsored = (clone $baseQuery)
+        ->whereHas('sponsors')
+        ->get();
+    
+    $apartmentsBase = (clone $baseQuery)
+        ->whereDoesntHave('sponsors')
+        ->get();
+    
+    $services = Service::all();
+
+    return response()->json([
+        'success' => true,
+        'results' => [
+            'sponsored' => $apartmentsSponsored,
+            'base' => $apartmentsBase,
+            'services' => $services
+        ]
+    ]);
+}
+public function servicesSearch($address, $latitude, $longitude, $serviceIds = null){
+
+    $radius = 20;
+
+    $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
+        ->having('distance', '<=', $radius);
+
+        if ($serviceIds) {
+            $serviceIds = explode(',', $serviceIds);
+            
+            // Utilizza una sottoquery per verificare che l'appartamento abbia tutti i servizi
+            foreach ($serviceIds as $serviceId) {
+                $baseQuery->whereHas('services', function ($query) use ($serviceId) {
+                    $query->where('service_id', $serviceId);
+                });
+            }
+        }
+
+    $apartmentsSponsored = (clone $baseQuery)
+        ->whereHas('sponsors')
+        ->get();
+    
+    $apartmentsBase = (clone $baseQuery)
+        ->whereDoesntHave('sponsors')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'results' => [
+            'sponsored' => $apartmentsSponsored,
+            'base' => $apartmentsBase,
+        ]
+    ]);
+}
+    public function show($slug)
     {
-        $apartment = Apartment::with('images', 'services')->findOrFail($id);
+        $apartment = Apartment::with('images', 'services')->where('slug', $slug)->first();
         return response()->json([
             'success' => true,
             'results' => $apartment
@@ -81,17 +110,11 @@ class ApartmentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $item = Apartment::findOrFail($id);
-        $item->update($request->all());
-        return response()->json([
-            'success' => true,
-            'results' => $item
-        ], 200);
+        
     }
 
     public function destroy($id)
     {
-        Apartment::destroy($id);
-        return response()->json(null, 204);
+        
     }
 }
