@@ -40,18 +40,11 @@ class ApartmentController extends Controller
 {
     $latitude = $request->latitude;
     $longitude = $request->longitude;
-    $serviceIds = $request->serviceId;
 
     $radius = 20;
 
     $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
         ->having('distance', '<=', $radius);
-
-    if ($serviceIds) {
-        $baseQuery->whereHas('services', function ($query) use ($serviceIds) {
-            $query->whereIn('service_id', $serviceIds);
-        });
-    }
 
     $apartmentsSponsored = (clone $baseQuery)
         ->whereHas('sponsors')
@@ -72,7 +65,40 @@ class ApartmentController extends Controller
         ]
     ]);
 }
+public function servicesSearch($address, $latitude, $longitude, $serviceIds = null){
 
+    $radius = 20;
+
+    $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
+        ->having('distance', '<=', $radius);
+
+        if ($serviceIds) {
+            $serviceIds = explode(',', $serviceIds);
+            
+            // Utilizza una sottoquery per verificare che l'appartamento abbia tutti i servizi
+            foreach ($serviceIds as $serviceId) {
+                $baseQuery->whereHas('services', function ($query) use ($serviceId) {
+                    $query->where('service_id', $serviceId);
+                });
+            }
+        }
+
+    $apartmentsSponsored = (clone $baseQuery)
+        ->whereHas('sponsors')
+        ->get();
+    
+    $apartmentsBase = (clone $baseQuery)
+        ->whereDoesntHave('sponsors')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'results' => [
+            'sponsored' => $apartmentsSponsored,
+            'base' => $apartmentsBase,
+        ]
+    ]);
+}
     public function show($slug)
     {
         $apartment = Apartment::with('images', 'services')->where('slug', $slug)->first();

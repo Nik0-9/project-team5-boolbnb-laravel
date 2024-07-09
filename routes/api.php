@@ -34,3 +34,4 @@ Route::get('apartments/{slug}', [ApartmentController::class, 'show']);
 Route::post('apartments', [ApartmentController::class, 'store']);
 Route::post('/apartments/{apartment}/send-message', [MessageController::class, 'sendMessage']);
 Route::get('apartments/search/{address}/{latitude}/{longitude}', [ApartmentController::class, 'search']);
+Route::get('apartments/services-filter/{address}/{latitude}/{longitude}/{serviceIds?}', [ApartmentController::class, 'servicesSearch']);
