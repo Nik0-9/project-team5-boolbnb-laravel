@@ -29,10 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Rotte per gli appartamenti
 Route::get('apartments', [ApartmentController::class, 'index']);
 Route::get('apartments/sponsored', [ApartmentController::class, 'getSponsoredApartments']);
-Route::get('apartments/{id}', [ApartmentController::class, 'show']);
-Route::get('apartments/{slug}/services', [ApartmentController::class, 'services']);
+Route::get('apartments/base', [ApartmentController::class, 'getBaseApartments']);
+Route::get('apartments/{slug}', [ApartmentController::class, 'show']);
 Route::post('apartments', [ApartmentController::class, 'store']);
-Route::put('apartments/{id}', [ApartmentController::class, 'update']);
-Route::delete('apartments/{id}', [ApartmentController::class, 'destroy']);
 Route::post('/apartments/{apartment}/send-message', [MessageController::class, 'sendMessage']);
 Route::get('apartments/search/{address}/{latitude}/{longitude}/{serviceId?}', [ApartmentController::class, 'search']);

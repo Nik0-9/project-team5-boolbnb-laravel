@@ -21,7 +21,7 @@
                 <tr class="align-middle r">
                     
                     <td data-title="name" class="w-25">{{ $apartment->name }}</td>
-                    <td class="w-25" data-title="image"><img class="w-100" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
+                    <td class="w-25" data-title="image"><img class="w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
                     <td data-title="address" class="w-25">{{ $apartment->address }}</td>
                     @if($apartment->visible == 1)
                     <td data-title="visible" class="visible">Si</td>
