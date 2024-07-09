@@ -56,7 +56,7 @@
                 <i class="fa-solid fa-building-columns"></i><span>Dashboard</span> 
             </a>
         </li>
-        @if (Auth::user()->apartments()->exists())
+     
         <li>
             <a href="{{ route('admin.apartments.index') }}" class="{{ Route::is('admin.apartments.*') ? 'active' : '' }} nav-link d-flex align-items-center">
                 <i class="fa-solid fa-building"></i>
@@ -70,7 +70,7 @@
                 <span>Messaggi</span> 
             </a>
         </li>
-        @endif
+      
     </ul>
     @endif
 </nav>
