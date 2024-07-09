@@ -4,7 +4,7 @@
 <h1>Modifica Appartamento</h1>
 <div class="mb-3 fs-5"> I campi sono obbligatori *</div>
 
-<form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST" id="modForm"
+<form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST" id="modForm "
     enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -39,16 +39,22 @@
     </div>
 
     <!-- IMMAGINE -->
-    <div class="form-group mb-3">
-        <label for="cover_image">Immagine di Copertina</label>
-        <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*">
+    <div class="form-group mb-3 row d-flex align-items-center">
+        
+        @if($apartment->cover_image)
+            <div class="mt-3 col-2">
+                <img id="current-cover-image" src="{{ asset('storage/' . $apartment->cover_image) }}" alt="Current Cover Image" style="max-height: 200px;">
+            </div>
+        @endif
+        <div class="col-10">
+            <label for="cover_image">Immagine di Copertina</label>
+            <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*">
+        </div>
+       
     </div>
     @error('cover_image')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
-
-
-
 
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
@@ -149,13 +155,15 @@
 
 
     <div class="form-group mb-3 col-6-col-md-12">
-        <label for="sponsors">Sponsor</label>
+        <label class="mb-3" for="sponsors">Sponsor</label>
         @error('sponsors')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <select class="form-control" id="sponsors" name="sponsors[]" multiple>
-            @foreach($sponsors as $sponsor)
-                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, $apartment->sponsors->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $sponsor->name }}</option>
+        @foreach($sponsors as $sponsor)
+                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsors', $apartment->sponsors->pluck('id')->toArray())) ? 'selected' : '' }}>
+                    {{ $sponsor->name }}
+                </option>
             @endforeach
         </select>
     </div>
@@ -169,6 +177,22 @@
 
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const coverImageInput = document.getElementById('cover_image');
+    const currentCoverImage = document.getElementById('current-cover-image');
+
+    coverImageInput.addEventListener('change', function () {
+        if (coverImageInput.files && coverImageInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                currentCoverImage.src = e.target.result;
+            }
+            reader.readAsDataURL(coverImageInput.files[0]);
+        }
+    });
+});
+
+
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('modForm');
         const inputs = document.querySelectorAll('#num_bathrooms, #num_beds, #num_rooms');
@@ -208,7 +232,33 @@
                 alert('Per favore, inserisci valori validi per tutti i campi.');
             }
         });
+        // Gestione selezione e deselezione degli sponsor
+        const sponsorSelect = document.getElementById('sponsors');
+        if (sponsorSelect) {
+            sponsorSelect.addEventListener('click', function (event) {
+                const option = event.target;
+                if (option.tagName === 'OPTION') {
+                    if (option.selected) {
+                        option.selected = false;
+                    } else {
+                        option.selected = true;
+                    }
+                }
+            });
+
+            sponsorSelect.addEventListener('dblclick', function (event) {
+                const option = event.target;
+                if (option.tagName === 'OPTION') {
+                    option.selected = !option.selected;
+                }
+            });
+        }
     });
 
 </script>
+<style scope>
+    img{
+        width: 180px;
+    }
+</style>
 @endsection

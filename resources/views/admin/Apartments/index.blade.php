@@ -11,7 +11,6 @@
             <tr class="r">
                 <th>Nome</th>
                 <th>Immagine</th>
-                <th class="address">Indirizzo</th>
                 <th class="visible">Visibile</th>
                 <th>Azione</th>
             </tr>
@@ -21,8 +20,8 @@
                 <tr class="align-middle r">
                     
                     <td data-title="name" class="w-25">{{ $apartment->name }}</td>
-                    <td class="w-25" data-title="image"><img class="w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
-                    <td data-title="address" class="w-25">{{ $apartment->address }}</td>
+                    <td class="w-25" data-title="image">
+                        <img src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
                     @if($apartment->visible == 1)
                     <td data-title="visible" class="visible">Si</td>
                     @else
@@ -53,5 +52,10 @@
      <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary my-3">Crea Nuovo Appartamento</a>
      @endelse
      @endif
-
+<style scope>
+    img{
+        width: 80px;
+    }
+</style>
 @endsection
+
