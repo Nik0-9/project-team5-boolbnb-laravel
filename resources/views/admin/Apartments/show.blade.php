@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
 <div class="card m-4 border-0">
     <h1 class="d-inline">Dettagli Appartamento</h1>
     <p><strong>{{ $apartment->name }}</strong></p>
@@ -83,6 +96,7 @@
 @endsection
 
 @section('scripts')
+{{-- funzione che conta il countdown dello sponsor --}}
 @if($activeSponsor)
     <script>
         document.addEventListener('DOMContentLoaded', function(){

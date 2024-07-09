@@ -120,14 +120,6 @@ class ApartmentController extends Controller
 
         $apartment = Apartment::with('images', 'sponsors')->findOrFail($apartment->id);
         $activeSponsor = $apartment->sponsors()->wherePivot('end_date', '>', now())->orderBy('price', 'desc')->first();
-        
-        Log::info('Current Timezone: ' . config('app.timezone'));
-        Log::info('Current DateTime: ' . now());
-        Log::info('Active Sponsor: ', ['active_sponsor' => $activeSponsor]);
-        Log::info('Visualizzazione dettagli appartamento', [
-            'apartment_id' => $apartment->id,
-            'active_sponsor' => $activeSponsor ? $activeSponsor->name : 'null'
-        ]);
 
         return view('admin.apartments.show', compact('apartment', 'activeSponsor'));
     }
@@ -180,9 +172,6 @@ class ApartmentController extends Controller
             $validated['slug'] = $apartment->slug;
         }
 
-
-        Log::info('Current Timezone: ' . config('app.timezone'));
-        Log::info('Current DateTime: ' . now());
         if ($request->hasFile('cover_image')) {
             if ($apartment->cover_image && $apartment->cover_image !== 'default.jpg') {
                 Storage::delete($apartment->cover_image);

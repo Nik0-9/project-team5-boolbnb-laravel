@@ -31,19 +31,13 @@ class BraintreeController extends Controller
 
     public function checkout(Request $request)
     {
-        // Log iniziale
-        Log::info('Inizio processo di checkout');
         $nonce = $request->input('payment_method_nonce');
-        Log::info('Nonce ricevuto: ' . $nonce);
 
         $apartment = Apartment::findOrFail($request->input('apartment_id'));
-        Log::info('Appartamento trovato: ' . $apartment->id);
 
         $sponsor = Sponsor::findOrFail($request->input('sponsor_id'));
-        Log::info('Sponsor trovato: ' . $sponsor->id);
 
         $amount = $sponsor->price;
-        Log::info('Prezzo della sponsorizzazione: ' . $amount);
 
         $result = $this->gateway->transaction()->sale([
             'amount' => $amount,
@@ -52,28 +46,24 @@ class BraintreeController extends Controller
                 'submitForSettlement' => true
             ]
         ]);
-        Log::info('Risultato della transazione: ', (array)$result);
 
         if ($result->success) {
             $currentDateTime = Carbon::now();
-            // Convertiamo la durata (di tipo TIME) in ore, minuti e secondi
+            //Conversione sponsor.duration in ore:minuti:secondi
             list($hours, $minutes, $seconds) = explode(':', $sponsor->duration);
             // Aggiungiamo la durata alla data e ora corrente
             $endDateTime = $currentDateTime->copy()->addHours($hours)->addMinutes($minutes)->addSeconds($seconds);
-            Log::info('Current DateTime: ' . $currentDateTime);
-            Log::info('End DateTime: ' . $endDateTime);
 
             $existingSponsor = $apartment->sponsors()
                 ->where('sponsor_id', $sponsor->id)
                 ->where('end_date', '>', $currentDateTime)
                 ->first();
-
+            //Se lo sponsor esiste, aggiorniamo l'end_date, altrimenti lo aggiungiamo
             if ($existingSponsor) {
-                Log::info('Sponsor esistente trovato, estendendo la durata');
                 $existingSponsor->pivot->end_date = Carbon::parse($existingSponsor->pivot->end_date)->addHours($hours)->addMinutes($minutes)->addSeconds($seconds);
                 $existingSponsor->pivot->save();
             } else {
-                Log::info('Nessuno sponsor esistente trovato, aggiungendo nuovo sponsor');
+                //Se lo sponsor non esiste, lo aggiungiamo
                 $apartment->sponsors()->attach($sponsor->id, [
                     'start_date' => $currentDateTime,
                     'end_date' => $endDateTime,
@@ -81,12 +71,9 @@ class BraintreeController extends Controller
                     'name' => $sponsor->name,
                 ]);
             }
-
-            Log::info('Pagamento avvenuto con successo');
             return redirect()->route('admin.apartments.show', $apartment->slug)
                              ->with('success', 'Pagamento avvenuto con successo');
         } else {
-            Log::error('Errore nella transazione: ' . $result->message);
             return redirect()->route('admin.apartments.show', $apartment->slug)
                              ->withErrors('Errore nella transazione: ' . $result->message);
         }

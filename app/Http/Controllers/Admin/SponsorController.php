@@ -46,10 +46,6 @@ class SponsorController extends Controller {
         } else {
             $endDate = now()->addHours($sponsor->duration);
         }
-
-        
-
-        // Reindirizza alla pagina di pagamento con i dati necessari
         return redirect()->route('admin.payment.page', ['apartment' => $apartment->slug, 'sponsor' => $sponsor->id]);
     }
 
