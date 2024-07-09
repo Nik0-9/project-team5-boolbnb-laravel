@@ -14,8 +14,12 @@ class StoreSponsorRequest extends FormRequest
     public function rules()
     {
         return [
+
             'sponsor_id' => 'required|exists:sponsors,id',
-            'payment_method_nonce' => 'required|string',
+
+            'duration' => 'required|integer',
+
+            'price' => 'required|numeric',
 
         ];
     }

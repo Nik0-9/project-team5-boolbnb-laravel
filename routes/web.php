@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\ApartmentSponsorController;
+use App\Http\Controllers\Admin\BraintreeController;
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -21,8 +22,17 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('images', ImageController::class);
     Route::resource('sponsors', SponsorController::class);
     Route::resource('apartment_sponsors', ApartmentSponsorController::class);
-    Route::get('apartments/{apartment}/sponsor', [SponsorController::class, 'create'])->name('sponsor.create');
-    Route::post('apartments/{apartment}/sponsor', [SponsorController::class, 'store'])->name('sponsor.store');
+    Route::get('payment', [BraintreeController::class, 'index'])->name('payment.page');
+    Route::post('/braintree/checkout', [BraintreeController::class, 'checkout'])->name('braintree.checkout');
+    Route::get('/braintree/token', [BraintreeController::class, 'token'])->name('braintree.token');
+    
+    Route::get('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'create'])->name('sponsor.create');
+    Route::post('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'store'])->name('sponsor.store');
+
+
+
+
+
 });
 
 Route::middleware('auth')->group(function () {

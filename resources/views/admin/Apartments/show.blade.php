@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content') 
+@section('content')
 <div class="card m-4 border-0">
     <h1 class="d-inline">Dettagli Appartamento</h1>
     <p><strong>{{ $apartment->name }}</strong></p>
@@ -51,7 +51,6 @@
                         <p class="text-center">{{ $service->name }}</p>
                     </div>
                 </div>
-
             @endforeach
         </div>
     @endif
@@ -71,9 +70,43 @@
         </ul>
     @endif
 
-    <!-- Link alla pagina di sponsorizzazione -->
-    <a href="{{ route('admin.sponsor.create', $apartment->id) }}" class="btn btn-primary w-25 mb-4">Sponsorizza questo appartamento</a>
+    @if($activeSponsor)
+        <p class="text-success">Appartamento sponsorizzato con {{ $activeSponsor->name }} fino al {{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('d/m/Y H:i') }}</p>
+        <p id="remaining-time"></p>
+    @else
+        <p>Nessuna sponsorizzazione attiva</p>
+    @endif
 
+    <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-primary w-25 mb-4">Sponsorizza</a>
     <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
 </div>
+@endsection
+
+@section('scripts')
+@if($activeSponsor)
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            function updateRemainingTime() {
+                const endTime = new Date("{{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('Y-m-d H:i:s') }}").getTime();
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('remaining-time').innerHTML = `Tempo rimanente: ${days} giorni ${hours} ore ${minutes} minuti ${seconds} secondi`;
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById('remaining-time').innerHTML = "Sponsorizzazione scaduta";
+                }
+            }
+
+            updateRemainingTime();
+            const x = setInterval(updateRemainingTime, 1000);
+        });
+    </script>
+@endif
 @endsection

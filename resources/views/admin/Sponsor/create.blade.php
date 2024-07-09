@@ -4,52 +4,21 @@
 <div class="container">
     <h1>Sponsorizza il tuo appartamento</h1>
     
-    <form action="{{ route('admin.sponsor.store', $apartment->slug) }}" method="POST">
+    <form action="{{ route('admin.payment.page') }}" method="GET">
         @csrf
         
         <div class="form-group">
-            <label for="sponsor_id">Scegli un pacchetto di sponsorizzazione</label>
-            <select name="sponsor_id" id="sponsor_id" class="form-control">
+            <label for="sponsor_id">Scegli un pacchetto di sponsorizzazione:</label>
+            <select name="sponsor_id" id="sponsor_id" class="form-control mb-3 mt-3 w-25">
                 @foreach($sponsors as $sponsor)
                     <option value="{{ $sponsor->id }}">{{ $sponsor->name }} - €{{ $sponsor->price }} per {{ $sponsor->duration }} ore</option>
                 @endforeach
             </select>
         </div>
 
-        <div id="dropin-container"></div>
-        <input type="hidden" name="payment_method_nonce" value="">
-        
+        <input type="hidden" name="apartment_id" value="{{ $apartment->id }}">
+
         <button type="submit" class="btn btn-primary">Sponsorizza</button>
     </form>
 </div>
-@endsection
-
-@section('scripts')
-<script src="https://js.braintreegateway.com/web/dropin/1.33.0/js/dropin.min.js"></script>
-<script>
-    var form = document.querySelector('form');
-    var client_token = "{{ Braintree\ClientToken::generate() }}";
-
-    braintree.dropin.create({
-        authorization: client_token,
-        container: '#dropin-container'
-    }, function (createErr, instance) {
-        if (createErr) {
-            console.log('Create Error', createErr);
-            return;
-        }
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            instance.requestPaymentMethod(function (err, payload) {
-                if (err) {
-                    console.log('Request Payment Method Error', err);
-                    return;
-                }
-                document.querySelector('input[name="payment_method_nonce"]').value = payload.nonce;
-                form.submit();
-            });
-        });
-    });
-</script>
 @endsection

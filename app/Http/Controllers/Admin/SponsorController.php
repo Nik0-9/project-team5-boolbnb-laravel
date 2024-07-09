@@ -2,44 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Sponsor;
 use App\Models\Apartment;
 use App\Http\Requests\StoreSponsorRequest;
 use App\Http\Requests\UpdateSponsorRequest;
 use App\Http\Controllers\Controller;
-use Braintree\Gateway as BraintreeGateway;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
-class SponsorController extends Controller
-{
-    protected $gateway;
-
+class SponsorController extends Controller {
     public function __construct()
     {
         $this->middleware('auth');
-
-        $gatewayConfig = config('services.braintree');
-        Log::info('Braintree Config:', $gatewayConfig);
-
-        $this->gateway = new BraintreeGateway([
-            'environment' => $gatewayConfig['environment'],
-            'merchantId' => $gatewayConfig['merchant_id'],
-            'publicKey' => $gatewayConfig['public_key'],
-            'privateKey' => $gatewayConfig['private_key'],
-        ]);
-
-        Log::info('Braintree Gateway:', [
-            'environment' => $gatewayConfig['environment'],
-            'merchantId' => $gatewayConfig['merchant_id'],
-            'publicKey' => $gatewayConfig['public_key'],
-            'privateKey' => $gatewayConfig['private_key']
-        ]);
     }
 
     public function index()
     {
-        //
+        // $sponsors = Sponsor::all();
+        // return view('admin.sponsor.index', compact('sponsors'));
     }
 
     public function create(Apartment $apartment)
@@ -54,34 +34,36 @@ class SponsorController extends Controller
 
         $sponsor = Sponsor::findOrFail($validated['sponsor_id']);
         $endDate = now()->addHours($sponsor->duration);
-
-        $nonce = $validated['payment_method_nonce'];
-        $result = $this->gateway->transaction()->sale([
-            'amount' => $sponsor->price,
-            'paymentMethodNonce' => $nonce,
-            'options' => [
-                'submitForSettlement' => true
-            ]
-        ]);
-
-        if ($result->success) {
-            $apartment->sponsors()->attach($sponsor->id, [
-                'start_date' => now(),
-                'end_date' => $endDate,
-                'price' => $sponsor->price,
-                'name' => $sponsor->name,
-            ]);
-
-            return redirect()->route('admin.apartments.show', $apartment->slug)
-                             ->with('success', 'Sponsorizzazione aggiunta con successo');
+        $apartment->sponsors()->attach($sponsor->id, [
+            'start_date' => now(), // Data di inizio sponsorizzazione
+            'end_date' => $endDate, // Data di fine sponsorizzazione
+            'price' => $sponsor->price, // Prezzo della sponsorizzazione
+            'name' => $sponsor->name,
+        ]);   
+        $existingSponsor = $apartment->sponsors()->where('sponsor_id', $sponsor->id)->first();
+        if ($existingSponsor) {
+            $endDate = $existingSponsor->pivot->end_date->addHours($sponsor->duration);
         } else {
-            return back()->withErrors('Errore nella transazione: ' . $result->message);
+            $endDate = now()->addHours($sponsor->duration);
         }
+
+        
+
+        // Reindirizza alla pagina di pagamento con i dati necessari
+        return redirect()->route('admin.payment.page', ['apartment' => $apartment->slug, 'sponsor' => $sponsor->id]);
     }
 
-    public function show(Sponsor $sponsor)
+    public function show(Apartment $apartment)
     {
-        //
+        if ($apartment->user_id !== Auth::id()) {
+            abort(404, 'Pagina non trovata');
+        }
+        
+        $apartment = Apartment::with(['images', 'sponsors' => function($query) {
+            $query->wherePivot('end_date', '>', now());
+        }])->findOrFail($apartment->id);
+        
+        return view('admin.apartments.show', compact('apartment'));
     }
 
     public function edit(Sponsor $sponsor)
