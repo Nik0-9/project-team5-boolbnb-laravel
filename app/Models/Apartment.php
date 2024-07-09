@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use Illuminate\Support\Facades\Log; 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -60,9 +60,31 @@ class Apartment extends Model
     }
 
     public function sponsors(){
-        return $this->belongsToMany(Sponsor::class)
-        ->withPivot('start_date', 'end_date', 'price', 'name')
-        ->withTimestamps();
+    return $this->belongsToMany(Sponsor::class)
+                ->withPivot('start_date', 'end_date', 'price', 'name')
+                ->withTimestamps();
+    }
+    public function activeSponsor()
+{
+    $now = now();
+    $activeSponsor = $this->sponsors()
+        ->where('end_date', '>', $now)
+        ->orderBy('price', 'desc')
+        ->first();
+
+    // Debug per verificare quali sponsorizzazioni vengono recuperate
+    Log::info('Active Sponsor:', ['active_sponsor' => $activeSponsor]);
+
+    return $activeSponsor;
+}
+
+    public function remainingTime(){
+        $now = now();
+        $sponsor = $this->activeSponsor();
+        if ($sponsor) {
+            return $now->diffInHours($sponsor->pivot->end_date);
+        }
+        return 0;
     }
 
 }
