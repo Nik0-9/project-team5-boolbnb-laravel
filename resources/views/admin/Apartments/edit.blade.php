@@ -135,11 +135,11 @@
         <div class="form-group mb-3 col-6-col-md-12">
             <label for="visible">L'appartamento è ancora visibile?</label>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="visible" id="visible_yes" value="1" {{ $apartment->visible ? 'checked' : '' }}>
+                <input class="form-check-input" type="radio" name="visible" id="visible_yes" value="1" {{ old('visible', $apartment->visible) == 1 ? 'checked' : '' }}>
                 <label class="form-check-label" for="visible_yes">Sì</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="visible" id="visible_no" value="0" {{ !$apartment->visible ? 'checked' : '' }}>
+                <input class="form-check-input" type="radio" name="visible" id="visible_no" value="0" {{ old('visible', $apartment->visible) == 0 ? 'checked' : '' }}>
                 <label class="form-check-label" for="visible_no">No</label>
             </div>
         </div>
