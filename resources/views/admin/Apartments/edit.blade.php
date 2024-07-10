@@ -145,23 +145,6 @@
         </div>
     </div>
 
-    <!-- SPONSOR -->
-
-
-    <div class="form-group mb-3 col-6-col-md-12">
-        <label for="sponsors">Sponsor</label>
-        @error('sponsors')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-        <select class="form-control" id="sponsors" name="sponsors[]" multiple>
-            @foreach($sponsors as $sponsor)
-                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, $apartment->sponsors->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $sponsor->name }}</option>
-            @endforeach
-        </select>
-    </div>
-
-
-
 </form>
 <div class="position-fixed bottom-0 end-0 p-5" style="z-index: 10;">
     <button type="submit" form="modForm" class="btn btn-primary btn-lg">Aggiorna</button>

@@ -142,21 +142,6 @@
             </div>
         </div>
 
-        <!-- SPONSOR -->
-        <div class="form-group mb-3 col-6-col-md-12">
-            <label class="mb-3" for="sponsors">Sponsor</label>
-            @error('sponsors')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            <select class="form-control" id="sponsors" name="sponsors[]" multiple>
-                @foreach($sponsors as $sponsor)
-                    <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsors', [])) ? 'selected' : '' }}>
-                        {{ $sponsor->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
         <div class="position-fixed bottom-0 end-0 p-5" style="z-index: 10;">
             <button type="submit" form="modForm" class="btn btn-primary btn-lg">Salva</button>
         </div>
@@ -212,28 +197,6 @@
                 alert('Per favore, inserisci valori validi per tutti i campi.');
             }
         });
-        // Gestione selezione e deselezione degli sponsor
-        const sponsorSelect = document.getElementById('sponsors');
-        if (sponsorSelect) {
-            sponsorSelect.addEventListener('click', function (event) {
-                const option = event.target;
-                if (option.tagName === 'OPTION') {
-                    if (option.selected) {
-                        option.selected = false;
-                    } else {
-                        option.selected = true;
-                    }
-                }
-            });
-
-            sponsorSelect.addEventListener('dblclick', function (event) {
-                const option = event.target;
-                if (option.tagName === 'OPTION') {
-                    option.selected = !option.selected;
-                }
-            });
-        }
     });
-
 </script>
 @endsection

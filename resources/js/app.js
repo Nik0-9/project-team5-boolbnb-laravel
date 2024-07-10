@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
       clearTimeout(debounceTimeout);
       debounceTimeout = setTimeout(() => {
 
-        fetch(`https://api.tomtom.com/search/2/search/${query}.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
+        fetch(`https://api.tomtom.com/search/2/geocode/${query}.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
           .then(response => response.json())
           .then(data => {
             addressSuggestions.innerHTML = '';
