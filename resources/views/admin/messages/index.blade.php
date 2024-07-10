@@ -48,8 +48,11 @@
             </div>
         </div>
     </div>
+@if ($messages->isEmpty())
+@else()
+@include('admin.partials.modal-delete-message')
+@endif
 
-    @include('admin.partials.modal-delete-message')
 @endsection
 <style scope>
 .list-group-item-action a {
