@@ -79,7 +79,6 @@
             @enderror
         </div>
 
-
         <!-- NUMERO STANZE -->
         <div class="col-12 col-lg-6">
 
@@ -93,7 +92,6 @@
             @enderror
         </div>
     </div>
-
     <div class="row">
         <!-- NUMERO BAGNI -->
         <div class="col-12 col-lg-6">
@@ -141,19 +139,16 @@
         <div class="form-group mb-3 col-6-col-md-12">
             <label for="visible">L'appartamento è ancora visibile?</label>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="visible" id="visible_yes" value="1" {{ $apartment->visible ? 'checked' : '' }}>
+                <input class="form-check-input" type="radio" name="visible" id="visible_yes" value="1" {{ old('visible') == 1  ? 'checked' : '' }}>
                 <label class="form-check-label" for="visible_yes">Sì</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="visible" id="visible_no" value="0" {{ !$apartment->visible ? 'checked' : '' }}>
+                <input class="form-check-input" type="radio" name="visible" id="visible_no" value="0" {{ old('visible') == 0 ? 'checked' : '' }}>
                 <label class="form-check-label" for="visible_no">No</label>
             </div>
         </div>
     </div>
-
     <!-- SPONSOR -->
-
-
     <div class="form-group mb-3 col-6-col-md-12">
         <label class="mb-3" for="sponsors">Sponsor</label>
         @error('sponsors')
@@ -167,9 +162,6 @@
             @endforeach
         </select>
     </div>
-
-
-
 </form>
 <div class="position-fixed bottom-0 end-0 p-5" style="z-index: 10;">
     <button type="submit" form="modForm" class="btn btn-primary btn-lg">Aggiorna</button>
@@ -191,7 +183,6 @@
         }
     });
 });
-
 
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('modForm');
