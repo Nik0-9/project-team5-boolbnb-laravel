@@ -2,7 +2,10 @@
 
 @section('content') 
 <div class="card m-4 border-0">
-    <h1 class="d-inline">Dettagli Appartamento</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="d-inline">Dettagli Appartamento</h1>
+        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-warning ">Modifica</a>
+    </div>
     <p><strong>{{ $apartment->name }}</strong></p>
 
     <div class="row">

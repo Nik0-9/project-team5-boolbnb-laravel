@@ -131,7 +131,7 @@
                 </div>
             @endforeach
         </div>
-
+    <!-- VISIBILIA' -->
         <div class="form-group mb-3 col-6-col-md-12">
             <label for="visible">L'appartamento è ancora visibile?</label>
             <div class="form-check form-check-inline">
