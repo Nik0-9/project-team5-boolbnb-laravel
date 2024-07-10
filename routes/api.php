@@ -32,6 +32,6 @@ Route::get('apartments/sponsored', [ApartmentController::class, 'getSponsoredApa
 Route::get('apartments/base', [ApartmentController::class, 'getBaseApartments']);
 Route::get('apartments/{slug}', [ApartmentController::class, 'show']);
 Route::post('apartments', [ApartmentController::class, 'store']);
-Route::post('/apartments/{apartment}/send-message', [MessageController::class, 'sendMessage']);
+Route::post('apartments/{apartment:slug}/send-message', [MessageController::class, 'sendMessage']);
 Route::get('apartments/search/{address}/{latitude}/{longitude}', [ApartmentController::class, 'search']);
 Route::get('apartments/services-filter/{address}/{latitude}/{longitude}/{serviceIds?}', [ApartmentController::class, 'servicesSearch']);
