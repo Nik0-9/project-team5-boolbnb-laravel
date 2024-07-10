@@ -4,7 +4,7 @@
 <h1>Modifica Appartamento</h1>
 <div class="mb-3 fs-5"> I campi sono obbligatori *</div>
 
-<form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST" id="modForm "
+<form action="{{ route('admin.apartments.update', $apartment->slug) }}" method="POST" id="modForm"
     enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -39,22 +39,16 @@
     </div>
 
     <!-- IMMAGINE -->
-    <div class="form-group mb-3 row d-flex align-items-center">
-        
-        @if($apartment->cover_image)
-            <div class="mt-3 col-2">
-                <img id="current-cover-image" src="{{ asset('storage/' . $apartment->cover_image) }}" alt="Current Cover Image" style="max-height: 200px;">
-            </div>
-        @endif
-        <div class="col-10">
-            <label for="cover_image">Immagine di Copertina</label>
-            <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*">
-        </div>
-       
+    <div class="form-group mb-3">
+        <label for="cover_image">Immagine di Copertina</label>
+        <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*">
     </div>
     @error('cover_image')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+
+
+
 
     <!-- DESCRIZIONE -->
     <div class="form-group mb-3">
@@ -79,6 +73,7 @@
             @enderror
         </div>
 
+
         <!-- NUMERO STANZE -->
         <div class="col-12 col-lg-6">
 
@@ -92,6 +87,7 @@
             @enderror
         </div>
     </div>
+
     <div class="row">
         <!-- NUMERO BAGNI -->
         <div class="col-12 col-lg-6">
@@ -135,33 +131,37 @@
                 </div>
             @endforeach
         </div>
-    <!-- VISIBILITA' -->
+
         <div class="form-group mb-3 col-6-col-md-12">
             <label for="visible">L'appartamento è ancora visibile?</label>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="visible" id="visible_yes" value="1" {{ old('visible') == 1  ? 'checked' : '' }}>
+                <input class="form-check-input" type="radio" name="visible" id="visible_yes" value="1" {{ $apartment->visible ? 'checked' : '' }}>
                 <label class="form-check-label" for="visible_yes">Sì</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="visible" id="visible_no" value="0" {{ old('visible') == 0 ? 'checked' : '' }}>
+                <input class="form-check-input" type="radio" name="visible" id="visible_no" value="0" {{ !$apartment->visible ? 'checked' : '' }}>
                 <label class="form-check-label" for="visible_no">No</label>
             </div>
         </div>
     </div>
+
     <!-- SPONSOR -->
+
+
     <div class="form-group mb-3 col-6-col-md-12">
-        <label class="mb-3" for="sponsors">Sponsor</label>
+        <label for="sponsors">Sponsor</label>
         @error('sponsors')
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <select class="form-control" id="sponsors" name="sponsors[]" multiple>
-        @foreach($sponsors as $sponsor)
-                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, old('sponsors', $apartment->sponsors->pluck('id')->toArray())) ? 'selected' : '' }}>
-                    {{ $sponsor->name }}
-                </option>
+            @foreach($sponsors as $sponsor)
+                <option value="{{ $sponsor->id }}" {{ in_array($sponsor->id, $apartment->sponsors->pluck('id')->toArray()) ? 'selected' : '' }}>{{ $sponsor->name }}</option>
             @endforeach
         </select>
     </div>
+
+
+
 </form>
 <div class="position-fixed bottom-0 end-0 p-5" style="z-index: 10;">
     <button type="submit" form="modForm" class="btn btn-primary btn-lg">Aggiorna</button>
@@ -169,21 +169,6 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const coverImageInput = document.getElementById('cover_image');
-    const currentCoverImage = document.getElementById('current-cover-image');
-
-    coverImageInput.addEventListener('change', function () {
-        if (coverImageInput.files && coverImageInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                currentCoverImage.src = e.target.result;
-            }
-            reader.readAsDataURL(coverImageInput.files[0]);
-        }
-    });
-});
-
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('modForm');
         const inputs = document.querySelectorAll('#num_bathrooms, #num_beds, #num_rooms');
@@ -223,33 +208,7 @@
                 alert('Per favore, inserisci valori validi per tutti i campi.');
             }
         });
-        // Gestione selezione e deselezione degli sponsor
-        const sponsorSelect = document.getElementById('sponsors');
-        if (sponsorSelect) {
-            sponsorSelect.addEventListener('click', function (event) {
-                const option = event.target;
-                if (option.tagName === 'OPTION') {
-                    if (option.selected) {
-                        option.selected = false;
-                    } else {
-                        option.selected = true;
-                    }
-                }
-            });
-
-            sponsorSelect.addEventListener('dblclick', function (event) {
-                const option = event.target;
-                if (option.tagName === 'OPTION') {
-                    option.selected = !option.selected;
-                }
-            });
-        }
     });
 
 </script>
-<style scope>
-    img{
-        width: 180px;
-    }
-</style>
 @endsection
