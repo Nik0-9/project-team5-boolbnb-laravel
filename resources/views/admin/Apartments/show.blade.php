@@ -23,7 +23,7 @@
     <div class="row">
         <!-- Immagine Grande -->
         <div class="col-12 col-md-8">
-            <img class="img-fluid w-100" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
+            <img class="img-fluid w-25" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
         </div>
         <!-- Contenitore per le miniature -->
         <div class="col-12 col-md-4">
