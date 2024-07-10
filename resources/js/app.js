@@ -36,36 +36,56 @@ deleteSubmitButtons.forEach((button) => {
 document.addEventListener('DOMContentLoaded', function () {
   const addressInput = document.getElementById('address');
   const addressSuggestions = document.getElementById('addressSuggestions');
+  const form = document.getElementById('modForm');
   let debounceTimeout;
-if(addressInput){
-  addressInput.addEventListener('input', function () {
-    const query = addressInput.value;
 
-    if (query.length < 3) {
-      addressSuggestions.innerHTML = '';
-      return;
-    }
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
+  if (addressInput) {
+    addressInput.addEventListener('input', function () {
+      const query = addressInput.value;
 
-      fetch(`https://api.tomtom.com/search/2/search/${query}.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
-        .then(response => response.json())
-        .then(data => {
-          addressSuggestions.innerHTML = '';
-          if (data.results.length > 0) {
-            data.results.forEach(result => {
-              const option = document.createElement('option');
-              option.value = result.address.freeformAddress;
-              addressSuggestions.appendChild(option);
-            });
+      if (query.length < 3) {
+        addressSuggestions.innerHTML = '';
+        return;
+      }
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
 
-
-          }
-        })
-        .catch(error => console.error('Errore di ricerca indirizzo:', error));
+        fetch(`https://api.tomtom.com/search/2/search/${query}.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
+          .then(response => response.json())
+          .then(data => {
+            addressSuggestions.innerHTML = '';
+            if (data.results.length > 0) {
+              data.results.forEach(result => {
+                const option = document.createElement('option');
+                option.value = result.address.freeformAddress;
+                addressSuggestions.appendChild(option);
+              });
+            }
+          })
+          .catch(error => console.error('Errore di ricerca indirizzo:', error));
       }, 1000);
     });
-}
+
+    form.addEventListener('submit', function (event) {
+      const inputValue = addressInput.value;
+      const options = addressSuggestions.children;
+      let isValid = false;
+
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].value === inputValue) {
+          isValid = true;
+          break;
+        }
+      }
+
+      if (!isValid) {
+        event.preventDefault();
+        alert('Per favore seleziona un indirizzo valido dalla lista dei suggerimenti.');
+        addressInput.focus();
+      }
+    });
+  }
+});
   
 
     // Verifica se l'utente ha selezionato almeno un servizio
@@ -89,7 +109,7 @@ if(addressInput){
         errorDiv.classList.add('d-none');
       }
     });
-  });
+  
 
 
 
