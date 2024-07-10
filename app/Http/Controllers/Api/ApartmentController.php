@@ -40,8 +40,8 @@ class ApartmentController extends Controller
     {
         $latitude = $request->latitude;
         $longitude = $request->longitude;
-        
-        
+
+
         $radius = 20;
 
         $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
@@ -66,25 +66,82 @@ class ApartmentController extends Controller
             ]
         ]);
     }
-    public function servicesSearch($address, $latitude, $longitude, $serviceIds = null)
+    // public function servicesSearch($address, $latitude, $longitude, $serviceIds = null)
+    // {
+
+    //     $radius = 20;
+
+    //     $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
+    //         ->having('distance', '<=', $radius);
+
+    //     if ($serviceIds) {
+    //         $serviceIds = explode(',', $serviceIds);
+
+    //         // Utilizza una sottoquery per verificare che l'appartamento abbia tutti i servizi
+    //         foreach ($serviceIds as $serviceId) {
+    //             $baseQuery->whereHas('services', function ($query) use ($serviceId) {
+    //                 $query->where('service_id', $serviceId);
+    //             });
+    //         }
+    //     }
+
+    //     $apartmentsSponsored = (clone $baseQuery)
+    //         ->whereHas('sponsors')
+    //         ->get();
+
+    //     $apartmentsBase = (clone $baseQuery)
+    //         ->whereDoesntHave('sponsors')
+    //         ->get();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'results' => [
+    //             'sponsored' => $apartmentsSponsored,
+    //             'base' => $apartmentsBase,
+    //         ]
+    //     ]);
+    // }
+
+    public function searchAdvanced($address, $latitude, $longitude, $serviceIds, $rooms, $beds, $range)
     {
+        // Imposta il raggio di ricerca
+        $radius = $range;
 
-        $radius = 20;
-
+        // Base query per cercare appartamenti entro un certo raggio
         $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
             ->having('distance', '<=', $radius);
 
-        if ($serviceIds) {
-            $serviceIds = explode(',', $serviceIds);
-
-            // Utilizza una sottoquery per verificare che l'appartamento abbia tutti i servizi
-            foreach ($serviceIds as $serviceId) {
+        // Filtra per servizi, se forniti
+        if ($serviceIds === 'all') {
+            $baseQuery->whereHas('services');
+        } else {
+            $serviceIdsArray = explode(',', $serviceIds);
+            foreach ($serviceIdsArray as $serviceId) {
                 $baseQuery->whereHas('services', function ($query) use ($serviceId) {
                     $query->where('service_id', $serviceId);
                 });
             }
         }
 
+        // Filtra per numero di camere, se specificato
+        if($rooms === 'all'){
+            $baseQuery->where('num_rooms','>', 0);
+        }elseif($rooms == 5){
+            $baseQuery->where('num_rooms','>=', 5);
+        }else{
+            $baseQuery->where('num_rooms', '=', $rooms);
+        }
+        
+        // Filtra per numero di letti, se specificato
+        if($beds === 'all'){
+            $baseQuery->where('num_beds','>', 0);
+        }elseif($beds == 5){
+            $baseQuery->where('num_beds','>=', 5);
+        }else{
+            $baseQuery->where('num_beds', '=', $beds);
+        }
+
+        // Separare gli appartamenti sponsorizzati da quelli non sponsorizzati
         $apartmentsSponsored = (clone $baseQuery)
             ->whereHas('sponsors')
             ->get();
@@ -101,59 +158,6 @@ class ApartmentController extends Controller
             ]
         ]);
     }
-
-    public function searchAdvanced($address, $latitude, $longitude, $serviceIds = null, $rooms , $beds , $range )
-{
-    // Imposta il raggio di ricerca
-    $radius = $range;
-
-    // Base query per cercare appartamenti entro un certo raggio
-    $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
-        ->having('distance', '<=', $radius);
-
-    // Filtra per servizi, se forniti
-    if ($serviceIds !== 'all' && $serviceIds !== null) {
-        $serviceIdsArray = explode(',', $serviceIds);
-        foreach ($serviceIdsArray as $serviceId) {
-            $baseQuery->whereHas('services', function ($query) use ($serviceId) {
-                $query->where('service_id', $serviceId);
-            });
-        }
-    }else{
-        $baseQuery->whereHas('services');
-    }
-
-    // Filtra per numero di camere, se specificato
-    if ($rooms !== 'all' && $rooms !== 5) {
-        $baseQuery->where('num_rooms', '=', $rooms);
-    }elseif($rooms === 5){
-        $baseQuery->where('num_rooms', '>=', $rooms );
-    }
-
-    // Filtra per numero di letti, se specificato
-    if ($beds !== 'all' && $beds !== 5) {
-        $baseQuery->where('num_beds', '=', $beds);
-    }elseif($beds === 5){
-        $baseQuery->where('num_beds', '>=', $beds );
-    }
-
-    // Separare gli appartamenti sponsorizzati da quelli non sponsorizzati
-    $apartmentsSponsored = (clone $baseQuery)
-        ->whereHas('sponsors')
-        ->get();
-
-    $apartmentsBase = (clone $baseQuery)
-        ->whereDoesntHave('sponsors')
-        ->get();
-
-    return response()->json([
-        'success' => true,
-        'results' => [
-            'sponsored' => $apartmentsSponsored,
-            'base' => $apartmentsBase,
-        ]
-    ]);
-}
 
 
 
