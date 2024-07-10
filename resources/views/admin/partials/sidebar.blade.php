@@ -70,6 +70,12 @@
                 <span>Messaggi</span> 
             </a>
         </li>
+        <li>
+            <a href="{{ route('admin.sponsors.index') }}" class="{{ Route::is('admin.sponsors.*') ? 'active' : '' }} nav-link d-flex align-items-center">
+            <i class="fa-solid fa-crown"></i>
+                <span>Sponsorizzazioni</span> 
+            </a>
+        </li>
       
     </ul>
     @endif
