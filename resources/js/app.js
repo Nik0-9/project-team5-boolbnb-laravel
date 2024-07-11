@@ -49,16 +49,19 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       clearTimeout(debounceTimeout);
       debounceTimeout = setTimeout(() => {
-
-        fetch(`https://api.tomtom.com/search/2/geocode/${query}.json?countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
+      
+           fetch(`https://api.tomtom.com/search/2/geocode/${query}.json?limit=10&countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
           .then(response => response.json())
           .then(data => {
+            console.log(data);
             addressSuggestions.innerHTML = '';
             if (data.results.length > 0) {
               data.results.forEach(result => {
-                const option = document.createElement('option');
-                option.value = result.address.freeformAddress;
-                addressSuggestions.appendChild(option);
+                if (result.address && result.address.freeformAddress) {
+                  const option = document.createElement('option');
+                  option.value = result.address.freeformAddress;
+                  addressSuggestions.appendChild(option);
+                }
               });
             }
           })
@@ -70,6 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const inputValue = addressInput.value;
       const options = addressSuggestions.children;
       let isValid = false;
+      if (options[i].value === inputValue) {
+        isValid = true;
+      }
 
       for (let i = 0; i < options.length; i++) {
         if (options[i].value === inputValue) {
