@@ -24,7 +24,7 @@
         const selectedOption = this.options[this.selectedIndex];
         const slug = selectedOption.getAttribute('data-slug');
         const form = document.getElementById('apartmentForm');
-        form.action = '/admin/apartments/' + slug + '/sponsor';
+        form.action = '/admin/' + slug + '/sponsor';
     });
 </script>
 @endsection

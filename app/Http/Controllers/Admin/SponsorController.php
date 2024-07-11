@@ -20,13 +20,13 @@ class SponsorController extends Controller {
     {
         $user_id = Auth::id();
         $apartments = Apartment::where('user_id', $user_id)->get();
-        return view('admin.sponsors.index', compact('apartments'));
+        return view('admin.sponsor.index', compact('apartments'));
     }
 
     public function create(Apartment $apartment)
     {
         $sponsors = Sponsor::all();
-        return view('admin.sponsors.create', compact('apartment', 'sponsors'));
+        return view('admin.sponsor.create', compact('apartment', 'sponsors'));
     }
 
     public function store(StoreSponsorRequest $request, Apartment $apartment)

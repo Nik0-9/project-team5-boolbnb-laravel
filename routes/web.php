@@ -24,11 +24,11 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('apartment_sponsors', ApartmentSponsorController::class);
     Route::get('payment', [BraintreeController::class, 'index'])->name('payment.page');
     Route::post('/braintree/checkout', [BraintreeController::class, 'checkout'])->name('braintree.checkout');
-    Route::get('/braintree/{apartments:slug}/token', [BraintreeController::class, 'token'])->name('braintree.token');
+    Route::get('/braintree/token', [BraintreeController::class, 'token'])->name('braintree.token');
     
     Route::resource('sponsors', SponsorController::class);
-    Route::get('-/sponsors', [SponsorController::class, 'index'])->name('sponsors.index');
-    Route::get('sponsors', [SponsorController::class, 'create'])->name('sponsor.create');
+    Route::get('-/sponsor', [SponsorController::class, 'index'])->name('sponsors.index');
+    Route::get('sponsor', [SponsorController::class, 'create'])->name('sponsor.create');
     Route::post('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'store'])->name('sponsor.store');
 
 });
