@@ -21,18 +21,15 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('messages', MessageController::class);
     Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
     Route::resource('images', ImageController::class);
-    Route::resource('sponsors', SponsorController::class);
     Route::resource('apartment_sponsors', ApartmentSponsorController::class);
     Route::get('payment', [BraintreeController::class, 'index'])->name('payment.page');
     Route::post('/braintree/checkout', [BraintreeController::class, 'checkout'])->name('braintree.checkout');
-    Route::get('/braintree/token', [BraintreeController::class, 'token'])->name('braintree.token');
+    Route::get('/braintree/{apartments:slug}/token', [BraintreeController::class, 'token'])->name('braintree.token');
     
-    Route::get('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'create'])->name('sponsor.create');
+    Route::resource('sponsors', SponsorController::class);
+    Route::get('-/sponsors', [SponsorController::class, 'index'])->name('sponsors.index');
+    Route::get('sponsors', [SponsorController::class, 'create'])->name('sponsor.create');
     Route::post('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'store'])->name('sponsor.store');
-
-
-
-
 
 });
 

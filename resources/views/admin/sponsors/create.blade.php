@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Sponsorizza il tuo appartamento</h1>
+    <h1>Sponsorizza</h1>
     
     <form action="{{ route('admin.payment.page') }}" method="GET">
         @csrf
