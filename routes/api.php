@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Api\ApartmentController;
 use App\Http\Controllers\Api\MessageController;
-
+use App\Http\Controllers\Admin\ViewController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,3 +35,16 @@ Route::post('apartments', [ApartmentController::class, 'store']);
 Route::post('/apartments/{apartment}/send-message', [MessageController::class, 'sendMessage']);
 Route::get('apartments/search/{address}/{latitude}/{longitude}', [ApartmentController::class, 'search']);
 Route::get('apartments/services-filter/{address}/{latitude}/{longitude}/{serviceIds?}', [ApartmentController::class, 'servicesSearch']);
+
+
+Route::get('apartments/advanced-search/{address}/{latitude}/{longitude}/{serviceIds?}/{rooms?}/{beds?}/{range?}',
+[ApartmentController::class, 'searchAdvanced']);
+
+Route::post('/views', [ViewController::class, 'store']);
+
+
+
+Route::get('apartments/advanced-search/{address}/{latitude}/{longitude}/{serviceIds?}/{rooms?}/{beds?}/{range?}',
+[ApartmentController::class, 'searchAdvanced']);
+
+Route::post('/views', [ViewController::class, 'store']);

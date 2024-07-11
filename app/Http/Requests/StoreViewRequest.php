@@ -11,18 +11,16 @@ class StoreViewRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Assicurati di personalizzare l'autorizzazione secondo le tue logiche di accesso
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'apartment_id' => 'required|exists:apartments,id', // L'ID dell'appartamento deve esistere nella tabella apartments
         ];
     }
 }
