@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const updateResults = (results) => {
+    console.log(results);
     addressSuggestions.innerHTML = '';
     if (results.length) {
       results.forEach(({ address: { freeformAddress } }) => {
@@ -105,22 +106,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkboxes = document.querySelectorAll('.form-check-input');
     const errorDiv = document.getElementById('serviceError');
 
-
-    form.addEventListener('submit', function (event) {
-      let isChecked = false;
-      checkboxes.forEach(function (checkbox) {
-        if (checkbox.checked) {
-          isChecked = true;
+    if(form){
+      form.addEventListener('submit', function (event) {
+        let isChecked = false;
+        checkboxes.forEach(function (checkbox) {
+          if (checkbox.checked) {
+            isChecked = true;
+          }
+        });
+  
+        if (!isChecked) {
+          event.preventDefault();
+          errorDiv.classList.remove('d-none');
+        } else {
+          errorDiv.classList.add('d-none');
         }
       });
-
-      if (!isChecked) {
-        event.preventDefault();
-        errorDiv.classList.remove('d-none');
-      } else {
-        errorDiv.classList.add('d-none');
-      }
-    });
+    }
+    
   
 
 
