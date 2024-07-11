@@ -38,6 +38,31 @@ document.addEventListener('DOMContentLoaded', function () {
   const addressSuggestions = document.getElementById('addressSuggestions');
   const form = document.getElementById('modForm');
   let debounceTimeout;
+  const apiBaseUrl = 'https://api.tomtom.com/search/2/search/';
+  const apiKey = '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI';
+
+  const fetchAddressResults = async (query) => {
+    try {
+      const response = await fetch(`${apiBaseUrl}${query}.json?countrySet=IT&key=${apiKey}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.error('Errore di ricerca indirizzo:', error);
+      return [];
+    }
+  };
+
+  const updateResults = (results) => {
+    addressSuggestions.innerHTML = '';
+    if (results.length) {
+      results.forEach(({ address: { freeformAddress } }) => {
+        const option = document.createElement('option');
+        option.value = freeformAddress;
+        addressSuggestions.appendChild(option);
+      });
+    }
+  };
 
   if (addressInput) {
     addressInput.addEventListener('input', function () {
@@ -48,24 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
       clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => {
-      
-           fetch(`https://api.tomtom.com/search/2/geocode/${query}.json?limit=10&countrySet=IT&key=88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI`)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-            addressSuggestions.innerHTML = '';
-            if (data.results.length > 0) {
-              data.results.forEach(result => {
-                if (result.address && result.address.freeformAddress) {
-                  const option = document.createElement('option');
-                  option.value = result.address.freeformAddress;
-                  addressSuggestions.appendChild(option);
-                }
-              });
-            }
-          })
-          .catch(error => console.error('Errore di ricerca indirizzo:', error));
+      debounceTimeout = setTimeout(async () => {
+        const results = await fetchAddressResults(query);
+        updateResults(results);
       }, 1000);
     });
 
@@ -73,9 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const inputValue = addressInput.value;
       const options = addressSuggestions.children;
       let isValid = false;
-      if (options[i].value === inputValue) {
-        isValid = true;
-      }
 
       for (let i = 0; i < options.length; i++) {
         if (options[i].value === inputValue) {
@@ -92,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-  
 
     // Verifica se l'utente ha selezionato almeno un servizio
     const form = document.getElementById('modForm');
