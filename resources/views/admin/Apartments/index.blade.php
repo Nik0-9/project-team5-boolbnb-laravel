@@ -55,6 +55,7 @@
 <style scope>
     img{
         width: 80px;
+        aspect-ratio: 1/1;
     }
 </style>
 @endsection
