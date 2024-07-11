@@ -128,9 +128,9 @@
         </div>
 
         <!-- VISIBILITA' -->
-        <div class="form-group mb-3 col-6-col-md-12">
+        <div class="form-group col-6-col-md-12">
             <label for="visible">L'appartamento è visibile?</label>
-            <div class="form-check form-check-inline">
+            <div class="form-check form-check-inline mb-5 " >
                 <input class="form-check-input" type="radio" name="visible" id="visible_yes" value="1"
                     {{ old('visible') == 1 ? 'checked' : '' }}>
                 <label class="form-check-label" for="visible_yes">Sì</label>
