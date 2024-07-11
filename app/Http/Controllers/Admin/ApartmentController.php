@@ -239,21 +239,22 @@ class ApartmentController extends Controller
         return redirect()->route('admin.apartments.index')->with('success', 'Appartamento eliminato con successo.');
     }
 
-    public function deleteImage(Image $image, Apartment $apartment)
-{
-    // Verifica se l'utente è autorizzato a eliminare l'immagine
-    if ($apartment->user_id !== Auth::id()) {
-        abort(404, 'Pagina non trovata');
+    public function deleteImage($id)
+    {
+        $image = Image::findOrFail($id);
+        $apartment = $image->apartment;
+
+        if ($apartment->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Delete the image file from storage
+        Storage::delete($image->image);
+
+        // Delete the image record from the database
+        $image->delete();
+
+        return redirect()->route('admin.apartments.show', $apartment->slug)
+            ->with('success', 'Immagine eliminata con successo.');
     }
-
-    // Verifica che il file esista prima di eliminarlo
-    if (Storage::exists($image->image)) {
-        Storage::delete($image->image); // Elimina il file dal filesystem
-    }
-
-    $image->delete(); // Elimina l'immagine dal database
-
-    return redirect()->route('admin.apartments.show', $apartment->slug)
-                     ->with('success', 'Immagine eliminata con successo.');
-}
 }

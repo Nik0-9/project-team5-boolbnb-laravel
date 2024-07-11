@@ -27,11 +27,13 @@
             @foreach($apartment->images as $image)
                 <div class="col-4 mb-2 position-relative">
                     <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail" alt="{{ $apartment->name }}">
-                    <a href="{{ route('admin.apartments.deleteImage', $image->id) }}"
-                        class="btn btn-sm btn-danger position-absolute top-0 end-0"
-                        onclick="return confirm('Sei sicuro di voler eliminare questa immagine di {{ $apartment->name }}?');">
-                        <i class="bi bi-x"></i>
-                    </a>
+                    <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST" class="position-absolute top-0 end-0">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questa immagine di {{ $apartment->name }}?');">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </form>
                 </div>
             @endforeach
         </div>
