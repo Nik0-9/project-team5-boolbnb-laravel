@@ -23,7 +23,7 @@
         <div id="dropin-container"></div>
         <input type="hidden" name="payment_method_nonce" value="">
         
-        <button type="submit" class="btn btn-primary">Paga</button>
+        <button type="submit" class="btn btn-admin">Paga</button>
     </form>
 </div>
 @endsection

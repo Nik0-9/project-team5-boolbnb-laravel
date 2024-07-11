@@ -50,7 +50,7 @@ class ApartmentController extends Controller
 
         Log::info('Current Timezone: ' . config('app.timezone'));
         Log::info('Current DateTime: ' . now());
-    
+
 
         if ($request->hasFile('cover_image')) {
             $name = $validated['slug'];
@@ -114,7 +114,7 @@ class ApartmentController extends Controller
      */
     public function show(Apartment $apartment)
     {
-        if($apartment->user_id !== Auth::id()){
+        if ($apartment->user_id !== Auth::id()) {
             abort(404, 'Pagina non trovata');
         }
 
@@ -141,7 +141,7 @@ class ApartmentController extends Controller
                 ]);
             }
         }
-    
+
         return redirect()->route('admin.apartments.show', $apartment->slug)
             ->with('success', 'Immagini caricate con successo.');
     }
@@ -238,4 +238,22 @@ class ApartmentController extends Controller
         $apartment->delete();
         return redirect()->route('admin.apartments.index')->with('success', 'Appartamento eliminato con successo.');
     }
+
+    public function deleteImage(Image $image, Apartment $apartment)
+{
+    // Verifica se l'utente è autorizzato a eliminare l'immagine
+    if ($apartment->user_id !== Auth::id()) {
+        abort(404, 'Pagina non trovata');
+    }
+
+    // Verifica che il file esista prima di eliminarlo
+    if (Storage::exists($image->image)) {
+        Storage::delete($image->image); // Elimina il file dal filesystem
+    }
+
+    $image->delete(); // Elimina l'immagine dal database
+
+    return redirect()->route('admin.apartments.show', $apartment->slug)
+                     ->with('success', 'Immagine eliminata con successo.');
+}
 }

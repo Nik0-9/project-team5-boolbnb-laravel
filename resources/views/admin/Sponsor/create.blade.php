@@ -18,7 +18,7 @@
 
         <input type="hidden" name="apartment_id" value="{{ $apartment->id }}">
 
-        <button type="submit" class="btn btn-primary">Sponsorizza</button>
+        <button type="submit" class="btn btn-admin">Sponsorizza</button>
     </form>
 </div>
 @endsection

@@ -16,6 +16,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('apartments', ApartmentController::class)->parameters(['apartments' => 'apartment:slug']);
     Route::post('/apartments/{id}/upload-images', [ApartmentController::class, 'uploadImages'])->name('apartments.uploadImages');
+    Route::delete('/apartments/images/{image}', [ApartmentController::class, 'deleteImage'])->name('apartments.deleteImage');
     Route::resource('views', ViewController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('messages', MessageController::class);
@@ -26,13 +27,8 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('payment', [BraintreeController::class, 'index'])->name('payment.page');
     Route::post('/braintree/checkout', [BraintreeController::class, 'checkout'])->name('braintree.checkout');
     Route::get('/braintree/token', [BraintreeController::class, 'token'])->name('braintree.token');
-    
     Route::get('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'create'])->name('sponsor.create');
     Route::post('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'store'])->name('sponsor.store');
-
-
-
-
 
 });
 
