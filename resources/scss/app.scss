@@ -12,6 +12,9 @@
     height: 100vh;
     overflow: hidden;
     display: flex;
+    .btn-admin {
+        background-color: $sidebar-bg;
+    }
 
     /* sidebar */
     #sidebar {

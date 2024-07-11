@@ -4,7 +4,7 @@
     <!-- Begin Page Content -->
    <h1 class="mb-4">Appartamenti</h1>
    @if (Auth::user() && Auth::user()->apartments()->exists())
-    <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary mb-3">Crea Nuovo Appartamento</a>
+    <a href="{{ route('admin.apartments.create') }}" class="btn btn-admin mb-3">Crea Nuovo Appartamento</a>
     <div class="table-responsive-md">
     <table id="res-table" class="table table-hover">
         <thead>
@@ -28,15 +28,15 @@
                     <td data-title="visible" class="visible">No</td>
                     @endif
                     <td data-title="actions">
-                        <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-info" id="btnInfo"><i
+                        <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-admin" id="btnInfo"><i
                                 class="fas fa-eye"></i></a>
-                        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-warning"><i
+                        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-admin"><i
                                 class="fas fa-pencil-alt"></i></a>
                         <form action="{{ route('admin.apartments.destroy', $apartment->slug) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger delete-button"><i><i
+                            <button type="submit" class="btn btn-admin delete-button"><i><i
                                         class="fas fa-trash-alt"></i></i></button>
                         </form>
                     </td>
@@ -49,7 +49,7 @@
     @include('admin.partials.modal-delete')
     @else
      <p>non hai ancora alcun appartamento</p>
-     <a href="{{ route('admin.apartments.create') }}" class="btn btn-primary my-3">Crea Nuovo Appartamento</a>
+     <a href="{{ route('admin.apartments.create') }}" class="btn btn-admin my-3">Crea Nuovo Appartamento</a>
      @endelse
      @endif
 <style scope>

@@ -17,7 +17,7 @@
 <div class="card m-4 border-0">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="d-inline">Dettagli Appartamento</h1>
-        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-warning ">Modifica</a>
+        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-admin ">Modifica</a>
     </div>
     <p><strong>{{ $apartment->name }}</strong></p>
     <div class="row">
@@ -41,7 +41,7 @@
             <label for="images">Carica Immagini</label>
             <input type="file" name="images[]" id="images" multiple class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">Carica Immagini</button>
+        <button type="submit" class="btn btn-admin">Carica Immagini</button>
     </form>
     </div>
     <p><strong>Indirizzo:</strong> {{ $apartment->address }}</p>
@@ -103,7 +103,7 @@
     @else
         <p>Nessuna sponsorizzazione attiva</p>
     @endif
-    <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-primary w-25 mb-4">Sponsorizza</a>
+    <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
     <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
 </div>
 @endsection

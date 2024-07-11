@@ -13,7 +13,7 @@
             @endforeach
         </select>
 
-        <button id="filter_button" class="btn btn-primary w-25 w-md-auto me-2">Filtra per data</button>
+        <button id="filter_button" class="btn btn-admin w-25 w-md-auto me-2">Filtra per data</button>
         Da: <input type="date" id="start_date" class="form-control mb-2 mb-md-0 w-25 w-md-auto me-2">
         A: <input type="date" id="end_date" class="form-control mb-2 mb-md-0 w-25 w-md-auto">
     </div>

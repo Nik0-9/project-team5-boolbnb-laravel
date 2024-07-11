@@ -143,7 +143,7 @@
         </div>
 
         <div class="position-fixed bottom-0 end-0 p-5" style="z-index: 10;">
-            <button type="submit" form="modForm" class="btn btn-primary btn-lg">Salva</button>
+            <button type="submit" form="modForm" class="btn btn-admin btn-lg">Salva</button>
         </div>
     </form>
 
