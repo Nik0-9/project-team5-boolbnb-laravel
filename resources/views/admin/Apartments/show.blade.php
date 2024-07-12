@@ -48,7 +48,7 @@
             @csrf
             <div class="form-group mb-3">
                 <label for="images">Carica Immagini</label>
-                <input type="file" name="images[]" id="images" multiple class="form-control">
+                <input type="file" name="images[]" id="images" multiple class="form-control" required>
             </div>
 
             <button type="submit" class="btn btn-admin" id="submitButton">Carica Immagini</button>

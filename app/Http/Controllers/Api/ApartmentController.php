@@ -19,7 +19,15 @@ class ApartmentController extends Controller
     }
     public function getSponsoredApartments()
     {
-        $sponsoredApartments = Apartment::whereHas('sponsors')->with('sponsors')->get();
+        $currentDate = now(); 
+
+        $sponsoredApartments = Apartment::whereHas('sponsors', function ($query) use ($currentDate) {
+            $query->where('end_date', '>', $currentDate);
+        })->with([
+                    'sponsors' => function ($query) use ($currentDate) {
+                        $query->where('end_date', '>', $currentDate);
+                    }
+                ])->get();
 
         return response()->json([
             'success' => true,
@@ -45,7 +53,7 @@ class ApartmentController extends Controller
         $radius = 20;
 
         $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
-            ->having('distance', '<=', $radius);
+            ->having('distance', '<=', $radius)->orderBy('distance', 'asc');
 
         $apartmentsSponsored = (clone $baseQuery)
             ->whereHas('sponsors')
@@ -89,20 +97,20 @@ class ApartmentController extends Controller
         }
 
         // Filtra per numero di camere, se specificato
-        if($rooms === 'all'){
-            $baseQuery->where('num_rooms','>', 0);
-        }elseif($rooms == 5){
-            $baseQuery->where('num_rooms','>=', 5);
-        }else{
+        if ($rooms === 'all') {
+            $baseQuery->where('num_rooms', '>', 0);
+        } elseif ($rooms == 5) {
+            $baseQuery->where('num_rooms', '>=', 5);
+        } else {
             $baseQuery->where('num_rooms', '=', $rooms);
         }
-        
+
         // Filtra per numero di letti, se specificato
-        if($beds === 'all'){
-            $baseQuery->where('num_beds','>', 0);
-        }elseif($beds == 5){
-            $baseQuery->where('num_beds','>=', 5);
-        }else{
+        if ($beds === 'all') {
+            $baseQuery->where('num_beds', '>', 0);
+        } elseif ($beds == 5) {
+            $baseQuery->where('num_beds', '>=', 5);
+        } else {
             $baseQuery->where('num_beds', '=', $beds);
         }
 

@@ -40,13 +40,12 @@ document.addEventListener('DOMContentLoaded', function () {
   let debounceTimeout;
   const apiBaseUrl = 'https://api.tomtom.com/search/2/search/';
   const apiKey = '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI';
-
+  
   const fetchAddressResults = async (query) => {
     try {
-      const response = await fetch(`${apiBaseUrl}${query}.json?countrySet=IT&key=${apiKey}`);
-      if (!response.ok) throw new Error('Network response was not ok');
+      const response = await fetch(`${apiBaseUrl}${query}.json?typeahead=true&countrySet=IT&key=${apiKey}`);
       const data = await response.json();
-      return data.results;
+      return data.results.map(result => result.address.freeformAddress);
     } catch (error) {
       console.error('Errore di ricerca indirizzo:', error);
       return [];
@@ -57,11 +56,11 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log(results);
     addressSuggestions.innerHTML = '';
     if (results.length) {
-      results.forEach(({ address: { freeformAddress } }) => {
+      for (let i = 0; i < results.length; i++) {
         const option = document.createElement('option');
-        option.value = freeformAddress;
+        option.value = results[i];
         addressSuggestions.appendChild(option);
-      });
+      }
     }
   };
 
