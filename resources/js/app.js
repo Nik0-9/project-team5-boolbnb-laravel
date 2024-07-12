@@ -40,12 +40,13 @@ document.addEventListener('DOMContentLoaded', function () {
   let debounceTimeout;
   const apiBaseUrl = 'https://api.tomtom.com/search/2/search/';
   const apiKey = '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI';
-  
+
   const fetchAddressResults = async (query) => {
     try {
-      const response = await fetch(`${apiBaseUrl}${query}.json?typeahead=true&countrySet=IT&key=${apiKey}`);
+      const response = await fetch(`${apiBaseUrl}${query}.json?countrySet=IT&key=${apiKey}`);
+      if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      return data.results.map(result => result.address.freeformAddress);
+      return data.results;
     } catch (error) {
       console.error('Errore di ricerca indirizzo:', error);
       return [];
@@ -53,21 +54,19 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const updateResults = (results) => {
-    console.log(results);
     addressSuggestions.innerHTML = '';
     if (results.length) {
-      for (let i = 0; i < results.length; i++) {
+      results.forEach(({ address: { freeformAddress } }) => {
         const option = document.createElement('option');
-        option.value = results[i];
+        option.value = freeformAddress;
         addressSuggestions.appendChild(option);
-      }
+      });
     }
   };
 
   if (addressInput) {
     addressInput.addEventListener('input', function () {
       const query = addressInput.value;
-
       if (query.length < 3) {
         addressSuggestions.innerHTML = '';
         return;
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
       debounceTimeout = setTimeout(async () => {
         const results = await fetchAddressResults(query);
         updateResults(results);
-      }, 1000);
+      }, 800);
     });
 
     form.addEventListener('submit', function (event) {
@@ -93,7 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (!isValid) {
         event.preventDefault();
-        alert('Per favore seleziona un indirizzo valido dalla lista dei suggerimenti.');
+        const addressError = document.getElementById('addressError');
+        addressError.classList.remove('d-none');
         addressInput.focus();
       }
     });

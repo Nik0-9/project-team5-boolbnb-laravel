@@ -29,6 +29,7 @@
                         value="{{ old('address', isset($apartment) ? $apartment->address : '') }}" required maxlength="200"
                         minlength="10" list="addressSuggestions">
                     <datalist id="addressSuggestions"></datalist>
+                    <div id="addressError" class="alert alert-danger d-none">Per favore seleziona un indirizzo valido dalla lista dei suggerimenti.</div>
                 </div>
                 @error('address')
                     <div class="alert alert-danger">{{ $message }}</div>
