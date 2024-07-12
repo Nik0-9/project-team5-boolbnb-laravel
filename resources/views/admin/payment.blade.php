@@ -3,27 +3,31 @@
 @section('content')
 <div class="container">
     <h1>Pagamento per la sponsorizzazione</h1>
-    
+
     <form id="payment-form" action="{{ route('admin.braintree.checkout') }}" method="POST">
         @csrf
-        
+
         <input type="hidden" name="apartment_id" value="{{ $apartment->id }}">
         <input type="hidden" name="sponsor_id" value="{{ $sponsor->id }}">
-        
+
         <div class="form-group">
             <label>Appartamento: </label>
             <p>{{ $apartment->name }}</p>
         </div>
-        
+
         <div class="form-group">
             <label>Sponsorizzazione: </label>
-            <p>{{ $sponsor->name }} - €{{ $sponsor->price }} per {{ $sponsor->duration }} ore</p>
+            <?php
+                $durationParts = explode(':', $sponsor->duration);
+                $hours = $durationParts[0];
+                ?>
+            <p>{{ $sponsor->name }} - €{{ $sponsor->price }} per {{ $hours }} ore</p>
         </div>
-        
+
         <div id="dropin-container"></div>
         <input type="hidden" name="payment_method_nonce" value="">
-        
-        <button type="submit" class="btn btn-admin">Paga</button>
+
+        <button type="submit" class="btn btn-admin">Procedi con il pagamento</button>
     </form>
 </div>
 @endsection
@@ -40,7 +44,7 @@
             .then(data => {
                 // console.log('Token fetched:', data);
                 var client_token = data.token;
-                
+
                 braintree.dropin.create({
                     authorization: client_token,
                     container: '#dropin-container'

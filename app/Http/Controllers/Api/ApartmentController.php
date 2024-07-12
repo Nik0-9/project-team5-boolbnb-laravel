@@ -53,7 +53,7 @@ class ApartmentController extends Controller
         $radius = 20;
 
         $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
-            ->having('distance', '<=', $radius)->orderBy('distance', 'asc');
+            ->having('distance', '<=', $radius)->where('visible', '1')->orderBy('distance', 'asc');
 
         $apartmentsSponsored = (clone $baseQuery)
             ->whereHas('sponsors')
@@ -82,7 +82,7 @@ class ApartmentController extends Controller
 
         // Base query per cercare appartamenti entro un certo raggio
         $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
-            ->having('distance', '<=', $radius);
+            ->having('distance', '<=', $radius)->where('visible', '1')->orderBy('distance', 'asc');;
 
         // Filtra per servizi, se forniti
         if ($serviceIds === 'all') {

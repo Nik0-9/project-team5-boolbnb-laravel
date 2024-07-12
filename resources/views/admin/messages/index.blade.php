@@ -13,9 +13,9 @@
             @endforeach
         </select>
 
-        <button id="filter_button" class="btn btn-admin w-25 w-md-auto me-2">Filtra per data</button>
         Da: <input type="date" id="start_date" class="form-control mb-2 mb-md-0 w-25 w-md-auto me-2">
         A: <input type="date" id="end_date" class="form-control mb-2 mb-md-0 w-25 w-md-auto">
+        <button id="filter_button" class="btn btn-admin w-25 w-md-auto ms-2">Filtra per data</button>
     </div>
 </div>
 
@@ -28,39 +28,39 @@
                         @if ($messages->isEmpty())
                             <p>La ricerca non ha trovato risultati.</p>
                         @else
-                            @foreach ($messages as $message)
-                                <div class="list-group-item list-group-item-action"
-                                    data-apartment-id="{{ $message->apartment->id }}" data-date="{{ $message->created_at }}">
-                                    <a href=" {{ route('admin.messages.show', $message->id) }}">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">{{ $message->apartment->name }}</h5>
-                                            <small>{{ $message->created_at }}</small>
-                                        </div>
-                                        <p>{{ $message->body }}</p>
-                                        <p class="mb-1"><small><strong>Nome utente: </strong>{{ $message->name }}
-                                                {{$message->surname}}</small></p>
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <small><strong>Email: </strong> {{ $message->email }}</small>
-                                            <!-- Form di eliminazione -->
-                                            <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger p-1 delete-button">
-                                                    Cancella messaggio
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endforeach
+                                @foreach ($messages as $message)
+                                    <div class="list-group-item list-group-item-action"
+                                        data-apartment-id="{{ $message->apartment->id }}" data-date="{{ $message->created_at }}">
+                                        <a href=" {{ route('admin.messages.show', $message->id) }}">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="mb-1">{{ $message->apartment->name }}</h5>
+                                                <small>{{ $message->created_at }}</small>
+                                            </div>
+                                            <p>{{ $message->body }}</p>
+                                            <p class="mb-1"><small><strong>Nome utente: </strong>{{ $message->name }}
+                                                    {{$message->surname}}</small></p>
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <small><strong>Email: </strong> {{ $message->email }}</small>
+                                                <!-- Form di eliminazione -->
+                                                <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger p-1 delete-button">
+                                                        Cancella messaggio
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
                         @endif
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 @if ($messages->isEmpty())
 @else()
@@ -78,13 +78,13 @@
 
     @media (max-width: 992px) {
         .d-flex.flex-column.flex-lg-row {
-            flex-direction: column ;
+            flex-direction: column;
             width: 600px;
-            
+
         }
 
         .d-flex.flex-column.flex-md-row {
-            flex-direction: column ;
+            flex-direction: column;
         }
     }
 </style>
