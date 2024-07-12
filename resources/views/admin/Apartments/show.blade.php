@@ -15,11 +15,15 @@
     </div>
 @endif
 
+<h1>{{ $apartment->name }}</h1>
+
 <div class="row">
     <!-- Immagine Grande -->
     <div class="col-12 col-md-8 mb-4">
         <img class="img-fluid w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
     </div>
+
+    <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-secondary w-25 mb-4 h-25">Modifica</a>
 
     <!-- Contenitore per le miniature -->
     <div class="col-12 col-md-8 mb-4">

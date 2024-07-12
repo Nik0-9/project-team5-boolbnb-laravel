@@ -9,8 +9,9 @@
     <table id="res-table" class="table table-hover">
         <thead>
             <tr class="r">
-                <th>Nome</th>
                 <th>Immagine</th>
+                <th>Nome</th>
+                <th>Indirizzo</th>
                 <th class="visible">Visibile</th>
                 <th>Azione</th>
             </tr>
@@ -19,9 +20,10 @@
             @foreach ($apartments as $apartment)
                 <tr class="align-middle r">
                     
-                    <td data-title="name" class="w-25">{{ $apartment->name }}</td>
                     <td class="w-25" data-title="image">
                         <img src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
+                    <td data-title="name" class="w-25">{{ $apartment->name }}</td>
+                    <td data-title="name" class="w-25">{{ $apartment->address }}</td>
                     @if($apartment->visible == 1)
                     <td data-title="visible" class="visible">Si</td>
                     @else
