@@ -15,7 +15,20 @@
     </div>
 @endif
 
-<h1>{{ $apartment->name }}</h1>
+@if($activeSponsor)
+    <p class="text-success">Appartamento sponsorizzato con {{ $activeSponsor->name }} fino al
+        {{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('d/m/Y H:i') }}
+    </p>
+    <p id="remaining-time"></p>
+@else
+    <p>Nessuna sponsorizzazione attiva</p>
+@endif
+
+<div class="d-flex align-items-center justify-content-between mt-3">
+    <h1>{{ $apartment->name }}</h1>
+    <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
+</div>
+
 
 <div class="row">
     <!-- Immagine Grande -->
@@ -23,18 +36,18 @@
         <img class="img-fluid w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
     </div>
 
-    <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-secondary w-25 mb-4 h-25">Modifica</a>
-
     <!-- Contenitore per le miniature -->
     <div class="col-12 col-md-8 mb-4">
         <div class="d-flex flex-wrap">
             @foreach($apartment->images as $image)
                 <div class="col-4 mb-2 position-relative">
                     <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail" alt="{{ $apartment->name }}">
-                    <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST" class="position-absolute top-0 end-0">
+                    <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST"
+                        class="position-absolute top-0 end-0">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questa immagine di {{ $apartment->name }}?');">
+                        <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Sei sicuro di voler eliminare questa immagine di {{ $apartment->name }}?');">
                             <i class="bi bi-x"></i>
                         </button>
                     </form>
@@ -83,6 +96,12 @@
             @endforeach
         </div>
     @endif
+    <div class="d-flex flex-column">
+        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}"
+            class="btn btn-secondary w-25 mb-4 ">Modifica</a>
+        <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
+    </div>
+
     <h3 class="mt-2">Richiesta di contatto</h3>
     @if($apartment->messages->isEmpty())
         <p>Nessun messaggio.</p>
@@ -115,16 +134,7 @@
             @endforeach
         </div>
     @endif
-    @if($activeSponsor)
-        <p class="text-success">Appartamento sponsorizzato con {{ $activeSponsor->name }} fino al
-            {{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('d/m/Y H:i') }}
-        </p>
-        <p id="remaining-time"></p>
-    @else
-        <p>Nessuna sponsorizzazione attiva</p>
-    @endif
-    <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
-    <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
+
 </div>
 @endsection
 @if($activeSponsor)
@@ -177,5 +187,4 @@
         color: inherit;
         cursor: pointer;
     }
-    
 </style>

@@ -9,7 +9,7 @@
     <table id="res-table" class="table table-hover">
         <thead>
             <tr class="r">
-                <th>Immagine</th>
+                <th class="d-none d-md-table-cell">Immagine</th>
                 <th>Nome</th>
                 <th>Indirizzo</th>
                 <th class="visible">Visibile</th>
@@ -20,7 +20,7 @@
             @foreach ($apartments as $apartment)
                 <tr class="align-middle r">
                     
-                    <td class="w-25" data-title="image">
+                    <td class="w-25 d-none d-md-table-cell" data-title="image">
                         <img src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
                     <td data-title="name" class="w-25">{{ $apartment->name }}</td>
                     <td data-title="name" class="w-25">{{ $apartment->address }}</td>
@@ -30,16 +30,16 @@
                     <td data-title="visible" class="visible">No</td>
                     @endif
                     <td data-title="actions">
-                        <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="btn btn-admin" id="btnInfo"><i
+                        <a href="{{ route('admin.apartments.show', $apartment->slug) }}" class="color-admin p-2" id="btnInfo"><i
                                 class="fas fa-eye"></i></a>
-                        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="btn btn-admin"><i
+                        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}" class="color-admin p-2"><i
                                 class="fas fa-pencil-alt"></i></a>
                         <form action="{{ route('admin.apartments.destroy', $apartment->slug) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-admin delete-button"><i><i
-                                        class="fas fa-trash-alt"></i></i></button>
+                            <a type="submit" class="color-admin p-2"><i><i
+                                        class="fas fa-trash-alt"></i></i></a>
                         </form>
                     </td>
                 </tr>
