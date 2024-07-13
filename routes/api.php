@@ -35,3 +35,4 @@ Route::get('apartments/services-filter/{address}/{latitude}/{longitude}/{service
 Route::get('apartments/advanced-search/{address}/{latitude}/{longitude}/{serviceIds?}/{rooms?}/{beds?}/{range?}',
 [ApartmentController::class, 'searchAdvanced']);
 Route::post('/apartment/{id}/view', [ViewController::class, 'store']);
+Route::get('/apartment/{id}/views', [ViewController::class, 'getViewsByApartment']);

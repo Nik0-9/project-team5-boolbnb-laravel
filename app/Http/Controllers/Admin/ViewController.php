@@ -7,6 +7,8 @@ use App\Http\Requests\StoreViewRequest;
 use App\Http\Requests\UpdateViewRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+
 
 
 class ViewController extends Controller
@@ -44,6 +46,25 @@ class ViewController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Errore durante il tracciamento della visualizzazione'], 500);
         }
+    }
+
+    public function getViewsByApartment($id)
+    {
+        $currentMonth = Carbon::now()->format('Y-m');
+        $views = View::where('apartment_id', $id)
+            ->where('view', 'like', "$currentMonth%")
+            ->orderBy('view', 'asc')
+            ->get()
+            ->groupBy(function ($date) {
+                return Carbon::parse($date->view)->format('Y-m-d');
+            });
+
+        $viewsData = [];
+        foreach ($views as $date => $viewGroup) {
+            $viewsData[$date] = $viewGroup->count();
+        }
+
+        return response()->json(['views' => $viewsData]);
     }
     /**
      * Display the specified resource.

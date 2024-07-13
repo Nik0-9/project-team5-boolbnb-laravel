@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartment;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
@@ -11,9 +12,35 @@ class StatisticsController extends Controller
     {
         $user = auth()->user();
 
-        // Recupera gli appartamenti dell'utente con le relative visualizzazioni
-        $apartments = Apartment::where('user_id', $user->id)->with('views')->get();
+        // Recupera gli appartamenti dell'utente
+        $apartments = Apartment::where('user_id', $user->id)->get();
 
-        return view('admin.statistics', compact('apartments'));
+        // Inizializza i dati per i grafici
+        $currentMonth = Carbon::now()->format('Y-m');
+        $dailyViews = [];
+        $totalViewsPerApartment = [];
+
+        foreach ($apartments as $apartment) {
+            $views = $apartment->views()
+                ->where('view', 'like', "$currentMonth%")
+                ->orderBy('view', 'asc')
+                ->get();
+
+            $totalViewsPerApartment[$apartment->id] = $views->count();
+
+            foreach ($views as $view) {
+                $date = Carbon::parse($view->view)->format('Y-m-d');
+                if (!isset($dailyViews[$date])) {
+                    $dailyViews[$date] = [];
+                }
+                if (!isset($dailyViews[$date][$apartment->id])) {
+                    $dailyViews[$date][$apartment->id] = 0;
+                }
+                $dailyViews[$date][$apartment->id]++;
+            }
+        }
+
+        return view('admin.statistics', compact('apartments', 'dailyViews', 'totalViewsPerApartment', 'currentMonth'));
     }
+    
 }
