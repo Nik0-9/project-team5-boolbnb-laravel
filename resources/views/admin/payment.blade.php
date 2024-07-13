@@ -47,7 +47,8 @@
 
                 braintree.dropin.create({
                     authorization: client_token,
-                    container: '#dropin-container'
+                    container: '#dropin-container',
+                    locale: 'it'
 
                 }, function (createErr, instance) {
                     if (createErr) {
