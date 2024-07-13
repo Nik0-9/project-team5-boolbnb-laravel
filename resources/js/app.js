@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   const updateResults = (results) => {
-    console.log(results);
     addressSuggestions.innerHTML = '';
     if (results.length) {
       results.forEach(({ address: { freeformAddress } }) => {
@@ -68,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (addressInput) {
     addressInput.addEventListener('input', function () {
       const query = addressInput.value;
-
       if (query.length < 3) {
         addressSuggestions.innerHTML = '';
         return;
@@ -77,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
       debounceTimeout = setTimeout(async () => {
         const results = await fetchAddressResults(query);
         updateResults(results);
-      }, 1000);
+      }, 800);
     });
 
     form.addEventListener('submit', function (event) {
@@ -94,7 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (!isValid) {
         event.preventDefault();
-        alert('Per favore seleziona un indirizzo valido dalla lista dei suggerimenti.');
+        const addressError = document.getElementById('addressError');
+        addressError.classList.remove('d-none');
         addressInput.focus();
       }
     });

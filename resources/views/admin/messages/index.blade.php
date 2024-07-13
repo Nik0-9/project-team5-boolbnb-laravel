@@ -13,84 +13,110 @@
             @endforeach
         </select>
 
-        <button id="filter_button" class="btn btn-admin w-25 w-md-auto me-2">Filtra per data</button>
         Da: <input type="date" id="start_date" class="form-control mb-2 mb-md-0 w-25 w-md-auto me-2">
         A: <input type="date" id="end_date" class="form-control mb-2 mb-md-0 w-25 w-md-auto">
+        <button id="filter_button" class="btn btn-admin w-25 w-md-auto ms-2">Filtra per data</button>
     </div>
 </div>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="list-group">
-                        @if ($messages->isEmpty())
-                            <p>La ricerca non ha trovato risultati.</p>
-                        @else
-                            @foreach ($messages as $message)
-                                <div class="list-group-item list-group-item-action"
-                                    data-apartment-id="{{ $message->apartment->id }}" data-date="{{ $message->created_at }}">
-                                    <a href=" {{ route('admin.messages.show', $message->id) }}">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">{{ $message->apartment->name }}</h5>
-                                            <small>{{ $message->created_at }}</small>
-                                        </div>
-                                        <p>{{ $message->body }}</p>
-                                        <p class="mb-1"><small><strong>Nome utente: </strong>{{ $message->name }}
-                                                {{$message->surname}}</small></p>
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <small><strong>Email: </strong> {{ $message->email }}</small>
-                                            <!-- Form di eliminazione -->
-                                            <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger p-1 delete-button">
-                                                    Cancella messaggio
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endforeach
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container-fluid table-responsive">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="d-none d-md-table-cell">Nome Appartamento</th>
+            <th>Data</th>
+            <th class="d-none d-md-table-cell">Nome Utente</th>
+            <th>Email</th>
+            <th>Messaggio</th>
+            <th>Azioni</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if ($messages->isEmpty())
+            <tr>
+                <td colspan="6">La ricerca non ha trovato risultati.</td>
+            </tr>
+        @else
+            @foreach ($messages as $message)
+                <tr data-href="{{ route('admin.messages.show', $message->id) }}">
+                    <td class="d-none d-md-table-cell">
+                            {{ $message->apartment->name }}
+                    </td>
+                    <td>{{ $message->created_at_formatted }}</td>
+                    <td  class="text-truncate d-none d-md-table-cell" style="max-width: 20px;">{{ $message->name }} {{ $message->surname }}</td>
+                    <td class="text-truncate" style="max-width: 200pxpx;">{{ $message->email }}</td>
+                    <td class="text-truncate" style="max-width: 100px;">{{ $message->body }}</td>
+                    </a>
+                    <td>
+                        <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <a type="submit" class="color-admin p-2 delete-button"><i><i
+                                        class="fas fa-trash-alt"></i></i></a>
+                        </form>
+                    </td>   
+                </tr>
+            @endforeach
+        @endif
+    </tbody>
+</table>
+</div>
 </div>
 @if ($messages->isEmpty())
 @else()
     @include('admin.partials.modal-delete-message')
 @endif
-
 @endsection
-
+@section('styles')
 <style>
-    .list-group-item-action a {
+    a {
         text-decoration: none;
         color: inherit;
         cursor: pointer;
     }
+    .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    tr[data-href] {
+            cursor: pointer;
+        }
 
     @media (max-width: 992px) {
         .d-flex.flex-column.flex-lg-row {
-            flex-direction: column ;
+            flex-direction: column;
             width: 600px;
-            
         }
 
         .d-flex.flex-column.flex-md-row {
-            flex-direction: column ;
+            flex-direction: column;
+        }
+        .d-lg-table-cell {
+            display: none !important;
         }
     }
+    @media (max-width: 767.98px) {
+        .d-md-table-cell {
+            display: none !important;
+        }
+}  
 </style>
-
+@endsection
 @section('scripts')
 <script>
+     document.addEventListener('DOMContentLoaded', function () {
+        const rows = document.querySelectorAll('tr[data-href]');
+        
+        rows.forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (e.target.closest('td').querySelector('form') === null) {
+                    window.location = this.dataset.href;
+                }
+            });
+        });
+    });
+        
     document.addEventListener('DOMContentLoaded', function () {
         const selectElement = document.getElementById('message_apartment');
         const messages = document.querySelectorAll('.list-group-item[data-apartment-id]');

@@ -15,6 +15,29 @@
     </div>
 @endif
 
+@if($activeSponsor)
+    <div class="d-flex align-items-center justify-content-between mt-3">
+        <div>
+            <p class="text-success mt-2">Appartamento sponsorizzato con {{ $activeSponsor->name }} fino al
+                {{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('d/m/Y H:i') }}
+            </p>
+            <p id="remaining-time"></p>
+
+        </div>
+        <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
+    </div>
+
+@else
+    <div class="d-flex align-items-center justify-content-between mt-3">
+        <p class="mt-2">Sponsorizza ora la tua struttura e godi di una maggiore visibilità </p>
+        <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
+    </div>
+
+@endif
+
+<h1>{{ $apartment->name }}</h1>
+
+
 <div class="row">
     <!-- Immagine Grande -->
     <div class="col-12 col-md-8 mb-4">
@@ -25,12 +48,14 @@
     <div class="col-12 col-md-8 mb-4">
         <div class="d-flex flex-wrap">
             @foreach($apartment->images as $image)
-                <div class="col-4 mb-2 position-relative">
-                    <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail" alt="{{ $apartment->name }}">
-                    <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST" class="position-absolute top-0 end-0">
+                <div class="col mb-2 position-relative">
+                    <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail img-fixed" alt="{{ $apartment->name }}">
+                    <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST"
+                        class="position-absolute top-0 end-0">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questa immagine di {{ $apartment->name }}?');">
+                        <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Sei sicuro di voler eliminare questa immagine di {{ $apartment->name }}?');">
                             <i class="bi bi-x"></i>
                         </button>
                     </form>
@@ -48,7 +73,7 @@
             @csrf
             <div class="form-group mb-3">
                 <label for="images">Carica Immagini</label>
-                <input type="file" name="images[]" id="images" multiple class="form-control">
+                <input type="file" name="images[]" id="images" multiple class="form-control" required>
             </div>
 
             <button type="submit" class="btn btn-admin" id="submitButton">Carica Immagini</button>
@@ -79,48 +104,12 @@
             @endforeach
         </div>
     @endif
-    <h3 class="mt-2">Richiesta di contatto</h3>
-    @if($apartment->messages->isEmpty())
-        <p>Nessun messaggio.</p>
-    @else
-        <div class="list-group">
-            @foreach ($apartment->messages as $message)
-                <div class="list-group-item list-group-item-action my-3">
-                    <a href=" {{ route('admin.messages.show', $message->id) }}">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{ $message->apartment->name }}</h5>
-                            <small>{{ $message->created_at }}</small>
-                        </div>
-                        <p>{{ $message->body }}</p>
-                        <p class="mb-1"><small><strong>Nome utente: </strong>{{ $message->name }} {{$message->surname}}</small>
-                        </p>
-                        <div class="d-flex w-100 justify-content-between">
-                            <small><strong>Email: </strong> {{ $message->email }}</small>
-                            <!-- Form di eliminazione -->
-                            <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger p-1 delete-button">
-                                    Cancella messaggio
-                                </button>
-                            </form>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
-    @endif
-    @if($activeSponsor)
-        <p class="text-success">Appartamento sponsorizzato con {{ $activeSponsor->name }} fino al
-            {{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('d/m/Y H:i') }}
-        </p>
-        <p id="remaining-time"></p>
-    @else
-        <p>Nessuna sponsorizzazione attiva</p>
-    @endif
-    <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
-    <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
+    <div class="d-flex flex-column">
+        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}"
+            class="btn btn-secondary w-25 mb-4 ">Modifica</a>
+        <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary w-25 mb-4">Torna alla Lista</a>
+    </div>
+
 </div>
 @endsection
 @if($activeSponsor)
@@ -173,5 +162,10 @@
         color: inherit;
         cursor: pointer;
     }
-    
+    .img-fixed {
+    width: 100%;  /* Imposta la larghezza al 100% del contenitore */
+    height: 150px;  /* Imposta l'altezza fissa, puoi cambiare il valore a tua discrezione */
+    object-fit: cover;  /* Mantiene il rapporto di aspetto delle immagini, coprendo l'intero contenitore */
+    object-position: center;  /* Centra l'immagine nel contenitore */
+}
 </style>

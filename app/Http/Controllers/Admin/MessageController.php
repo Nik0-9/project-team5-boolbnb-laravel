@@ -35,6 +35,10 @@ class MessageController extends Controller
         }
     })->orderBy('created_at', 'desc')->with('apartment')->get();
 
+    //per formattare la data
+    foreach ($messages as $message) {
+        $message->created_at_formatted = \Carbon\Carbon::parse($message->created_at)->format('d/m/Y H:i');
+    }
     return view('admin.messages.index', [
         'messages' => $messages,
         'apartments' => $apartments,

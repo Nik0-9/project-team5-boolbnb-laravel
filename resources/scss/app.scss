@@ -15,6 +15,9 @@
     .btn-admin {
         background-color: $sidebar-bg;
     }
+    .color-admin{
+        color: $sidebar-bg;
+    }
 
     /* sidebar */
     #sidebar {
@@ -69,6 +72,19 @@
                 }
             }
         }
+        @media screen and (max-width: 900px) {
+            #sidebar {
+                width: 80px  !important;
+        
+                
+                .navbar-nav {
+                    a.nav-link {
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+        
 
         #routes-list {
             li {
