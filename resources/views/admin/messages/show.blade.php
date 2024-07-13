@@ -7,7 +7,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Messaggio ricevuto il {{ $message->created_at }}</h5>
+                <h5 class="card-title">Messaggio ricevuto il {{ $message->created_at_formatted }}</h5>
                 <div class="mb-3">
                     <strong>Nome:</strong> {{ $message->name }}
                 </div>

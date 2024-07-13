@@ -52,8 +52,8 @@
                         <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <a type="submit" class="color-admin p-2 delete-button"><i><i
-                                        class="fas fa-trash-alt"></i></i></a>
+                            <a type="submit" class="color-admin p-2 delete-button">
+                                <i class="fas fa-trash-alt"></i></a>
                         </form>
                     </td>   
                 </tr>

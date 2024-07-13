@@ -88,6 +88,10 @@ class MessageController extends Controller
 
         // Recupera i messaggi associati agli appartamenti dell'utente autenticato
         $messages = Message::where('apartment_id', $message->apartment_id)->get();
+         // Formattazione della data per ciascun messaggio
+        foreach ($messages as $message) {
+            $message->created_at_formatted = \Carbon\Carbon::parse($message->created_at)->format('d/m/Y H:i');
+        }
 
         return view('admin.messages.show', compact('message', 'apartments', 'messages'));
     }
