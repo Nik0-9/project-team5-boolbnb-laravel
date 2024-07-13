@@ -55,35 +55,4 @@
     @endif
 @endsection
 
-@section('scripts')
-    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.12.0/maps/maps-web.min.js"></script>
-    <script>
-        // Array di appartamenti con le loro coordinate
-        var apartments = @json($apartments);
 
-        // Inizializza la mappa TomTom con coordinate di default
-        var map = tt.map({
-            key: '88KjpqU7nmmEz3D6UYOg0ycCp6VqtdXI',
-            container: 'map',
-            center: [12.4964, 41.9028], // Centra la mappa su Roma
-            zoom: 5 // Imposta un livello di zoom appropriato per vedere i marker
-        });
-
-        // Aggiungi marker per ciascun appartamento
-        apartments.forEach(function(apartment) {
-            // Verifica se le coordinate esistono e sono valide
-            var latitude = parseFloat(apartment.latitude);
-            var longitude = parseFloat(apartment.longitude);
-
-            if (!isNaN(latitude) && !isNaN(longitude)) {
-                var marker = new tt.Marker().setLngLat([longitude, latitude]).addTo(map);
-                var popup = new tt.Popup({
-                    offset: 35
-                }).setText(apartment.name);
-                marker.setPopup(popup);
-            } else {
-                console.error("Coordinate mancanti o non valide per l'appartamento: ", apartment);
-            }
-        });
-    </script>
-@endsection
