@@ -6,6 +6,8 @@ import.meta.glob([
   '../img/**'
 ])
 import { Chart } from 'chart.js/auto';
+//import 'chartjs-adapter-date-fns';
+import './statistics';
 
 // funzione per eliminare
 const deleteSubmitButtons = document.querySelectorAll(".delete-button");
