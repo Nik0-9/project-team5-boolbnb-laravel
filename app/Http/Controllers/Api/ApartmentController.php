@@ -19,7 +19,7 @@ class ApartmentController extends Controller
     }
     public function getSponsoredApartments()
     {
-        $currentDate = now(); 
+        $currentDate = now();
 
         $sponsoredApartments = Apartment::whereHas('sponsors', function ($query) use ($currentDate) {
             $query->where('end_date', '>', $currentDate);
@@ -27,7 +27,9 @@ class ApartmentController extends Controller
                     'sponsors' => function ($query) use ($currentDate) {
                         $query->where('end_date', '>', $currentDate);
                     }
-                ])->get();
+                ])
+                ->withCount('messages')
+                ->get();
 
         return response()->json([
             'success' => true,
@@ -36,7 +38,9 @@ class ApartmentController extends Controller
     }
     public function getBaseApartments()
     {
-        $sponsoredApartments = Apartment::whereDoesntHave('sponsors')->get();
+        $sponsoredApartments = Apartment::whereDoesntHave('sponsors')
+        ->withCount('messages')
+        ->get();
 
         return response()->json([
             'success' => true,
@@ -82,7 +86,8 @@ class ApartmentController extends Controller
 
         // Base query per cercare appartamenti entro un certo raggio
         $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
-            ->having('distance', '<=', $radius)->where('visible', '1')->orderBy('distance', 'asc');;
+            ->having('distance', '<=', $radius)->where('visible', '1')->orderBy('distance', 'asc');
+        ;
 
         // Filtra per servizi, se forniti
         if ($serviceIds === 'all') {
@@ -137,8 +142,8 @@ class ApartmentController extends Controller
     public function show($slug)
     {
         $apartment = Apartment::with('images', 'services')
-        ->withCount('messages')
-        ->where('slug', $slug)->first();
+
+            ->where('slug', $slug)->first();
         return response()->json([
             'success' => true,
             'results' => $apartment
