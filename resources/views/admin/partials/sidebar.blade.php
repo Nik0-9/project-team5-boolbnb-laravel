@@ -7,7 +7,7 @@
                     src="{{ Auth::user() ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIWsyQ64yhymj3FRGsUyOp5Ju70IZSbDiOVlFQaLK2pEf6ApVS_ZvJ1XGX_sRB87Zp6RM&usqp=CAU' :
     'https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg' }}"
                     alt="{{ Auth::user() ? Auth::user()->name : 'Default' }} profile picture">
-                <span class="text-light">{{ Auth::user() ? Auth::user()->name : 'Ospite' }}</span>
+                <span class="text-light text-black">{{ Auth::user() ? Auth::user()->name : 'Ospite' }}</span>
                 <i class="fa-solid fa-caret-down ms-auto"></i>
             </a>
             <div class="collapse" id="collapseExample">
@@ -89,3 +89,10 @@
         </ul>
     @endif
 </nav>
+<style scoped>
+    span,
+    a,
+    i{
+        color:black;
+    }
+</style>
