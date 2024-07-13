@@ -16,35 +16,44 @@ class MessageController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
     // Recupera gli appartamenti dell'utente autenticato che hanno almeno un messaggio associato
     $apartments = Apartment::whereHas('messages', function ($query) use ($user) {
         $query->where('user_id', $user->id);
     })->get();
 
-    // Seleziona l'appartamento specificato nella richiesta (se presente)
-    $apartment_id = $request->input('apartment_id');
+    // Recupera l'ID dell'appartamento selezionato dalla richiesta
+    $apartmentId = $request->input('apartment');
 
-    // Recupera i messaggi associati agli appartamenti dell'utente autenticato
-    $messages = Message::whereHas('apartment', function ($query) use ($user, $apartment_id) {
-        $query->where('user_id', $user->id);
-        if ($apartment_id) {
-            $query->where('id', $apartment_id);
-        }
-    })->orderBy('created_at', 'desc')->with('apartment')->get();
+    // Recupera i messaggi associati all'appartamento selezionato (se specificato)
+    $messagesQuery = Message::query();
 
-    //per formattare la data
+    // Applica il filtro per l'appartamento selezionato se è stato fornito
+    if ($apartmentId) {
+        $messagesQuery->where('apartment_id', $apartmentId);
+    } else {
+        // Mostra tutti i messaggi se nessun appartamento è selezionato
+        $messagesQuery->whereHas('apartment', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        });
+    }
+
+    // Eager load per migliorare le performance: caricamento dell'appartamento associato a ciascun messaggio
+    $messages = $messagesQuery->with('apartment')->orderBy('created_at', 'desc')->get();
+
+    // Formattazione della data per ciascun messaggio
     foreach ($messages as $message) {
         $message->created_at_formatted = \Carbon\Carbon::parse($message->created_at)->format('d/m/Y H:i');
     }
+
     return view('admin.messages.index', [
         'messages' => $messages,
         'apartments' => $apartments,
-        'selected_apartment_id' => $apartment_id,
+        'selected_apartment_id' => $apartmentId,
     ]);
-    }
+}
 
     /**
      * Show the form for creating a new resource.
