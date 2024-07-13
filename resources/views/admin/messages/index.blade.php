@@ -4,10 +4,11 @@ Copia codice
 @section('content')
 
 <h1 class="my-4 pe-2">Messaggi</h1>
+
 <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center">
     <div class="my-4 me-5 w-100 w-lg-auto">
-        <form action="{{ route('admin.messages.index') }}" method="GET" class="d-flex flex-column flex-md-row align-items-center">
-            <select name="apartment" id="message_apartment" class="form-control me-2 mb-2 mb-md-0 flex-grow-1">
+        <form action="{{ route('admin.messages.index') }}" method="GET" class="d-flex align-items-center">
+            <select name="apartment" id="message_apartment" class="form-control me-2 mb-2 mb-md-0 flex-grow-1" style="max-width: 200px;">
                 <option value="">Seleziona appartamento</option>
                 @foreach ($apartments as $apartment)
                     <option value="{{ $apartment->id }}" {{ $selected_apartment_id == $apartment->id ? 'selected' : '' }}>
@@ -15,10 +16,7 @@ Copia codice
                     </option>
                 @endforeach
             </select>
-
-            Da: <input type="date" name="start_date" id="start_date" class="form-control mb-2 mb-md-0 me-2">
-            A: <input type="date" name="end_date" id="end_date" class="form-control mb-2 mb-md-0">
-            <button type="submit" id="filter_button" class="btn btn-admin ms-md-2">Filtra</button>
+            <button type="submit" id="filter_button" class="btn btn-admin ms-2">Filtra</button>
         </form>
     </div>
 </div>
