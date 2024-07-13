@@ -32,7 +32,6 @@
         <p class="mt-2">Sponsorizza ora la tua struttura e godi di una maggiore visibilità </p>
         <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
     </div>
-
 @endif
 
 <h1>{{ $apartment->name }}</h1>
@@ -43,6 +42,12 @@
     <div class="col-12 col-md-8 mb-4">
         <img class="img-fluid w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
     </div>
+    <div class="col-12 col-md-4">
+        <div class="card">
+            <h4>Messaggi <i class="fa-solid fa-message"></i></h4>
+            <p>{{ $messagesCount }}</p>
+            <a href="{{ route('admin.apartments.messages', $apartment->slug) }}" class="btn btn-primary">Visualizza Messaggi</a>
+        </div>
 
     <!-- Contenitore per le miniature -->
     <div class="col-12 col-md-8 mb-4">
@@ -73,7 +78,7 @@
             @csrf
             <div class="form-group mb-3">
                 <label for="images">Carica Immagini</label>
-                <input type="file" name="images[]" id="images" multiple class="form-control" required>
+                <input type="file" name="images[]" id="images" multiple class="form-control w-75" required>
             </div>
 
             <button type="submit" class="btn btn-admin" id="submitButton">Carica Immagini</button>

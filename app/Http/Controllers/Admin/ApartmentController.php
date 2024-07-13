@@ -118,10 +118,15 @@ class ApartmentController extends Controller
             abort(404, 'Pagina non trovata');
         }
 
-        $apartment = Apartment::with('images', 'sponsors')->findOrFail($apartment->id);
-        $activeSponsor = $apartment->sponsors()->wherePivot('end_date', '>', now())->orderBy('price', 'desc')->first();
+        $apartment = Apartment::with('images', 'sponsors')
+            ->findOrFail($apartment->id);
+        $activeSponsor = $apartment->sponsors()
+            ->wherePivot('end_date', '>', now())
+            ->orderBy('price', 'desc')
+            ->first();
+        $messagesCount = $apartment->messages()->count();
 
-        return view('admin.apartments.show', compact('apartment', 'activeSponsor'));
+        return view('admin.apartments.show', compact('apartment', 'activeSponsor', 'messagesCount'));
     }
     public function uploadImages(Request $request, $id)
     {
@@ -256,5 +261,14 @@ class ApartmentController extends Controller
 
         return redirect()->route('admin.apartments.show', $apartment->slug)
             ->with('success', 'Immagine eliminata con successo.');
+    }
+    public function showMessages($slug)
+    {
+        $apartment = Apartment::where('slug', $slug)
+            ->where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->firstOrFail();
+
+        return view('admin.apartments.messages', compact('apartment'));
     }
 }

@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\BraintreeController;
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('apartments', ApartmentController::class)->parameters(['apartments' => 'apartment:slug']);
+    Route::get('/apartments/messages/{slug}', [ApartmentController::class, 'showMessages'])->name('apartments.messages');
     Route::post('/apartments/{id}/upload-images', [ApartmentController::class, 'uploadImages'])->name('apartments.uploadImages');
     Route::delete('/apartments/images/{image}', [ApartmentController::class, 'deleteImage'])->name('apartments.deleteImage');
     Route::resource('views', ViewController::class);
