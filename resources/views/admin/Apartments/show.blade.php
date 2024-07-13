@@ -16,18 +16,26 @@
 @endif
 
 @if($activeSponsor)
-    <p class="text-success">Appartamento sponsorizzato con {{ $activeSponsor->name }} fino al
-        {{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('d/m/Y H:i') }}
-    </p>
-    <p id="remaining-time"></p>
+    <div class="d-flex align-items-center justify-content-between mt-3">
+        <div>
+            <p class="text-success mt-2">Appartamento sponsorizzato con {{ $activeSponsor->name }} fino al
+                {{ \Carbon\Carbon::parse($activeSponsor->pivot->end_date)->format('d/m/Y H:i') }}
+            </p>
+            <p id="remaining-time"></p>
+
+        </div>
+        <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
+    </div>
+
 @else
-    <p>Nessuna sponsorizzazione attiva</p>
+    <div class="d-flex align-items-center justify-content-between mt-3">
+        <p class="mt-2">Sponsorizza ora la tua struttura e godi di una maggiore visibilità </p>
+        <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
+    </div>
+
 @endif
 
-<div class="d-flex align-items-center justify-content-between mt-3">
-    <h1>{{ $apartment->name }}</h1>
-    <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
-</div>
+<h1>{{ $apartment->name }}</h1>
 
 
 <div class="row">
@@ -40,8 +48,8 @@
     <div class="col-12 col-md-8 mb-4">
         <div class="d-flex flex-wrap">
             @foreach($apartment->images as $image)
-                <div class="col-4 mb-2 position-relative">
-                    <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail" alt="{{ $apartment->name }}">
+                <div class="col mb-2 position-relative">
+                    <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail img-fixed" alt="{{ $apartment->name }}">
                     <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST"
                         class="position-absolute top-0 end-0">
                         @csrf
@@ -154,4 +162,10 @@
         color: inherit;
         cursor: pointer;
     }
+    .img-fixed {
+    width: 100%;  /* Imposta la larghezza al 100% del contenitore */
+    height: 150px;  /* Imposta l'altezza fissa, puoi cambiare il valore a tua discrezione */
+    object-fit: cover;  /* Mantiene il rapporto di aspetto delle immagini, coprendo l'intero contenitore */
+    object-position: center;  /* Centra l'immagine nel contenitore */
+}
 </style>
