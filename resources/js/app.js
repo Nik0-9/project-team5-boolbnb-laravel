@@ -289,3 +289,4 @@ document.addEventListener('DOMContentLoaded', function () {
       cutoutPercentage: 80,
     },
   });
+
