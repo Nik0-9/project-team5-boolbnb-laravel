@@ -25,7 +25,7 @@
         <tr>
             <th class="d-none d-md-table-cell">Nome Appartamento</th>
             <th>Data</th>
-            <th class="d-none d-md-table-cell">Nome Utente</th>
+            <th class="d-none d-lg-table-cell">Nome Utente</th>
             <th>Email</th>
             <th>Messaggio</th>
             <th>Azioni</th>
@@ -43,9 +43,9 @@
                             {{ $message->apartment->name }}
                     </td>
                     <td>{{ $message->created_at_formatted }}</td>
-                    <td  class="text-truncate d-none d-md-table-cell" style="max-width: 20px;">{{ $message->name }} {{ $message->surname }}</td>
+                    <td  class="text-truncate d-none d-lg-table-cell" style="max-width: 20px;">{{ $message->name }} {{ $message->surname }}</td>
                     <td class="text-truncate" style="max-width: 200pxpx;">{{ $message->email }}</td>
-                    <td class="text-truncate" style="max-width: 100px;">{{ $message->body }}</td>
+                    <td class="text-truncate" style="max-width: 150px;">{{ $message->body }}</td>
                     </a>
                     <td>
                         <form action="{{ route('admin.messages.destroy', $message->id) }}" method="POST" style="display:inline;">
