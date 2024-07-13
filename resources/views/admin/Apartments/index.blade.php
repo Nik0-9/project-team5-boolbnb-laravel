@@ -21,7 +21,7 @@
                 <tr class="align-middle r">
                     
                     <td class="w-25 d-none d-md-table-cell" data-title="image">
-                        <img src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}"></td>
+                        <img src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{$apartment->name}}" style="width: 200px; height: 150px"></td>
                     <td data-title="name" class="w-25">{{ $apartment->name }}</td>
                     <td data-title="name" class="w-25">{{ $apartment->address }}</td>
                     @if($apartment->visible == 1)
@@ -50,15 +50,9 @@
 
     @include('admin.partials.modal-delete')
     @else
-     <p>non hai ancora alcun appartamento</p>
-     <a href="{{ route('admin.apartments.create') }}" class="btn btn-admin my-3">Crea Nuovo Appartamento</a>
-     @endelse
-     @endif
-<style scope>
-    img{
-        width: 80px;
-        aspect-ratio: 1/1;
-    }
-</style>
+        <p>non hai ancora alcun appartamento</p>
+        <a href="{{ route('admin.apartments.create') }}" class="btn btn-admin my-3">Crea Nuovo Appartamento</a>
+    @endif
 @endsection
+
 

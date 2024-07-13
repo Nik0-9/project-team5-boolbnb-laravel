@@ -123,11 +123,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
     
-  
-
-
-
-
   // funzione per chiudere la sidebar
   const side = document.getElementById('sidebar');
   const but = document.getElementById('closeSidebar');
@@ -288,3 +283,4 @@ document.addEventListener('DOMContentLoaded', function () {
       cutoutPercentage: 80,
     },
   });
+
