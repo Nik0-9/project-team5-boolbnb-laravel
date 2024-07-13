@@ -17,8 +17,12 @@ class StatisticsController extends Controller
 
         // Inizializza i dati per i grafici
         $currentMonth = Carbon::now()->format('Y-m');
+        $currentYear = Carbon::now()->format('Y');
+
         $dailyViews = [];
         $totalViewsPerApartment = [];
+        $monthlyMessages = [];
+        $totalMessagesPerApartment = [];
 
         foreach ($apartments as $apartment) {
             $views = $apartment->views()
@@ -38,9 +42,26 @@ class StatisticsController extends Controller
                 }
                 $dailyViews[$date][$apartment->id]++;
             }
-        }
+        // Recupera i messaggi
+        $messages = $apartment->messages()
+        ->whereYear('created_at', $currentYear)
+        ->orderBy('created_at', 'asc')
+        ->get();
 
-        return view('admin.statistics', compact('apartments', 'dailyViews', 'totalViewsPerApartment', 'currentMonth'));
+    $totalMessagesPerApartment[$apartment->id] = $messages->count();
+
+    foreach ($messages as $message) {
+        $month = Carbon::parse($message->created_at)->format('Y-m');
+        if (!isset($monthlyMessages[$month])) {
+            $monthlyMessages[$month] = [];
+        }
+        if (!isset($monthlyMessages[$month][$apartment->id])) {
+            $monthlyMessages[$month][$apartment->id] = 0;
+        }
+        $monthlyMessages[$month][$apartment->id]++;
     }
-    
+}
+
+return view('admin.statistics', compact('apartments', 'dailyViews', 'totalViewsPerApartment', 'monthlyMessages', 'totalMessagesPerApartment', 'currentMonth'));
+}
 }

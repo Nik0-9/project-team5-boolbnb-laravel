@@ -70,8 +70,14 @@
                 <span>Messaggi</span> 
             </a>
         </li>
-      
+        
+        <!-- Aggiungi il link per la sezione Statistiche -->
+        <li>
+            <a href="{{ route('admin.statistics.index') }}" class="{{ Route::is('admin.statistics.*') ? 'active' : '' }} nav-link d-flex align-items-center">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Statistiche</span> 
+            </a>
+        </li>
     </ul>
     @endif
 </nav>
-
