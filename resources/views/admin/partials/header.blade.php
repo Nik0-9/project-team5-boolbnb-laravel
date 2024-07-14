@@ -10,6 +10,9 @@
                     </button>
                 </div>
             </div>
+            <div class="d-flex align-items-center">
+                <a href="http://localhost:5174/">BoolBnb</a>
+            </div>
             {{-- Right buttons --}}
             {{--@if (Auth::user())
                 <div id="navigation" class="d-flex">
