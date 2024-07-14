@@ -1,9 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Begin Page Content -->
-<h1 class="mb-4">Appartamenti</h1>
-@if (Auth::user() && Auth::user()->apartments()->exists())
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    <!-- Begin Page Content -->
+   <h1 class="mb-4">Appartamenti</h1>
+   @if (Auth::user() && Auth::user()->apartments()->exists())
     <a href="{{ route('admin.apartments.create') }}" class="btn btn-admin mb-3">Crea Nuovo Appartamento</a>
     <div class="table-responsive-md">
         <table id="res-table" class="table table-hover">
