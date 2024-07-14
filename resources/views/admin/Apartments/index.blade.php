@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    @if(session()->has('message'))
-        <div class="alert alert-success">{{session()->get('message')}}</div>
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
     <!-- Begin Page Content -->
    <h1 class="mb-4">Appartamenti</h1>
