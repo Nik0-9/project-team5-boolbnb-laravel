@@ -46,7 +46,8 @@
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <a type="submit" class="color-admin p-2"><i><i class="fas fa-trash-alt"></i></i></a>
+                                <a type="button" class="color-admin p-2"><i
+                                        class="fas fa-trash-alt delete-button"></i></a>
                             </form>
                         </td>
                     </tr>
