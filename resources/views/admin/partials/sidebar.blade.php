@@ -24,13 +24,13 @@
 
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
+                                                     document.getElementById('logout-form').submit();">
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                                <i class="fa-solid fa-sign-out"></i> 
+                                <i class="fa-solid fa-sign-out"></i>
                                 <span>
-                                {{ __('Disconnetti') }}
+                                    {{ __('Disconnetti') }}
                                 </span>
                             </a>
                         </li>
@@ -40,7 +40,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="{{ route('login') }}">
-                                <i class="fa-solid fa-arrow-right-to-bracket"></i> 
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 <span>
                                     {{ __('Accedi') }}
                                 </span>
@@ -49,7 +49,7 @@
                         @if (Route::has('register'))
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center" href="{{ route('register') }}">
-                                    <i class="fa-solid fa-id-card"></i> 
+                                    <i class="fa-solid fa-id-card"></i>
                                     <span>
                                         {{ __('Registrati') }}
                                     </span>
@@ -85,14 +85,20 @@
                     <span>Messaggi</span>
                 </a>
             </li>
-
+            <li>
+                <a href="{{ route('admin.statistics.index') }}"
+                    class="{{ Route::is('admin.statistics.*') ? 'active' : '' }} nav-link d-flex align-items-center">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Statistiche</span>
+                </a>
+            </li>
         </ul>
     @endif
 </nav>
 <style scoped>
     span,
     a,
-    i{
-        color:black;
+    i {
+        color: black;
     }
 </style>

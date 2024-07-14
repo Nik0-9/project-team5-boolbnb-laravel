@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\ApartmentSponsorController;
 use App\Http\Controllers\Admin\BraintreeController;
+use App\Http\Controllers\StatisticsController;
 
 Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -30,9 +31,9 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/braintree/token', [BraintreeController::class, 'token'])->name('braintree.token');
     Route::get('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'create'])->name('sponsor.create');
     Route::post('apartments/{apartment:slug}/sponsor', [SponsorController::class, 'store'])->name('sponsor.store');
-
+    Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 });
-
+Route::post('/apartment/{id}/view', [ViewController::class, 'store']);
 Route::middleware('auth')->group(function () {
     //Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     //Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
