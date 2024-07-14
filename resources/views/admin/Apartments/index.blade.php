@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session()->has('message'))
+        <div class="alert alert-success">{{session()->get('message')}}</div>
+    @endif
     <!-- Begin Page Content -->
    <h1 class="mb-4">Appartamenti</h1>
    @if (Auth::user() && Auth::user()->apartments()->exists())
@@ -38,8 +41,8 @@
                             style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <a type="submit" class="color-admin p-2"><i><i
-                                        class="fas fa-trash-alt delete-button"></i></i></a>
+                            <a type="button" class="color-admin p-2"><i
+                                        class="fas fa-trash-alt delete-button"></i></a>
                         </form>
                     </td>
                 </tr>

@@ -27,7 +27,8 @@ deleteSubmitButtons.forEach((button) => {
     const buttonDelete = modal.querySelector("button.btn-danger");
 
     buttonDelete.addEventListener("click", () => {
-      button.parentElement.submit();
+      const form = button.closest("form");
+      form.submit();
     });
   });
 });
