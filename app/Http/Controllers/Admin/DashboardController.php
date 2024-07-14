@@ -15,11 +15,15 @@ class DashboardController extends Controller
         ->whereHas('messages')
             ->withCount('messages')
             ->get();
+        $sponsored = Apartment::where('user_id', auth()->user()->id)
+        ->whereHas('sponsors')
+            ->with('sponsors') 
+            ->get();
 
         $totalMessages = Message::whereHas('apartment', function ($query) {
             $query->where('user_id', auth()->user()->id);
         })->count();
-        return view('admin.dashboard', compact('apartments', 'totalMessages'));
+        return view('admin.dashboard', compact('apartments', 'totalMessages', 'sponsored'));
     }
 
 }
