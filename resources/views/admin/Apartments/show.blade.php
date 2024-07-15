@@ -88,8 +88,8 @@
         @endif
         <div class="d-flex flex-column">
             <a href="{{ route('admin.apartments.edit', $apartment->slug) }}"
-                class="btn btn-admin  mb-4 ">Modifica</a>
-            <a href="{{ route('admin.apartments.index') }}" class="btn btn-admin  mb-4">Torna alla Lista</a>
+                class="btn btn-admin  mb-4 w-50">Modifica</a>
+            <a href="{{ route('admin.apartments.index') }}" class="btn btn-admin w-50 mb-4">Torna alla Lista</a>
         </div>
     </div>
 

@@ -11,7 +11,10 @@ class ApartmentController extends Controller
 {
     public function index()
     {
-        $data = Apartment::with('images', 'services')->get();
+        $data = Apartment::with('images', 'services')
+            ->withCount('views')
+            ->withCount('messages')
+            ->get();
         return response()->json([
             'success' => true,
             'results' => $data
@@ -28,9 +31,9 @@ class ApartmentController extends Controller
                         $query->where('end_date', '>', $currentDate);
                     }
                 ])
-                ->withCount('views')
-                ->withCount('messages')
-                ->get();
+            ->withCount('views')
+            ->withCount('messages')
+            ->get();
 
         return response()->json([
             'success' => true,
@@ -40,9 +43,9 @@ class ApartmentController extends Controller
     public function getBaseApartments()
     {
         $sponsoredApartments = Apartment::whereDoesntHave('sponsors')
-        ->withCount('views')
-        ->withCount('messages')
-        ->get();
+            ->withCount('views')
+            ->withCount('messages')
+            ->get();
 
         return response()->json([
             'success' => true,
