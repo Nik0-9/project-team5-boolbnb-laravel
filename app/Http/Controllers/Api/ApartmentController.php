@@ -81,10 +81,14 @@ class ApartmentController extends Controller
 
         $apartmentsSponsored = (clone $baseQuery)
             ->whereHas('sponsors')
+            ->withCount('views')
+            ->withCount('messages')
             ->get();
 
         $apartmentsBase = (clone $baseQuery)
             ->whereDoesntHave('sponsors')
+            ->withCount('views')
+            ->withCount('messages')
             ->get();
 
         $services = Service::all();
