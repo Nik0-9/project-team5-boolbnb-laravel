@@ -70,6 +70,8 @@ class ApartmentController extends Controller
 
     public function search(Request $request)
     {
+
+        $currentDate = now();
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
@@ -79,7 +81,13 @@ class ApartmentController extends Controller
         $baseQuery = Apartment::selectRaw("apartments.*, (6371 * acos(cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude)) + sin(radians($latitude)) * sin(radians(latitude)))) AS distance")
             ->having('distance', '<=', $radius)->where('visible', '1')->orderBy('distance', 'asc');
 
-        $apartmentsSponsored = (clone $baseQuery)
+        $apartmentsSponsored = (clone $baseQuery)->whereHas('sponsors', function ($query) use ($currentDate) {
+            $query->where('end_date', '>', $currentDate);
+        })->with([
+                    'sponsors' => function ($query) use ($currentDate) {
+                        $query->where('end_date', '>', $currentDate);
+                    }
+                ])
             ->whereHas('sponsors')
             ->withCount('views')
             ->withCount('messages')
@@ -143,8 +151,15 @@ class ApartmentController extends Controller
             $baseQuery->where('num_beds', '=', $beds);
         }
 
+        $currentDate = now();
         // Separare gli appartamenti sponsorizzati da quelli non sponsorizzati
-        $apartmentsSponsored = (clone $baseQuery)
+        $apartmentsSponsored = (clone $baseQuery)->whereHas('sponsors', function ($query) use ($currentDate) {
+            $query->where('end_date', '>', $currentDate);
+        })->with([
+                    'sponsors' => function ($query) use ($currentDate) {
+                        $query->where('end_date', '>', $currentDate);
+                    }
+                ])
             ->whereHas('sponsors')
             ->get();
 
