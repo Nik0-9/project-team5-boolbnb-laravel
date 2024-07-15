@@ -251,14 +251,14 @@
     width: 50px;
 }
 
-@media (max-width: 779px) {
-    #sidebar {
-        max-width: 200px;
-        min-width: 70px;
-    }
-}
+// @media (max-width: 779px) {
+//     #sidebar {
+//         max-width: 200px;
+//         min-width: 70px;
+//     }
+// }
 
-@media (max-width: 576px) {
+@media (max-width: 780px) {
     #sidebar {
         max-width: 90px;
         min-width: 70px;
