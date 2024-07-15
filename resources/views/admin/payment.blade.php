@@ -4,6 +4,13 @@
 <div class="container">
     <h1>Pagamento per la sponsorizzazione</h1>
 
+    <div id="loader" class="text-center" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Caricamento...</span>
+        </div>
+        <p class="mt-2">Attendere prego...</p>
+    </div>
+
     <form id="payment-form" action="{{ route('admin.braintree.checkout') }}" method="POST">
         @csrf
 
@@ -58,6 +65,8 @@
                     console.log('Dropin instance created');
                     form.addEventListener('submit', function (event) {
                         event.preventDefault();
+
+                        loader.style.display = 'block'; // Mostra il loader
 
                         instance.requestPaymentMethod(function (err, payload) {
                             if (err) {
