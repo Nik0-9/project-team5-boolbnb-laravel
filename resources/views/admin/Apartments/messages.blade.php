@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Messaggi dell'appartamento: {{ $apartment->name }}</h1>
+    <h1 class="py-3">Messaggi dell'appartamento: {{ $apartment->name }}</h1>
 
     @if ($apartment->messages->isEmpty())
         <p>Non ci sono messaggi per questo appartamento.</p>
@@ -25,7 +25,6 @@
                         {{ $message->apartment->name }}
                     </td>
                     <td>{{ $message->created_at->format('d/m/Y H:i:s') }}</td>
-                        <td>{{ $message->created_at_formatted }}</td>
                         <td class="text-truncate d-none d-md-table-cell" style="max-width: 20px;">{{ $message->name }}
                             {{ $message->surname }}
                         </td>

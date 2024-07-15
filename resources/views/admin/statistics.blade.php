@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <h1>Statistiche degli Appartamenti</h1>
+        <h1 class="py-3">Statistiche degli Appartamenti</h1>
         <div class="row">
             <!-- Grafico Views per Giorno nel Mese Corrente -->
             <div class="col-12 col-md-12 col-lg-6 mb-4">
