@@ -22,7 +22,7 @@
                     <h5 class="d-inline">Totale Messaggi Ricevuti</h5>
                     <strong class="d-inline">{{ $totalMessages }}</strong>
             @foreach ($apartments as $apartment)
-                <div class="card mb-2">
+                <div class="card my-2">
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column">
                             <h5 class="card-title">{{ $apartment->name }}</h5>
