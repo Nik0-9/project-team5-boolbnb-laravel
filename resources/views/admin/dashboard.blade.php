@@ -18,6 +18,7 @@
         </div>
     </div>
     <div class="row">
+        @if (Auth::user() && Auth::user()->apartments()->exists())
         <div class="col-12 col-lg-6 mb-3">
                     <h5 class="d-inline">Totale Messaggi Ricevuti</h5>
                     <strong class="d-inline">{{ $totalMessages }}</strong>
@@ -67,6 +68,10 @@
                 </div>
             @endforeach
         </div>
+        @else
+        <p>Aggiungi il tuo primo appartamento!</p>
+        <a href="{{ route('admin.apartments.create') }}" class="btn btn-admin my-3 w-25">Aggiungi un Appartamento</a>
+        @endif
     </div>
 
 </div>
