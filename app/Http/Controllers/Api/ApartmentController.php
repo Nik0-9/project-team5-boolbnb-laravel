@@ -28,6 +28,7 @@ class ApartmentController extends Controller
                         $query->where('end_date', '>', $currentDate);
                     }
                 ])
+                ->withCount('views')
                 ->withCount('messages')
                 ->get();
 
@@ -39,6 +40,7 @@ class ApartmentController extends Controller
     public function getBaseApartments()
     {
         $sponsoredApartments = Apartment::whereDoesntHave('sponsors')
+        ->withCount('views')
         ->withCount('messages')
         ->get();
 

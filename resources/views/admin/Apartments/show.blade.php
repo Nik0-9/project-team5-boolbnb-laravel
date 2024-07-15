@@ -24,12 +24,12 @@
             <p id="remaining-time"></p>
 
         </div>
-        <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
+        <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mt-3 mb-4">Sponsorizza</a>
     </div>
 
 @else
     <div class="d-flex align-items-center justify-content-between mt-3">
-        <p class="mt-2">Sponsorizza ora la tua struttura e godi di una maggiore visibilità </p>
+        <p class="mt-2 text-success">Sponsorizza ora la tua struttura e godi di una maggiore visibilità </p>
         <a href="{{ route('admin.sponsor.create', $apartment->slug) }}" class="btn btn-admin w-25 mb-4">Sponsorizza</a>
     </div>
 @endif
@@ -43,18 +43,63 @@
         <img class="img-fluid w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
     </div>
     <div class="col-12 col-md-4">
-        <div class="card">
-            <h4>Messaggi <i class="fa-solid fa-message"></i></h4>
-            <p>{{ $messagesCount }}</p>
-            <a href="{{ route('admin.apartments.messages', $apartment->slug) }}" class="btn btn-primary">Visualizza Messaggi</a>
+        <div class="card border-0">
+            <bold class="d-inline p-3">{{ $messagesCount }} Nuovi messaggi <i class="fa-solid fa-message"></i></bold>
+            
+            <a href="{{ route('admin.apartments.messages', $apartment->slug) }}" class="btn btn-admin">Visualizza
+                Messaggi</a>
         </div>
+    </div>
+</div>
+<div class="row ">
+    <!-- Form per il caricamento delle immagini -->
+    <div class="col-12 col-md-6 mb-4">
+        <form action="{{ route('admin.apartments.uploadImages', $apartment->id) }}" method="POST"
+            enctype="multipart/form-data" id="uploadForm">
+            @csrf
+            <div class="form-group mb-3">
+                <label for="images">Carica Immagini</label>
+                <input type="file" name="images[]" id="images" multiple class="form-control w-75" required>
+            </div>
+
+            <button type="submit" class="btn btn-admin" id="submitButton">Carica Immagini</button>
+        </form>
+        <p><strong>Indirizzo:</strong> {{ $apartment->address }}</p>
+        <p><strong>Descrizione:</strong> {{ $apartment->description }}</p>
+        @if ($apartment->visible == 1)
+            <p><strong>Visibile:</strong> Si</p>
+        @else
+            <p><strong>Visibile:</strong> No</p>
+        @endif
+        @if($apartment->services)
+            <p><strong>Servizi:</strong></p>
+            <div class="d-flex">
+                @foreach($apartment->services as $service)
+                    <div class="d-flex flex-column mx-2">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <img class="service-show" src="{{ asset($service->icon) }}" alt="{{ $service->name }}">
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-center">{{ $service->name }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+        <div class="d-flex flex-column">
+            <a href="{{ route('admin.apartments.edit', $apartment->slug) }}"
+                class="btn btn-admin w-25 mb-4 ">Modifica</a>
+            <a href="{{ route('admin.apartments.index') }}" class="btn btn-admin w-25 mb-4">Torna alla Lista</a>
+        </div>
+    </div>
 
     <!-- Contenitore per le miniature -->
-    <div class="col-12 col-md-8 mb-4">
-        <div class="d-flex flex-wrap">
+    <div class="col-12 col-md-6 mb-4 d-flex justify-content-end">
+        <div class="d-flex flex-column align-items-end w-50">
             @foreach($apartment->images as $image)
                 <div class="col mb-2 position-relative">
-                    <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail img-fixed" alt="{{ $apartment->name }}">
+                    <img src="{{ asset('storage/' . $image->image) }}" class=" w-100"
+                        alt="{{ $apartment->name }}">
                     <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST"
                         class="position-absolute top-0 end-0">
                         @csrf
@@ -70,52 +115,6 @@
     </div>
 </div>
 
-<!-- Form per il caricamento delle immagini -->
-<div class="row">
-    <div class="col-12 col-md-8 mb-4">
-        <form action="{{ route('admin.apartments.uploadImages', $apartment->id) }}" method="POST"
-            enctype="multipart/form-data" id="uploadForm">
-            @csrf
-            <div class="form-group mb-3">
-                <label for="images">Carica Immagini</label>
-                <input type="file" name="images[]" id="images" multiple class="form-control w-75" required>
-            </div>
-
-            <button type="submit" class="btn btn-admin" id="submitButton">Carica Immagini</button>
-        </form>
-    </div>
-</div>
-
-<div class="col-12 col-md-8 mb-4">
-    <p><strong>Indirizzo:</strong> {{ $apartment->address }}</p>
-    <p><strong>Descrizione:</strong> {{ $apartment->description }}</p>
-    @if ($apartment->visible == 1)
-        <p><strong>Visibile:</strong> Si</p>
-    @else
-        <p><strong>Visibile:</strong> No</p>
-    @endif
-    @if($apartment->services)
-        <p><strong>Servizi:</strong></p>
-        <div class="d-flex">
-            @foreach($apartment->services as $service)
-                <div class="d-flex flex-column mx-2">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <img class="service-show" src="{{ asset($service->icon) }}" alt="{{ $service->name }}">
-                    </div>
-                    <div class="d-flex justify-content-center align-items-center">
-                        <p class="text-center">{{ $service->name }}</p>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
-    <div class="d-flex flex-column">
-        <a href="{{ route('admin.apartments.edit', $apartment->slug) }}"
-            class="btn btn-admin w-25 mb-4 ">Modifica</a>
-        <a href="{{ route('admin.apartments.index') }}" class="btn btn-admin w-25 mb-4">Torna alla Lista</a>
-    </div>
-
-</div>
 @endsection
 @if($activeSponsor)
     <script>
@@ -167,10 +166,15 @@
         color: inherit;
         cursor: pointer;
     }
+
     .img-fixed {
-    width: 100%;  /* Imposta la larghezza al 100% del contenitore */
-    height: 150px;  /* Imposta l'altezza fissa, puoi cambiare il valore a tua discrezione */
-    object-fit: cover;  /* Mantiene il rapporto di aspetto delle immagini, coprendo l'intero contenitore */
-    object-position: center;  /* Centra l'immagine nel contenitore */
-}
+        width: 100%;
+        /* Imposta la larghezza al 100% del contenitore */
+        height: 150px;
+        /* Imposta l'altezza fissa, puoi cambiare il valore a tua discrezione */
+        object-fit: cover;
+        /* Mantiene il rapporto di aspetto delle immagini, coprendo l'intero contenitore */
+        object-position: center;
+        /* Centra l'immagine nel contenitore */
+    }
 </style>
