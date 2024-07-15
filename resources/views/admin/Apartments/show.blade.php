@@ -98,7 +98,7 @@
         <div class="d-flex flex-column align-items-end w-50">
             @foreach($apartment->images as $image)
                 <div class="col mb-2 position-relative">
-                    <img src="{{ asset('storage/' . $image->image) }}" class=" w-100"
+                    <img src="{{ asset('storage/' . $image->image) }}" style="max-width: 200px; max-height: 200px;"
                         alt="{{ $apartment->name }}">
                     <form action="{{ route('admin.apartments.deleteImage', $image->id) }}" method="POST"
                         class="position-absolute top-0 end-0">
