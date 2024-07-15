@@ -11,13 +11,28 @@ class ApartmentController extends Controller
 {
     public function index()
     {
-        $data = Apartment::with('images', 'services')
+        $currentDate = now();
+
+        $data = Apartment::whereHas('sponsors', function ($query) use ($currentDate) {
+            $query->where('end_date', '>', $currentDate);
+        })->with([
+                    'sponsors' => function ($query) use ($currentDate) {
+                        $query->where('end_date', '>', $currentDate);
+                    }
+                ])
+            ->with('services', 'images')
             ->withCount('views')
             ->withCount('messages')
             ->get();
+        $base = Apartment::whereDoesntHave('sponsors')
+            ->with('services', 'images')
+            ->withCount('views')
+            ->withCount('messages')
+            ->get();
+            $all = $data->merge($base);
         return response()->json([
             'success' => true,
-            'results' => $data
+            'results' => $all
         ]);
     }
     public function getSponsoredApartments()
