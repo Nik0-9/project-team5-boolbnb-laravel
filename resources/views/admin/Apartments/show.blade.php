@@ -39,14 +39,14 @@
 
 <div class="row">
     <!-- Immagine Grande -->
-    <div class="col-12 col-md-8 mb-4">
+    <div class="col-12 col-md-6 mb-4">
         <img class="img-fluid w-50" src="{{ asset('storage/' . $apartment->cover_image)}}" alt="{{ $apartment->name }}">
     </div>
-    <div class="col-12 col-md-4">
-        <div class="card border-0">
+    <div class="col-12 col-md-6 d-flex justify-content-end align-content-end">
+        <div class="card border-0 ">
             <bold class="d-inline p-3">{{ $messagesCount }} Nuovi messaggi <i class="fa-solid fa-message"></i></bold>
             
-            <a href="{{ route('admin.apartments.messages', $apartment->slug) }}" class="btn btn-admin">Visualizza
+            <a href="{{ route('admin.apartments.messages', $apartment->slug) }}" class="btn btn-admin  ">Visualizza
                 Messaggi</a>
         </div>
     </div>
@@ -88,8 +88,8 @@
         @endif
         <div class="d-flex flex-column">
             <a href="{{ route('admin.apartments.edit', $apartment->slug) }}"
-                class="btn btn-admin w-25 mb-4 ">Modifica</a>
-            <a href="{{ route('admin.apartments.index') }}" class="btn btn-admin w-25 mb-4">Torna alla Lista</a>
+                class="btn btn-admin  mb-4 w-50">Modifica</a>
+            <a href="{{ route('admin.apartments.index') }}" class="btn btn-admin w-50 mb-4">Torna alla Lista</a>
         </div>
     </div>
 
