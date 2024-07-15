@@ -58,7 +58,7 @@
 
     @include('admin.partials.modal-delete')
 @else
-    <p>non hai ancora alcun appartamento</p>
+    <p>Non ci sono appartamenti salvati</p>
     <a href="{{ route('admin.apartments.create') }}" class="btn btn-admin my-3">Crea Nuovo Appartamento</a>
 @endif
 @endsection
