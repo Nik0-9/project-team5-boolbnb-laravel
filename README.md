@@ -1,194 +1,73 @@
-cd your parent_folder_path
+# Boolbnb - Laravel Project
 
-#con laravel installer
-laravel new your_project_name_here
+Boolbnb è un progetto sviluppato con Laravel 10 che replica le funzionalità principali di una piattaforma simile a Airbnb. Questo progetto è stato realizzato in un team di quattro persone, con particolare attenzione alla gestione degli annunci di appartamenti, sponsorizzazioni e comunicazione tra utenti.
 
-#per versione 9
-composer create-project --prefer-dist laravel/laravel:^10.0 your_project_name_here
+## Descrizione del Progetto
 
-cd your_project_name_here
+Boolbnb consente di:
 
-code . -r
+- Gestire gli annunci di appartamenti, includendo dettagli come indirizzo, descrizione, immagine di copertina, numero di stanze, bagni e letti.
+- Aggiungere servizi specifici agli appartamenti (es. Wi-Fi, parcheggio, piscina).
+- Sponsorizzare gli annunci tramite il servizio di pagamento **Braintree**.
+- Gestire i messaggi degli utenti interessati a un appartamento.
+- Monitorare le visualizzazioni degli annunci.
 
-php artisan serve
+## Requisiti
 
-ctrl + c
+- **PHP**: >= 8.1
+- **Composer**
+- **Laravel**: 10.x
+- Database relazionale (MySQL o equivalente)
 
-npm remove postcss
+## Installazione
 
-#installo dbal per migration e seeder
-composer require doctrine/dbal
+1. Clonare la repository:
 
-composer require laravel/breeze --dev
-php artisan breeze:install #blade
+   ```bash
+   git clone https://github.com/Nik0-9/project-team5-boolbnb-laravel.git
+   ```
 
+2. Entrare nella directory del progetto e installare le dipendenze:
 
-composer require pacificdev/laravel_9_preset
+   ```bash
+   cd project-team5-boolbnb-laravel
+   composer install
+   ```
 
-#solo per versione 9
-php artisan preset:ui bootstrap --auth
+3. Copiare il file .env.example e rinominarlo in .env, quindi configurare le variabili d'ambiente, come le credenziali del database.
 
-npm install bootstrap axios @fortawesome/fontawesome-free sass
+4. Generare la chiave dell'applicazione:
 
-#in vite config aggiungo agli alias
-'~@fortawesome': path.resolve(__dirname, 'node_modules/@fortawesome'),
+   ```bash
+   php artisan key:generate
+   ```
 
-#copio la cartella dei webfont e se voglio la rinomino e la copio nella cartella font
+5. Configurare il database ed eseguire migrazioni con i seeder:
 
-#app.js
-import "./bootstrap";
-import "~resources/scss/app.scss";
-import * as bootstrap from "bootstrap";
-import.meta.glob(["../img/**", "../fonts/**"]);
+   ```bash
+   php artisan migrate --seed
+   ```
 
-#app.scss
-@use './partials/variables' as *;
+6. Avviare il server locale:
 
-$fa-font-path: "../fonts/webfonts" !default;
+   ```bash
+   php artisan serve
+   ```
 
-@import "~@fortawesome/fontawesome-free/scss/fontawesome";
-@import "~@fortawesome/fontawesome-free/scss/regular";
-@import "~@fortawesome/fontawesome-free/scss/solid";
-@import "~@fortawesome/fontawesome-free/scss/brands";
+## Funzionalità principali
 
-@import '~bootstrap/scss/bootstrap';
+1. Gestione Appartamenti:
+   - Creazione, visualizzazione, modifica e cancellazione di ppartamenti.
+   - Aggiunta di servizi come Wi-Fi, Parcheggio, Cucina etc.
 
+2. Sponsorizzazioni:
+   - Garantita visualizzazione in prima pagina dell'appartamento.
+   - Possibiltà di scelta tra 3 diversi piani di sponsorizzazione.
+   - Integrazione di **Braintree** per i pagamenti sicuri.
 
+3. Messaggistica:
+   - Ricezione di messaggi inviati dagli utenti tramite un form dalla parte front-end del sito.
+   - Salvataggio dei messaggi relativi ad un determinato appartamento.
 
-#vite.config.js
-import { defineConfig } from "vite";
-import laravel from "laravel-vite-plugin";
-import * as path from "path";
-
-export default defineConfig({
-    plugins: [
-        laravel({
-            input: ["resources/scss/app.scss", "resources/js/app.js"],
-            refresh: true,
-        }),
-    ],
-    // Add resolve object and aliases
-    resolve: {
-        alias: {
-            "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
-            "~@fortawesome": path.resolve(__dirname, "node_modules/@fortawesome"),
-            "~resources": "/resources/",
-        },
-    },
-});
-
-#sistemo (cambio/rimuovo) template e routing
-
-#volendo personalizzo paginazione e pagine di errore
-php artisan vendor:publish --tag=laravel-errors
-php artisan vendor:publish --tag=laravel-pagination
-php artisan lang:publish
-
-#comandi git
-
-git init
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin your_git_url 
-git push -u origin main
-
-# copio file .env.example e lo rinomino in .env
-
-composer install
-
-php artisan key:generate
-
-npm install
-
-# creo il database da phpmyadmin
-
-# inserisco i dati per il collegamento al db in env
-
-#creo migration
-php artisan make:migration create_nome_tabella_table
-php artisan make:migration update_users_table --table=users
-php artisan make:migration add_phone_number_to_users_table
-
-#lanciare migration
-php artisan migrate
-
-#revert migration
-php artisan migrate:rollback
-
-
-#popolare il db
-php artisan make:seeder UsersTableSeeder
-
-php artisan db:seed --class=UsersTableSeeder
-
-# preparo le rotte file web.php es. 
-Route::get('/books', [BookController::class, 'index'])->name('books.index');
-# oppure resource route per tutte le operazioni CRUD
-Route::resource('books', BookController::class);
-
-# creo controller
-php artisan make:controller NomeController
-#con opzione resource controller
-php artisan make:controller NomeController --resource
-
-
-#creo model
-php artisan make:model Nome 
-#posso creare il model e contestualmente resource controller, migration, seeder e form request per validazioni
-php artisan make:model Nome -rcms --requests
-
-# creo le views relative
-
-#creo form request per validazione
-	
-php artisan make:request StoreMomemodelRequest
-
-#in app/Providers/RouteServiceProvider.php modifico
-public const HOME = '/admin';
-
-# Se l’utente non è autenticato, sarà dirottato automaticamente verso la pagina di login.
-# Questo comportamento è modificabile nel file in app/Http/Middleware/Authenticate.php
-
-php artisan make:controller Admin/DashboardController
-# nel controller
-public function index(){
-        return view('admin.dashboard');
-    }
-
-Route::middleware(['auth', 'verified'])
-   ->name('admin.')
-   ->prefix('admin')
-   ->group(function () {
-         Route::get('/', [DashboardController::class, 'index'])
-         ->name('dashboard');
-   });
-
-....
-
-Route::fallback(function() {
-    return redirect()->route('admin.dashboard');
-});
-
-#migration di esempio 
-
-#up
-Schema::table('posts', function (Blueprint $table) {
-
-    $table->unsignedBigInteger('user_id');
-    $table->foreign('user_id')
-        ->references('id')
-        ->on('users')->cascadeOnDelete();
-});
-# shortcut
-	
-$table->foreignId('user_id')->constrained()->cascadeOnDelete();
-
-#down
-
-$table->dropForeign('posts_user_id_foreign');
-$table->dropColumn('user_id');
-
-#nei model
-
-
+4. Gestione Utenti:
+   - Sistema di autenticazione fornito da **Laravel Breeze**   
